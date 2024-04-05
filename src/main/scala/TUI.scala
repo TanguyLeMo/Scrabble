@@ -55,7 +55,7 @@ object Main extends App {
   val numbsForBothSide = 51
   val field = new ScrabbleField(numbsForBothSide, numbsForBothSide)
 
-  println("Hello There")
+  println("this should create a merge conflict")
   field.placeTile(3, 3, 'A')
   field.placeTile(7, 7, 'B')
   field.placeTile(9, 5, 'C')

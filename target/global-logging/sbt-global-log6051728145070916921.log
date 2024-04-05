@@ -1,0 +1,12 @@
+[debug] > Exec(p(o)pn)pn)p(rt(eo, None, None)
+[error] Expected ID character
+[error] Not a valid command: p
+[error] Expected 'print'
+[error] Expected project ID
+[error] Expected configuration
+[error] Expected ':'
+[error] Expected key
+[error] Not a valid key: p
+[error] p(o)pn)pn)p(rt(eo
+[error]  ^
+[debug] > Exec(idea-shell, None, None)

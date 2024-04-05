@@ -1,5 +1,12 @@
 import scala.language.postfixOps
 
+
+
+/*
+* TODO: Kommentare entfernen
+  minimale return statements
+  Methodenzeilen minimieren
+* */
 /**
  * Represents a Scrabble game field.
  *
@@ -77,15 +84,9 @@ class ScrabbleField(row: Int, cols: Int) {
     }
   }
 
-  /**
-   * Get the maximum number of characters that can be accommodated per column.
-   *
-   * @return Maximum number of characters per column.
-   */
-  private def getMaxNumOfChar(): Int = {
-    val returnval: Int = Math.ceil(columns / numofAlphabet).asInstanceOf[Int]
-    returnval
-  }
+
+  def getMaxNumOfChar(): Int = Math.ceil(columns / numofAlphabet).asInstanceOf[Int]
+
 
   /**
    * Helper method to generate string representation of each row.
@@ -142,7 +143,7 @@ class ScrabbleField(row: Int, cols: Int) {
 
 object Main extends App {
 
-  private val numbsForBothSide = 27
+  private val numbsForBothSide = 51
 
 
   private val field = new ScrabbleField(numbsForBothSide, numbsForBothSide)

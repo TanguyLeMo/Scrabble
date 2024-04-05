@@ -58,6 +58,8 @@ object Main extends App {
   
 
   println("Hello There")
+  println("hdfshsdf")
+
   field.placeTile(3, 3, 'A')
   field.placeTile(7, 7, 'B')
   field.placeTile(9, 5, 'C')

@@ -1,5 +1,5 @@
 import scala.language.postfixOps
-
+//testing pushing
 class ScrabbleField(row: Int, cols: Int) {
   val columns: Int = cols
   val rows: Int = row
@@ -38,13 +38,13 @@ class ScrabbleField(row: Int, cols: Int) {
 
     if (currentColumn >= columns) ""
     else if (field(currentRow)(currentColumn) == 0) {
-      val color = if (currentRow == midRow && currentColumn == midCol) Console.YELLOW
+      val color = if (currentRow == midRow && currentColumn == midCol) Console.GREEN
       else if ((currentRow == 0 || currentRow == rows - 1) && currentColumn == midCol) Console.RED
       else if ((currentRow == midRow && currentColumn == 0) || (currentRow == midRow && currentColumn == columns - 1)) Console.RED
       else if (currentRow == currentColumn || (currentRow + currentColumn) == rows - 1) {
         if (currentRow == 0 || currentRow == rows - 1) Console.RED
         else if (currentRow <= midRow + 2 && currentRow >= midRow - 2) Console.BLUE
-        else Console.YELLOW
+        else Console.GREEN
       } else Console.WHITE
       color + emptyTile + addSpace(numSymolPerColumn - 1) + gothroughColumn(currentRow, nextCol) + Console.WHITE
     } else Console.WHITE + field(currentRow)(currentColumn) + addSpace(numSymolPerColumn - 1) + gothroughColumn(currentRow, nextCol)

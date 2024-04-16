@@ -54,27 +54,6 @@ class ScrabbleField(row: Int, cols: Int) {
 object Main extends App {
   val numbsForBothSide = 51
   val field = new ScrabbleField(numbsForBothSide, numbsForBothSide)
-  /*
-  dsffffffffffffffffffff
-  sdsdfsdfsdfdsf
-  sdfsd
-  fsdf
-  sdf
-  sd
-  fsd
-
-  fsdfs
-  df
-  sd
-  fs
-  df
-  sdf
-  sd
-  f
-  sdf
-  s
-
-   */
 
   field.placeTile(3, 3, 'A')
   field.placeTile(7, 7, 'B')

@@ -29,6 +29,7 @@ null/
 *.ipr
 *.iws
 .idea
+*.idea
 
 # mac
 .DS_Store

@@ -52,7 +52,7 @@ class ScrabbleField(row: Int, cols: Int) {
 }
 
 object Main extends App {
-  val numbsForBothSide = 51
+  val numbsForBothSide = 15
   val field = new ScrabbleField(numbsForBothSide, numbsForBothSide)
 
   field.placeTile(3, 3, 'A')

@@ -1,3 +1,5 @@
+package de.htwg.se.scrabble.test
+
 import scala.language.postfixOps
 
 class ScrabbleField(row: Int, cols: Int) {
@@ -29,9 +31,9 @@ class ScrabbleField(row: Int, cols: Int) {
   def getMaxNumOfChar: Int = Math.ceil(columns / numofAlphabet).asInstanceOf[Int]
 
   def goThroughRow(currentRow: Int): String =
-    if (currentRow >= rows) "" else s"${currentRow.toString.padTo(3, ' ')} ${gothroughColumn(currentRow, 0) + "\n"}${goThroughRow(currentRow + 1)}"
+    if (currentRow >= rows) "" else s"${currentRow.toString.padTo(3, ' ')} ${goThroughColumn(currentRow, 0) + "\n"}${goThroughRow(currentRow + 1)}"
 
-  def gothroughColumn(currentRow: Int, currentColumn: Int): String = {
+  def goThroughColumn(currentRow: Int, currentColumn: Int): String = {
     val nextCol = currentColumn + 1
     val midRow = (rows - 1) / 2
     val midCol = (columns - 1) / 2
@@ -46,8 +48,8 @@ class ScrabbleField(row: Int, cols: Int) {
         else if (currentRow <= midRow + 2 && currentRow >= midRow - 2) Console.BLUE
         else Console.YELLOW
       } else Console.WHITE
-      color + emptyTile + addSpace(numSymolPerColumn - 1) + gothroughColumn(currentRow, nextCol) + Console.WHITE
-    } else Console.WHITE + field(currentRow)(currentColumn) + addSpace(numSymolPerColumn - 1) + gothroughColumn(currentRow, nextCol)
+      color + emptyTile + addSpace(numSymolPerColumn - 1) + goThroughColumn(currentRow, nextCol) + Console.WHITE
+    } else Console.WHITE + field(currentRow)(currentColumn) + addSpace(numSymolPerColumn - 1) + goThroughColumn(currentRow, nextCol)
   }
 }
 

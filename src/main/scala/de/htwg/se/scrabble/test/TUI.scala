@@ -2,16 +2,14 @@ package de.htwg.se.scrabble.test
 
 import scala.language.postfixOps
 
-class ScrabbleField(row: Int, cols: Int) {
-  val columns: Int = cols
-  val rows: Int = row
-  val field: Array[Array[Char]] = Array.ofDim[Char](rows, cols)
+class ScrabbleField(rows: Int, columns: Int) {
+  val field: Array[Array[Char]] = Array.ofDim[Char](rows, columns)
   val emptyTile = '_'
   val numofAlphabet = 26
   val numSymolPerColumn: Int = 2 + Math.ceil(rows.toDouble / numofAlphabet.toDouble).toInt
 
   def placeTile(row: Int, col: Int, tile: Char): Unit =
-    if (0 <= col && col < cols && 0 <= row && row < rows)
+    if (0 <= col && col < columns && 0 <= row && row < rows)
       field(row)(col) = tile
 
   override def toString: String =
@@ -28,8 +26,6 @@ class ScrabbleField(row: Int, cols: Int) {
   def getLetter(n: Int): String =
     if (n <= 0) "" else getLetter((n - 1) / 26) + ('A' + (n - 1) % 26).toChar
 
-  def getMaxNumOfChar: Int = Math.ceil(columns / numofAlphabet).asInstanceOf[Int]
-
   def goThroughRow(currentRow: Int): String =
     if (currentRow >= rows) "" else s"${currentRow.toString.padTo(3, ' ')} ${goThroughColumn(currentRow, 0) + "\n"}${goThroughRow(currentRow + 1)}"
 
@@ -45,13 +41,13 @@ class ScrabbleField(row: Int, cols: Int) {
   }
 }
 
-
+/*
   object Main extends App {
-  val numbsForBothSide = 15
+  val numbsForBothSide = 42
   val field = new ScrabbleField(numbsForBothSide, numbsForBothSide)
 
   field.placeTile(3, 3, 'A')
   field.placeTile(7, 7, 'B')
   field.placeTile(9, 5, 'C')
-  println(field)
-}
+  println(field.numSymolPerColumn) 
+}*/

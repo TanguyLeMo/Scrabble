@@ -16,6 +16,17 @@ class testingTUI extends AnyWordSpec {
         val scrabbleField = new ScrabbleField(standardScrabbleFieldSize, standardScrabbleFieldSize)
         scrabbleField.field(3)(3) shouldEqual 0
       }
+      "numSymbolPerColumn expresses the Number needed for each Column to represent a pleasant scale for the playing" +
+        " Field concerning the X axis labeling. It" should{
+        "represent the minimum number nedded " in{
+          val scrabbleField = new ScrabbleField(standardScrabbleFieldSize, standardScrabbleFieldSize)
+          scrabbleField.numSymolPerColumn shouldEqual 3
+        }
+        "Same applies for a bigger scale " in {
+          val scrabbleField = new ScrabbleField(43, 43)
+          scrabbleField.numSymolPerColumn shouldEqual 4
+        }
+      }
 
       "placeTile" should {
         "place a Character in the given position of the field Matrix and return nothing " in {
@@ -51,6 +62,10 @@ class testingTUI extends AnyWordSpec {
           val scrabbleField = new ScrabbleField(standardScrabbleFieldSize, standardScrabbleFieldSize)
           scrabbleField.addSpace(3) shouldEqual "    "
         }
+        "if the input argument is 0 or one at least one space character" in{
+          val scrabbleField = new ScrabbleField(standardScrabbleFieldSize, standardScrabbleFieldSize)
+          scrabbleField.addSpace(0) shouldEqual " "
+        }
       }
       "getLetter represents the Number of the X-Axis alphabetically. After Z it " should {
         "return the correct letter for single-digit positive integers" in {
@@ -71,6 +86,16 @@ class testingTUI extends AnyWordSpec {
             field.goThroughRow(0) should be("0   " + "_   " + "_   " + "_   " + "\n"
                                           + "1   " + "_   " + "_   " + "_   " + "\n"
                                           + "2   " + "_   " + "_   " + "_   " + "\n")
+          }
+          "in case that the Matrix has a placed a Character within a position, given specimen" should{
+            "be appear in given String" in {
+              val scrabbleField = new ScrabbleField(3, 3)
+              scrabbleField.placeTile(1, 1, 'A')
+              scrabbleField.placeTile(2, 2, 'B')
+              scrabbleField.goThroughRow(0) should be ("0   " + "_   " + "_   " + "_   " + "\n"
+                                                      +"1   " + "_   " + "A   " + "_   " + "\n"
+                                                      +"2   " + "_   " + "_   " + "B   " + "\n")
+            }
           }
         }
 

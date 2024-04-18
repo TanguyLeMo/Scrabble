@@ -28,6 +28,8 @@ class ScrabbleField(row: Int, cols: Int) {
   def getLetter(n: Int): String =
     if (n <= 0) "" else getLetter((n - 1) / 26) + ('A' + (n - 1) % 26).toChar
 
+  def getMaxNumOfChar: Int = Math.ceil(columns / numofAlphabet).asInstanceOf[Int]
+
   def goThroughRow(currentRow: Int): String =
     if (currentRow >= rows) "" else s"${currentRow.toString.padTo(3, ' ')} ${goThroughColumn(currentRow, 0) + "\n"}${goThroughRow(currentRow + 1)}"
 
@@ -38,22 +40,23 @@ class ScrabbleField(row: Int, cols: Int) {
 
     if (currentColumn >= columns) ""
     else if (field(currentRow)(currentColumn) == 0) {
-      val color = if (currentRow == midRow && currentColumn == midCol) Console.YELLOW
-      else if ((currentRow == 0 || currentRow == rows - 1) && currentColumn == midCol) Console.RED
-      else if ((currentRow == midRow && currentColumn == 0) || (currentRow == midRow && currentColumn == columns - 1)) Console.RED
+      val color = if (currentRow == midRow && currentColumn == midCol) "\u001B[33m" // Yellow
+      else if ((currentRow == 0 || currentRow == rows - 1) && currentColumn == midCol) "\u001B[31m" // Red
+      else if ((currentRow == midRow && currentColumn == 0) || (currentRow == midRow && currentColumn == columns - 1)) "\u001B[31m" // Red
       else if (currentRow == currentColumn || (currentRow + currentColumn) == rows - 1) {
-        if (currentRow == 0 || currentRow == rows - 1) Console.RED
-        else if (currentRow <= midRow + 2 && currentRow >= midRow - 2) Console.BLUE
-        else Console.YELLOW
-      } else Console.WHITE
-      color + emptyTile + addSpace(numSymolPerColumn - 1) + goThroughColumn(currentRow, nextCol) + Console.WHITE
-    } else Console.WHITE + field(currentRow)(currentColumn) + addSpace(numSymolPerColumn - 1) + goThroughColumn(currentRow, nextCol)
+        if (currentRow == 0 || currentRow == rows - 1) "\u001B[31m" // Red
+        else if (currentRow <= midRow + 2 && currentRow >= midRow - 2) "\u001B[34m" // Blue
+        else "\u001B[33m" // Yellow
+      } else "\u001B[37m" // White
+      color + emptyTile + addSpace(numSymolPerColumn - 1) + goThroughColumn(currentRow, nextCol) + "\u001B[0m"
+    } else "\u001B[37m" + field(currentRow)(currentColumn) + addSpace(numSymolPerColumn - 1) + goThroughColumn(currentRow, nextCol)
   }
 }
 
 object Main extends App {
   val numbsForBothSide = 15
   val field = new ScrabbleField(numbsForBothSide, numbsForBothSide)
+
   field.placeTile(3, 3, 'A')
   field.placeTile(7, 7, 'B')
   field.placeTile(9, 5, 'C')

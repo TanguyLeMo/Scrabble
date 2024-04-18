@@ -17,6 +17,23 @@ class testingTUI extends AnyWordSpec {
         val scrabbleField = new ScrabbleField(standardScrabbleFieldSize, standardScrabbleFieldSize)
         scrabbleField.field(3)(3) shouldEqual 0
       }
+
+      "placeTile" should{
+        "place a Character in the given position of the field Matrix and return nothing " in {
+          val scrabbleField = new ScrabbleField(standardScrabbleFieldSize, standardScrabbleFieldSize)
+          scrabbleField.placeTile(4,4, 'A')
+          assert(scrabbleField.field(4)(4) == 'A')
+        }
+        "not do Anything if the placeTile function arguments are out of Bonds of the matrix" in {
+          val scrabbleField = new ScrabbleField(standardScrabbleFieldSize, standardScrabbleFieldSize)
+          val compareField = scrabbleField.field.clone()
+
+          scrabbleField.placeTile(62, 62, 'B')
+          scrabbleField.placeTile(-1, -1, 'Z')
+          scrabbleField.field shouldEqual compareField
+        }
+
+      }
       "scalable invariant number of spaces between Positions and Tiles to ensure prettier prints" should {
         "be settled " in {
           val scrabbleField = new ScrabbleField(standardScrabbleFieldSize, standardScrabbleFieldSize)

@@ -6,19 +6,16 @@ import org.scalatest.matchers.should.Matchers._
 class testingTUI extends AnyWordSpec {
 val standardScrabbleFieldSize = 15
 // place Tile Tanguy
-"A Scrabble field is a datatype that contains a two-dimensional arrays of character. A Matrix" when {
-  "empty" should {
-    "be created by using a dimention and a sample cell" in {
+"A Scrabble field is a datatype that contains a two-dimensional arrays of character." when {
+  "created" should {
+    "be created by using the given dimension " in {
       val scrabbleField = new ScrabbleField(standardScrabbleFieldSize, standardScrabbleFieldSize)
-      scrabbleField.field.length should be (standardScrabbleFieldSize)
+      scrabbleField.field.length shouldEqual(standardScrabbleFieldSize)
     }
- /*   "The function \"PlaceTile\" should be placing a character at given position with given character. A tile" when {
-      "placed" should {
-        val scrabbleField = new ScrabbleField(standardScrabbleFieldSize, standardScrabbleFieldSize)
-        val character = 'B'
-        scrabbleField.placeTile(3, 7, character) shouldEqual(character)
-
-      } */
+    "Every position of the Scrabble field" should {
+      val scrabbleField = new ScrabbleField(standardScrabbleFieldSize, standardScrabbleFieldSize)
+      
+      
     }
   }
 }

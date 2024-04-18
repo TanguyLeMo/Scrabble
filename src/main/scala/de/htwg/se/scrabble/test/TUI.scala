@@ -40,20 +40,12 @@ class ScrabbleField(row: Int, cols: Int) {
 
     if (currentColumn >= columns) ""
     else if (field(currentRow)(currentColumn) == 0) {
-      val color = if (currentRow == midRow && currentColumn == midCol) "\u001B[33m" // Yellow
-      else if ((currentRow == 0 || currentRow == rows - 1) && currentColumn == midCol) "\u001B[31m" // Red
-      else if ((currentRow == midRow && currentColumn == 0) || (currentRow == midRow && currentColumn == columns - 1)) "\u001B[31m" // Red
-      else if (currentRow == currentColumn || (currentRow + currentColumn) == rows - 1) {
-        if (currentRow == 0 || currentRow == rows - 1) "\u001B[31m" // Red
-        else if (currentRow <= midRow + 2 && currentRow >= midRow - 2) "\u001B[34m" // Blue
-        else "\u001B[33m" // Yellow
-      } else "\u001B[37m" // White
-      color + emptyTile + addSpace(numSymolPerColumn - 1) + goThroughColumn(currentRow, nextCol) + "\u001B[0m"
-    } else "\u001B[37m" + field(currentRow)(currentColumn) + addSpace(numSymolPerColumn - 1) + goThroughColumn(currentRow, nextCol)
+      emptyTile + addSpace(numSymolPerColumn - 1) + goThroughColumn(currentRow, nextCol)
+    } else  field(currentRow)(currentColumn) + addSpace(numSymolPerColumn - 1) + goThroughColumn(currentRow, nextCol)
   }
-}
 
-object Main extends App {
+
+  object Main extends App {
   val numbsForBothSide = 15
   val field = new ScrabbleField(numbsForBothSide, numbsForBothSide)
 

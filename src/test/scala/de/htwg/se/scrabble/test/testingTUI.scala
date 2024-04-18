@@ -36,12 +36,12 @@ class testingTUI extends AnyWordSpec {
           "creates the columns of the playing field" in {
             val numRowCols = 1
             val field = new ScrabbleField(numRowCols, numRowCols)
-            field.goThroughColumn(0, 0) should be("\u001B[33m" + "_   " + "\u001B[0m")
+            field.goThroughColumn(0, 0) should be("_   ")
           }
           "be scaleable" in {
             val numRowsCols = 3
             val field = new ScrabbleField(numRowsCols, numRowsCols)
-            field.goThroughColumn(0, 0) should be("\u001B[31m" + "_   " + "\u001B[31m" + "_   " + "\u001B[31m" + "_   " + "\u001B[0m\u001B[0m\u001B[0m")
+            field.goThroughColumn(0, 0) should be("_   " + "_   " + "_   ")
           }
         }
 
@@ -63,14 +63,14 @@ class testingTUI extends AnyWordSpec {
           "create the playingfield out of the columns and numbering the rows" in {
             val numRowCols = 1
             val field = new ScrabbleField(numRowCols, numRowCols)
-            field.goThroughRow(0) should be("0   " + "\u001B[33m" + "_   " + "\u001B[0m" + "\n")
+            field.goThroughRow(0) should be("0   " + "_   " + "\n")
           }
           "be scaleable" in {
             val numRowsCols = 3
             val field = new ScrabbleField(numRowsCols, numRowsCols)
-            field.goThroughRow(0) should be("0   " + "\u001B[31m" + "_   " + "\u001B[31m" + "_   " + "\u001B[31m" + "_   " + "\u001B[0m\u001B[0m\u001B[0m" + "\n"
-              + "1   " + "\u001B[31m" + "_   " + "\u001B[33m" + "_   " + "\u001B[31m" + "_   " + "\u001B[0m\u001B[0m\u001B[0m" + "\n"
-              + "2   " + "\u001B[31m" + "_   " + "\u001B[31m" + "_   " + "\u001B[31m" + "_   " + "\u001B[0m\u001B[0m\u001B[0m" + "\n")
+            field.goThroughRow(0) should be("0   " + "_   " + "_   " + "_   " + "\n"
+                                          + "1   " + "_   " + "_   " + "_   " + "\n"
+                                          + "2   " + "_   " + "_   " + "_   " + "\n")
           }
         }
 

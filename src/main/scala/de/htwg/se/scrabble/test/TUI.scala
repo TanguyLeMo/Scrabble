@@ -41,8 +41,9 @@ class ScrabbleField(row: Int, cols: Int) {
     if (currentColumn >= columns) ""
     else if (field(currentRow)(currentColumn) == 0) {
       emptyTile + addSpace(numSymolPerColumn - 1) + goThroughColumn(currentRow, nextCol)
-    } else  field(currentRow)(currentColumn) + addSpace(numSymolPerColumn - 1) + goThroughColumn(currentRow, nextCol)
+    } else field(currentRow)(currentColumn) + addSpace(numSymolPerColumn - 1) + goThroughColumn(currentRow, nextCol)
   }
+}
 
 
   object Main extends App {

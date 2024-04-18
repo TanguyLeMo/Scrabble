@@ -28,8 +28,6 @@ class ScrabbleField(row: Int, cols: Int) {
   def getLetter(n: Int): String =
     if (n <= 0) "" else getLetter((n - 1) / 26) + ('A' + (n - 1) % 26).toChar
 
-  def getMaxNumOfChar: Int = Math.ceil(columns / numofAlphabet).asInstanceOf[Int]
-
   def goThroughRow(currentRow: Int): String =
     if (currentRow >= rows) "" else s"${currentRow.toString.padTo(3, ' ')} ${goThroughColumn(currentRow, 0) + "\n"}${goThroughRow(currentRow + 1)}"
 
@@ -60,5 +58,5 @@ object Main extends App {
   field.placeTile(3, 3, 'A')
   field.placeTile(7, 7, 'B')
   field.placeTile(9, 5, 'C')
-  println(field.goThroughColumn(0,0))
+  println(field)
 }

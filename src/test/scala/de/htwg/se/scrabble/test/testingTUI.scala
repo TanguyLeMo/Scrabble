@@ -84,8 +84,8 @@ class testingTUI extends AnyWordSpec {
             val numRowsCols = 3
             val field = new ScrabbleField(numRowsCols, numRowsCols)
             field.goThroughRow(0) should be("0   " + "_   " + "_   " + "_   " + "\n"
-                                          + "1   " + "_   " + "_   " + "_   " + "\n"
-                                          + "2   " + "_   " + "_   " + "_   " + "\n")
+              + "1   " + "_   " + "_   " + "_   " + "\n"
+              + "2   " + "_   " + "_   " + "_   " + "\n")
           }
           "in case that the Matrix has a placed a Character within a position, given specimen" should{
             "be appear in given String" in {
@@ -93,9 +93,20 @@ class testingTUI extends AnyWordSpec {
               scrabbleField.placeTile(1, 1, 'A')
               scrabbleField.placeTile(2, 2, 'B')
               scrabbleField.goThroughRow(0) should be ("0   " + "_   " + "_   " + "_   " + "\n"
-                                                      +"1   " + "_   " + "A   " + "_   " + "\n"
-                                                      +"2   " + "_   " + "_   " + "B   " + "\n")
+                +"1   " + "_   " + "A   " + "_   " + "\n"
+                +"2   " + "_   " + "_   " + "B   " + "\n")
             }
+          }
+        }
+
+        "toString" should{
+          "Put the labeled XAxis on top of the playing field" in{
+            val numRowsCols = 3
+            val field = new ScrabbleField(numRowsCols, numRowsCols)
+            field.toString should be("    A   B   C   " + "\n"
+              +"0   _   _   _   " + "\n"
+              +"1   _   _   _   " + "\n"
+              +"2   _   _   _   " + "\n")
           }
         }
 

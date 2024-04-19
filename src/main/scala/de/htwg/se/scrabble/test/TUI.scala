@@ -13,7 +13,7 @@ class ScrabbleField(rows: Int, columns: Int) {
       field(row)(col) = tile
 
   override def toString: String =
-    s"    ${labelingXAxis(1)}\n${goThroughRow(0)}"
+    s"    ${labelingXAxis(1)}\n${concatenateCurrentRow(0)}"
 
   def labelingXAxis(currcolum: Int): String =
     if (currcolum > columns) "" else getLetter(currcolum) + addSpace(numSymolPerColumn - getLetter(currcolum).length) + labelingXAxis(currcolum + 1)
@@ -26,18 +26,18 @@ class ScrabbleField(rows: Int, columns: Int) {
   def getLetter(n: Int): String =
     if (n <= 0) "" else getLetter((n - 1) / 26) + ('A' + (n - 1) % 26).toChar
 
-  def goThroughRow(currentRow: Int): String =
-    if (currentRow >= rows) "" else s"${currentRow.toString.padTo(3, ' ')} ${goThroughColumn(currentRow, 0) + "\n"}${goThroughRow(currentRow + 1)}"
+  def concatenateCurrentRow(currentRow: Int): String =
+    if (currentRow >= rows) "" else s"${currentRow.toString.padTo(3, ' ')} ${concatenateColumnsOfCurrentRow(currentRow, 0) + "\n"}${concatenateCurrentRow(currentRow + 1)}"
 
-  def goThroughColumn(currentRow: Int, currentColumn: Int): String = {
+  def concatenateColumnsOfCurrentRow(currentRow: Int, currentColumn: Int): String = {
     val nextCol = currentColumn + 1
     val midRow = (rows - 1) / 2
     val midCol = (columns - 1) / 2
 
     if (currentColumn >= columns) ""
     else if (field(currentRow)(currentColumn) == 0) {
-      emptyTile + addSpace(numSymolPerColumn - 1) + goThroughColumn(currentRow, nextCol)
-    } else field(currentRow)(currentColumn) + addSpace(numSymolPerColumn - 1) + goThroughColumn(currentRow, nextCol)
+      emptyTile + addSpace(numSymolPerColumn - 1) + concatenateColumnsOfCurrentRow(currentRow, nextCol)
+    } else field(currentRow)(currentColumn) + addSpace(numSymolPerColumn - 1) + concatenateColumnsOfCurrentRow(currentRow, nextCol)
   }
 }
 

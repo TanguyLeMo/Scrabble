@@ -16,17 +16,20 @@ class testingTUI extends AnyWordSpec {
         val scrabbleField = new ScrabbleField(standardScrabbleFieldSize, standardScrabbleFieldSize)
         scrabbleField.field(3)(3) shouldEqual 0
       }
-      "numSymbolPerColumn expresses the Number needed for each Column to represent a pleasant scale for the playing" +
+
+
+      "The immutable value numSymbolPerColumn expresses the Number needed for each Column to represent a pleasant scale for the playing" +
         " Field concerning the X axis labeling. It" should{
         "represent the minimum number nedded " in{
           val scrabbleField = new ScrabbleField(standardScrabbleFieldSize, standardScrabbleFieldSize)
           scrabbleField.numSymolPerColumn shouldEqual 3
         }
-        "Same applies for a bigger scale " in {
+        "and apply for a bigger scale " in {
           val scrabbleField = new ScrabbleField(43, 43)
           scrabbleField.numSymolPerColumn shouldEqual 4
         }
       }
+
 
       "placeTile" should {
         "place a Character in the given position of the field Matrix and return nothing " in {
@@ -42,31 +45,21 @@ class testingTUI extends AnyWordSpec {
           scrabbleField.placeTile(-1, -1, 'Z')
           scrabbleField.field shouldEqual compareField
         }
-        //labelingXAxis Tanguy
-        "goThroughColumn" should {
-          "creates the columns of the playing field" in {
-            val numRowCols = 1
-            val field = new ScrabbleField(numRowCols, numRowCols)
-            field.goThroughColumn(0, 0) should be("_   ")
-          }
-          "be scaleable" in {
-            val numRowsCols = 3
-            val field = new ScrabbleField(numRowsCols, numRowsCols)
-            field.goThroughColumn(0, 0) should be("_   " + "_   " + "_   ")
-          }
-        }
 
       }
-      "scalable invariant number of spaces between Positions and Tiles to ensure prettier prints" should {
+      "add Space's task is to represent scalable invariant number of spaces between Positions and Tiles to ensure" +
+        " prettier prints it" should {
         "be settled " in {
           val scrabbleField = new ScrabbleField(standardScrabbleFieldSize, standardScrabbleFieldSize)
           scrabbleField.addSpace(3) shouldEqual "    "
         }
-        "if the input argument is 0 or one at least one space character" in{
+        "if the input argument is 0 or or lower, one space character will be returned" in {
           val scrabbleField = new ScrabbleField(standardScrabbleFieldSize, standardScrabbleFieldSize)
           scrabbleField.addSpace(0) shouldEqual " "
         }
       }
+
+
       "getLetter represents the Number of the X-Axis alphabetically. After Z it " should {
         "return the correct letter for single-digit positive integers" in {
           val scrabbleField = new ScrabbleField(standardScrabbleFieldSize, standardScrabbleFieldSize)
@@ -74,43 +67,7 @@ class testingTUI extends AnyWordSpec {
           scrabbleField.getLetter(2) shouldBe "B"
           scrabbleField.getLetter(3) shouldBe "C"
         }
-        "goThrougRow" should {
-          "create the playingfield out of the columns and numbering the rows" in {
-            val numRowCols = 1
-            val field = new ScrabbleField(numRowCols, numRowCols)
-            field.goThroughRow(0) should be("0   " + "_   " + "\n")
-          }
-          "be scaleable" in {
-            val numRowsCols = 3
-            val field = new ScrabbleField(numRowsCols, numRowsCols)
-            field.goThroughRow(0) should be("0   " + "_   " + "_   " + "_   " + "\n"
-              + "1   " + "_   " + "_   " + "_   " + "\n"
-              + "2   " + "_   " + "_   " + "_   " + "\n")
-          }
-          "in case that the Matrix has a placed a Character within a position, given specimen" should{
-            "be appear in given String" in {
-              val scrabbleField = new ScrabbleField(3, 3)
-              scrabbleField.placeTile(1, 1, 'A')
-              scrabbleField.placeTile(2, 2, 'B')
-              scrabbleField.goThroughRow(0) should be ("0   " + "_   " + "_   " + "_   " + "\n"
-                +"1   " + "_   " + "A   " + "_   " + "\n"
-                +"2   " + "_   " + "_   " + "B   " + "\n")
-            }
-          }
-        }
-
-        "toString" should{
-          "Put the labeled XAxis on top of the playing field" in{
-            val numRowsCols = 3
-            val field = new ScrabbleField(numRowsCols, numRowsCols)
-            field.toString should be("    A   B   C   " + "\n"
-              +"0   _   _   _   " + "\n"
-              +"1   _   _   _   " + "\n"
-              +"2   _   _   _   " + "\n")
-          }
-        }
-
-        "return the correct letter for double-digit positive integers" in {
+        "return the correct letter for double-digit above 26 positive integers" in {
           val scrabbleField = new ScrabbleField(standardScrabbleFieldSize, standardScrabbleFieldSize)
           scrabbleField.getLetter(27) shouldBe "AA"
           scrabbleField.getLetter(28) shouldBe "AB"
@@ -122,6 +79,47 @@ class testingTUI extends AnyWordSpec {
           scrabbleField.getLetter(-1) shouldBe ""
         }
       }
+
+
+      "concatenateColumnsOfCurrentRow concatenates the columns of the current row index and" should {
+        "create the columns of the playing field" in {
+          val numRowCols = 1
+          val field = new ScrabbleField(numRowCols, numRowCols)
+          field.concatenateColumnsOfCurrentRow(0, 0) should be("_   ")
+        }
+        " and be scalable" in {
+          val numRowsCols = 3
+          val field = new ScrabbleField(numRowsCols, numRowsCols)
+          field.concatenateColumnsOfCurrentRow(0, 0) should be("_   " + "_   " + "_   ")
+        }
+      }
+
+
+      "concatenateCurrentRow concatenates every row as a string thus " should {
+        "create the playingfield out of the columns and numbering the rows" in {
+          val numRowCols = 1
+          val field = new ScrabbleField(numRowCols, numRowCols)
+          field.concatenateCurrentRow(0) should be("0   " + "_   " + "\n")
+        }
+        "be scaleable" in {
+          val numRowsCols = 3
+          val field = new ScrabbleField(numRowsCols, numRowsCols)
+          field.concatenateCurrentRow(0) should be("0   " + "_   " + "_   " + "_   " + "\n"
+            + "1   " + "_   " + "_   " + "_   " + "\n"
+            + "2   " + "_   " + "_   " + "_   " + "\n")
+        }
+        "in case that the Matrix has a placed a Character within a position, given specimen" should {
+          "be appear in given String" in {
+            val scrabbleField = new ScrabbleField(3, 3)
+            scrabbleField.placeTile(1, 1, 'A')
+            scrabbleField.placeTile(2, 2, 'B')
+            scrabbleField.concatenateCurrentRow(0) should be("0   " + "_   " + "_   " + "_   " + "\n"
+              + "1   " + "_   " + "A   " + "_   " + "\n"
+              + "2   " + "_   " + "_   " + "B   " + "\n")
+          }
+        }
+      }
+
       "labelingXAxis describes the X-Axis with it properties and scale of the Board. When implemented" +
         "Correctly it" should {
         "return a correct labels for each column for a standard Scrabble field" in {
@@ -132,6 +130,19 @@ class testingTUI extends AnyWordSpec {
           val scrabbleField = new ScrabbleField(3, 3)
           scrabbleField.labelingXAxis(4) shouldEqual ""
         }
+        
+        "toString" should {
+          "Put the labeled XAxis on top of the playing field" in {
+            val numRowsCols = 3
+            val field = new ScrabbleField(numRowsCols, numRowsCols)
+            field.toString should be("    A   B   C   " + "\n"
+              + "0   _   _   _   " + "\n"
+              + "1   _   _   _   " + "\n"
+              + "2   _   _   _   " + "\n")
+          }
+        }
+
+
       }
     }
   }

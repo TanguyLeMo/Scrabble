@@ -1,25 +1,149 @@
 package de.htwg.se.scrabble.test
+
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers._
 
-
 class testingTUI extends AnyWordSpec {
+  val standardScrabbleFieldSize = 15
 
-// place Tile Tanguy
+  "A Scrabble field is a datatype that contains a two-dimensional arrays of character." when {
+    "created" should {
+      "be created by using the given dimension " in {
+        val scrabbleField = new ScrabbleField(standardScrabbleFieldSize, standardScrabbleFieldSize)
+        scrabbleField.field.length shouldEqual standardScrabbleFieldSize
+      }
+      "Every position of the Scrabble field " in {
+        val scrabbleField = new ScrabbleField(standardScrabbleFieldSize, standardScrabbleFieldSize)
+        scrabbleField.field(3)(3) shouldEqual 0
+      }
 
-// addSpaces Tanguy
 
-// getLetter Tanguy
+      "The immutable value numSymbolPerColumn expresses the Number needed for each Column to represent a pleasant scale for the playing" +
+        " Field concerning the X axis labeling. It" should{
+        "represent the minimum number nedded " in{
+          val scrabbleField = new ScrabbleField(standardScrabbleFieldSize, standardScrabbleFieldSize)
+          scrabbleField.numSymolPerColumn shouldEqual 3
+        }
+        "and apply for a bigger scale " in {
+          val scrabbleField = new ScrabbleField(43, 43)
+          scrabbleField.numSymolPerColumn shouldEqual 4
+        }
+      }
 
-//getMaxNumOfChar Tanguy
 
-//getMaxNumOfChar Tanguy
+      "placeTile" should {
+        "place a Character in the given position of the field Matrix and return nothing " in {
+          val scrabbleField = new ScrabbleField(standardScrabbleFieldSize, standardScrabbleFieldSize)
+          scrabbleField.placeTile(4, 4, 'A')
+          assert(scrabbleField.field(4)(4) == 'A')
+        }
+        "not do Anything if the placeTile function arguments are out of Bonds of the matrix" in {
+          val scrabbleField = new ScrabbleField(standardScrabbleFieldSize, standardScrabbleFieldSize)
+          val compareField = scrabbleField.field.clone()
 
-//labelingXAxis Tanguy
+          scrabbleField.placeTile(62, 62, 'B')
+          scrabbleField.placeTile(-1, -1, 'Z')
+          scrabbleField.field shouldEqual compareField
+        }
 
-  //goThroughColumn Hannes
+      }
+      "add Space's task is to represent scalable invariant number of spaces between Positions and Tiles to ensure" +
+        " prettier prints it" should {
+        "be settled " in {
+          val scrabbleField = new ScrabbleField(standardScrabbleFieldSize, standardScrabbleFieldSize)
+          scrabbleField.addSpace(3) shouldEqual "    "
+        }
+        "if the input argument is 0 or or lower, one space character will be returned" in {
+          val scrabbleField = new ScrabbleField(standardScrabbleFieldSize, standardScrabbleFieldSize)
+          scrabbleField.addSpace(0) shouldEqual " "
+        }
+      }
 
-  //goTrhoughRow Hannes
 
-//toString Hannes/Tanguy
+      "getLetter represents the Number of the X-Axis alphabetically. After Z it " should {
+        "return the correct letter for single-digit positive integers" in {
+          val scrabbleField = new ScrabbleField(standardScrabbleFieldSize, standardScrabbleFieldSize)
+          scrabbleField.getLetter(1) shouldBe "A"
+          scrabbleField.getLetter(2) shouldBe "B"
+          scrabbleField.getLetter(3) shouldBe "C"
+        }
+        "return the correct letter for double-digit above 26 positive integers" in {
+          val scrabbleField = new ScrabbleField(standardScrabbleFieldSize, standardScrabbleFieldSize)
+          scrabbleField.getLetter(27) shouldBe "AA"
+          scrabbleField.getLetter(28) shouldBe "AB"
+          scrabbleField.getLetter(53) shouldBe "BA"
+        }
+        "return an empty string for non-positive integers" in {
+          val scrabbleField = new ScrabbleField(standardScrabbleFieldSize, standardScrabbleFieldSize)
+          scrabbleField.getLetter(0) shouldBe ""
+          scrabbleField.getLetter(-1) shouldBe ""
+        }
+      }
+
+
+      "concatenateColumnsOfCurrentRow concatenates the columns of the current row index and" should {
+        "create the columns of the playing field" in {
+          val numRowCols = 1
+          val field = new ScrabbleField(numRowCols, numRowCols)
+          field.concatenateColumnsOfCurrentRow(0, 0) should be("_   ")
+        }
+        " and be scalable" in {
+          val numRowsCols = 3
+          val field = new ScrabbleField(numRowsCols, numRowsCols)
+          field.concatenateColumnsOfCurrentRow(0, 0) should be("_   " + "_   " + "_   ")
+        }
+      }
+
+
+      "concatenateCurrentRow concatenates every row as a string thus " should {
+        "create the playingfield out of the columns and numbering the rows" in {
+          val numRowCols = 1
+          val field = new ScrabbleField(numRowCols, numRowCols)
+          field.concatenateCurrentRow(0) should be("0   " + "_   " + "\n")
+        }
+        "be scaleable" in {
+          val numRowsCols = 3
+          val field = new ScrabbleField(numRowsCols, numRowsCols)
+          field.concatenateCurrentRow(0) should be("0   " + "_   " + "_   " + "_   " + "\n"
+            + "1   " + "_   " + "_   " + "_   " + "\n"
+            + "2   " + "_   " + "_   " + "_   " + "\n")
+        }
+        "in case that the Matrix has a placed a Character within a position, given specimen" should {
+          "be appear in given String" in {
+            val scrabbleField = new ScrabbleField(3, 3)
+            scrabbleField.placeTile(1, 1, 'A')
+            scrabbleField.placeTile(2, 2, 'B')
+            scrabbleField.concatenateCurrentRow(0) should be("0   " + "_   " + "_   " + "_   " + "\n"
+              + "1   " + "_   " + "A   " + "_   " + "\n"
+              + "2   " + "_   " + "_   " + "B   " + "\n")
+          }
+        }
+      }
+
+      "labelingXAxis describes the X-Axis with it properties and scale of the Board. When implemented" +
+        "Correctly it" should {
+        "return a correct labels for each column for a standard Scrabble field" in {
+          val scrabbleField = new ScrabbleField(standardScrabbleFieldSize, standardScrabbleFieldSize)
+          scrabbleField.labelingXAxis(0) shouldEqual "    A   B   C   D   E   F   G   H   I   J   K   L   M   N   O   "
+        }
+        "return a correct empty String if the current column is greater than the columns of the Field" in {
+          val scrabbleField = new ScrabbleField(3, 3)
+          scrabbleField.labelingXAxis(4) shouldEqual ""
+        }
+        
+        "toString" should {
+          "Put the labeled XAxis on top of the playing field" in {
+            val numRowsCols = 3
+            val field = new ScrabbleField(numRowsCols, numRowsCols)
+            field.toString should be("    A   B   C   " + "\n"
+              + "0   _   _   _   " + "\n"
+              + "1   _   _   _   " + "\n"
+              + "2   _   _   _   " + "\n")
+          }
+        }
+
+
+      }
+    }
+  }
 }

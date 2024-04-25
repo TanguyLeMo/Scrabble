@@ -24,7 +24,6 @@ class ScrabbleField(field: Vector[Vector[Char]]) {
         new ScrabbleField(field.updated(yPosition, updatedRow))
       case 'V' => val newMatrix = placeVertically(xPosition, yPosition, word, 0, field)
                   new ScrabbleField(newMatrix)
-      case _ => this
   }
 
    def placeVertically(xPosition: Int, yPosition: Int, word: String, index : Int, matrix: Vector[Vector[Char]]): Vector[Vector[Char]] = {
@@ -59,9 +58,8 @@ class ScrabbleField(field: Vector[Vector[Char]]) {
         }
       case 'V' =>
         field.slice(yPosition, yPosition + word.length).zipWithIndex.forall {
-          case (element, index) => '_' == element(xPosition) || element(xPosition) == word.charAt(index)
+          case (element, index) => element(xPosition) == word.charAt(index) ||  '_' == element(xPosition)
         }
-      case _ => false
     }
   }
   def playfield: Vector[Vector[Char]] = field

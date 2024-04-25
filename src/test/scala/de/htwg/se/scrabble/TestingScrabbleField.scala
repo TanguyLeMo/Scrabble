@@ -133,7 +133,7 @@ class TestingScrabbleField extends AnyWordSpec {
     }
     "and return false if the direction is at random" in {
       val field = new ScrabbleField(standardScrabbleFieldSize).placeWord(1, 0, 'V', "AT")
-      assert(!field.wordFits(0, 0, 'T', "CAT"))
+      assert(!field.wordFits(1, 1, 'T', "CAT"))
     }
 
     "return false if the word does not fit within bounds" in {

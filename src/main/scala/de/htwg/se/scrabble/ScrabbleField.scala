@@ -92,16 +92,8 @@ class ScrabbleField(field: Vector[Vector[Char]]) {
     else
       field(currentRow)(currentColumn) + addSpace(numSymbolPerColumn - 1) + concatenateColumnsOfCurrentRow(currentRow, nextCol)
   }
-}
-
-
-  object Demo{
-    def main(args:Array[String]): Unit = {
-      val numbsForBothSide = 42
-      val field = new ScrabbleField(Vector.fill(3)(Vector.fill(3)('_')))
-      field.placeTile(3, 3, 'A')
-      field.placeTile(7, 7, 'B')
-      val newField = field.placeTile(1, 1, 'B')
-      println(newField)
-    }
+  def translateCoordinate(coordinate: String): (Int, Int) = {
+    val coordinates = coordinate.split(" ")
+    (coordinates(0).toUpperCase().toCharArray.sum - 'A', coordinates(1).toInt)
   }
+}

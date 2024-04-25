@@ -10,6 +10,27 @@ class TestingScrabbleField extends AnyWordSpec {
   val scrabblefieldSize3: Vector[Vector[Char]] = Vector.fill(3)(Vector.fill(3)('_'))
   val scrabblefieldSize4: Vector[Vector[Char]] = Vector.fill(4)(Vector.fill(4)('_'))
 
+  "A ScrabbleField" when {
+    "translating coordinates" should {
+      "return the correct (x, y) coordinates" in {
+        val scrabbleField = new ScrabbleField(Vector(
+          Vector('_', '_', '_'),
+          Vector('_', '_', '_'),
+          Vector('_', '_', '_')
+        ))
+
+        val (x, y) = scrabbleField.translateCoordinate("A 1")
+        assert(x == 0 && y == 1)
+
+        val (x2, y2) = scrabbleField.translateCoordinate("B 3")
+        assert(x2 == 1 && y2 == 3)
+
+        val (x3, y3) = scrabbleField.translateCoordinate("D 2")
+        assert(x3 == 3 && y3 == 2)
+      }
+    }
+  }
+
   "fitsInBounds" when {
     "given valid position and direction" should {
       "return true if the word fits within the bounds horizontally" in {
@@ -80,6 +101,14 @@ class TestingScrabbleField extends AnyWordSpec {
       updatedField.playfield shouldBe expectedField.playfield
     }
   }
+  "placing a word with a random direction " should{
+    "do nothing " in {
+      val field = new ScrabbleField(standardScrabbleFieldSize)
+      val falsyFilldField = field.placeWord( 0, 0, 'T', "Cat")
+      assert(field === falsyFilldField)
+    }
+  }
+
 
   "placing a word that doesn't fit" should {
     "not change the field" in {
@@ -89,13 +118,24 @@ class TestingScrabbleField extends AnyWordSpec {
       updatedField.playfield shouldBe originalField
     }
   }
-
-
   "checking if a word fits vertically" should {
     "return true if the word fits within bounds and does not overlap with existing tiles" in {
       val field = new ScrabbleField(Vector.fill(15)(Vector.fill(15)('_')))
       assert(field.wordFits(3, 3, 'V', "DOG"))
     }
+    "return true if the letter and current element is the same" in{
+      val field = new ScrabbleField(standardScrabbleFieldSize).placeWord(1,0, 'H', "AT")
+      assert(field.wordFits(0,0, 'H', "CAT"))
+    }
+    "same conditions goes for vertical" in {
+      val field = new ScrabbleField(standardScrabbleFieldSize).placeWord(1, 0, 'V', "AT")
+      assert(field.wordFits(0, 0, 'V', "CAT"))
+    }
+    "and return false if the direction is at random" in {
+      val field = new ScrabbleField(standardScrabbleFieldSize).placeWord(1, 0, 'V', "AT")
+      assert(!field.wordFits(0, 0, 'T', "CAT"))
+    }
+
     "return false if the word does not fit within bounds" in {
       val field = new ScrabbleField(Vector.fill(15)(Vector.fill(15)('_')))
       assert(!field.wordFits(13, 13, 'V', "ELEPHANT"))

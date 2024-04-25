@@ -11,11 +11,26 @@ class ScrabbleField(field: Vector[Vector[Char]]) {
     if (0 <= col && col < columns && 0 <= row && row < rows) {
       val newRow = field(row).updated(col, tile)
       new ScrabbleField(field.updated(row, newRow))
-    } else {
-      this
     }
+    this
 
 
+  def placeWord(xPosition: Int, yPosition: Int, direction : Char, word: String): ScrabbleField = {
+    if(!wordFits(xPosition, yPosition, direction, word)){
+      return this
+    }
+    direction.match
+      case 'V' => val prefix = this.field(yPosition).take(xPosition)
+        val updatedRow : Vector[Char] = prefix ++ word.toVector.padTo(columns, '_')
+        new ScrabbleField(field.updated(yPosition, updatedRow))
+      case 'H' => val tmp= field.patch(yPosition,word.toCharArray.toVector, word.length).map{
+        case row: Vector[Char] => row
+      }
+        new ScrabbleField(tmp)
+        //new ScrabbleField(field.patch(yPosition, word.toCharArray, word.length))
+      case _ => this
+  }
+  
   def wordFits(xPosition: Int, yPosition: Int, direction: Char, word: String): Boolean = {
     val validX = xPosition >= 0 && xPosition < columns
     val validY = yPosition >= 0 && yPosition < rows
@@ -24,7 +39,6 @@ class ScrabbleField(field: Vector[Vector[Char]]) {
       case 'H' => xPosition + word.length <= columns
       case _ => false
     })
-
     if (!fitsInBounds) return false
 
     direction.toUpper match {
@@ -66,7 +80,6 @@ class ScrabbleField(field: Vector[Vector[Char]]) {
 
     if (currentColumn >= columns) ""
     else
-      print(field(currentRow) (currentColumn))
       field(currentRow)(currentColumn) + addSpace(numSymbolPerColumn - 1) + concatenateColumnsOfCurrentRow(currentRow, nextCol)
   }
 }
@@ -78,7 +91,7 @@ class ScrabbleField(field: Vector[Vector[Char]]) {
       val field = new ScrabbleField(Vector.fill(15)(Vector.fill(15)('_')))
       field.placeTile(3, 3, 'A')
       field.placeTile(7, 7, 'B')
-      val newField = field.placeTile(9, 5, 'C')
+      val newField = field.placeWord(2, 2, 'H', "test")
       println(newField)
     }
-  } 
+  }

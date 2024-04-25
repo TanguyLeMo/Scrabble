@@ -10,6 +10,47 @@ class TestingScrabbleField extends AnyWordSpec {
   val scrabblefieldSize3: Vector[Vector[Char]] = Vector.fill(3)(Vector.fill(3)('_'))
   val scrabblefieldSize4: Vector[Vector[Char]] = Vector.fill(4)(Vector.fill(4)('_'))
 
+  "placing a word vertically" should {
+    "correctly update the field" in {
+      val field = new ScrabbleField(Vector.fill(5)(Vector.fill(5)('_')))
+      val updatedField = field.placeWord(1, 0, 'V', "hallo")
+      val expectedField = new ScrabbleField(Vector(
+        Vector('_', 'h', '_', '_', '_'),
+        Vector('_', 'a', '_', '_', '_'),
+        Vector('_', 'l', '_', '_', '_'),
+        Vector('_', 'l', '_', '_', '_'),
+        Vector('_', 'o', '_', '_', '_')
+      ))
+
+      updatedField.playfield shouldBe expectedField.playfield
+    }
+  }
+
+  "placing a word horizontally" should {
+    "correctly update the field" in {
+      val field = new ScrabbleField(Vector.fill(5)(Vector.fill(5)('_')))
+      val updatedField = field.placeWord(0, 1, 'H', "hater")
+      val expectedField = new ScrabbleField(Vector(
+        Vector('_', '_', '_', '_', '_'),
+        Vector('h', 'a', 't', 'e', 'r'),
+        Vector('_', '_', '_', '_', '_'),
+        Vector('_', '_', '_', '_', '_'),
+        Vector('_', '_', '_', '_', '_')
+      ))
+
+      updatedField.playfield shouldBe expectedField.playfield
+    }
+  }
+
+  "placing a word that doesn't fit" should {
+    "not change the field" in {
+      val field = new ScrabbleField(Vector.fill(5)(Vector.fill(5)('_')))
+      val originalField = field.playfield
+      val updatedField = field.placeWord(4, 4, 'H', "hello")
+      updatedField.playfield shouldBe originalField
+    }
+  }
+
 
   "checking if a word fits vertically" should {
     "return true if the word fits within bounds and does not overlap with existing tiles" in {

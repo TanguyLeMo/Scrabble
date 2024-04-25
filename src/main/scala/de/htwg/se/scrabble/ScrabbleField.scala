@@ -11,45 +11,48 @@ class ScrabbleField(field: Vector[Vector[Char]]) {
     if (0 <= col && col < columns && 0 <= row && row < rows) {
       val newRow = field(row).updated(col, tile)
       new ScrabbleField(field.updated(row, newRow))
+    } else{
+      this
     }
-    this
-
-
   def placeWord(xPosition: Int, yPosition: Int, direction : Char, word: String): ScrabbleField = {
     if(!wordFits(xPosition, yPosition, direction, word)){
       return this
     }
     direction.match
-      case 'V' => val prefix = this.field(yPosition).take(xPosition)
-        val updatedRow : Vector[Char] = prefix ++ word.toVector.padTo(columns, '_')
+      case 'H' => val prefix = this.field(yPosition).take(xPosition)
+        val updatedRow : Vector[Char] = prefix ++ word.toVector ++ this.field(yPosition).takeRight(columns - (xPosition + word.length))
         new ScrabbleField(field.updated(yPosition, updatedRow))
-      case 'H' => val tmp= field.patch(yPosition,word.toCharArray.toVector, word.length).map{
-        case row: Vector[Char] => row
-      }
-        new ScrabbleField(tmp)
-        //new ScrabbleField(field.patch(yPosition, word.toCharArray, word.length))
+      case 'V' => val newMatrix = placeVertically(xPosition, yPosition, word, 0, field)
+                  new ScrabbleField(newMatrix)
       case _ => this
+  }
+
+   def placeVertically(xPosition: Int, yPosition: Int, word: String, index : Int, matrix: Vector[Vector[Char]]): Vector[Vector[Char]] = {
+    if(word.length <= index){
+      matrix
+    }else{
+      val newVector = matrix(yPosition).updated(xPosition, word.charAt(index))
+      placeVertically(xPosition, yPosition+1, word, index+1, matrix.updated(yPosition, newVector))
+    }
   }
   
   def wordFits(xPosition: Int, yPosition: Int, direction: Char, word: String): Boolean = {
     val validX = xPosition >= 0 && xPosition < columns
     val validY = yPosition >= 0 && yPosition < rows
     val fitsInBounds = validX && validY && (direction.toUpper match {
-      case 'V' => yPosition + word.length <= rows
-      case 'H' => xPosition + word.length <= columns
+      case 'H' => xPosition + word.length <= rows
+      case 'V' => yPosition + word.length <= columns
       case _ => false
     })
     if (!fitsInBounds) return false
-
     direction.toUpper match {
-      case 'V' =>
+      case 'H' =>
         field(yPosition).slice(xPosition, xPosition + word.length).zipWithIndex.forall {
           case (element, index) => element == '_' || element == word.charAt(index)
         }
-      case 'H' =>
+      case 'V' =>
         field.slice(yPosition, yPosition + word.length).zipWithIndex.forall {
           case (element, index) => '_' == element(xPosition) || element(xPosition) == word.charAt(index)
-          //case (element, index) => element(xPosition) == '_' || element(xPosition)  == word.charAt(index)
         }
       case _ => false
     }
@@ -88,10 +91,10 @@ class ScrabbleField(field: Vector[Vector[Char]]) {
   object Demo{
     def main(args:Array[String]): Unit = {
       val numbsForBothSide = 42
-      val field = new ScrabbleField(Vector.fill(15)(Vector.fill(15)('_')))
+      val field = new ScrabbleField(Vector.fill(3)(Vector.fill(3)('_')))
       field.placeTile(3, 3, 'A')
       field.placeTile(7, 7, 'B')
-      val newField = field.placeWord(2, 2, 'H', "test")
+      val newField = field.placeTile(1, 1, 'B')
       println(newField)
     }
   }

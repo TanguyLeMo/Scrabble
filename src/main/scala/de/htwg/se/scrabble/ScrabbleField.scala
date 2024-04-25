@@ -35,16 +35,24 @@ class ScrabbleField(field: Vector[Vector[Char]]) {
       placeVertically(xPosition, yPosition+1, word, index+1, matrix.updated(yPosition, newVector))
     }
   }
-  
-  def wordFits(xPosition: Int, yPosition: Int, direction: Char, word: String): Boolean = {
+
+  def fitsInBounds(xPosition: Int, yPosition: Int, direction: Char, word: String): Boolean = {
     val validX = xPosition >= 0 && xPosition < columns
     val validY = yPosition >= 0 && yPosition < rows
-    val fitsInBounds = validX && validY && (direction.toUpper match {
-      case 'H' => xPosition + word.length <= rows
-      case 'V' => yPosition + word.length <= columns
-      case _ => false
-    })
-    if (!fitsInBounds) return false
+    if (validX && validY) {
+      direction.toUpper match {
+        case 'H' => xPosition + word.length <= rows
+        case 'V' => yPosition + word.length <= columns
+        case _ => false
+      }
+    } else {
+      false
+    }
+  }
+
+
+  def wordFits(xPosition: Int, yPosition: Int, direction: Char, word: String): Boolean = {
+    if (!fitsInBounds(xPosition, yPosition, direction, word )) return false
     direction.toUpper match {
       case 'H' =>
         field(yPosition).slice(xPosition, xPosition + word.length).zipWithIndex.forall {

@@ -10,6 +10,45 @@ class TestingScrabbleField extends AnyWordSpec {
   val scrabblefieldSize3: Vector[Vector[Char]] = Vector.fill(3)(Vector.fill(3)('_'))
   val scrabblefieldSize4: Vector[Vector[Char]] = Vector.fill(4)(Vector.fill(4)('_'))
 
+  "fitsInBounds" when {
+    "given valid position and direction" should {
+      "return true if the word fits within the bounds horizontally" in {
+        val field = new ScrabbleField(Vector.fill(5)(Vector.fill(5)('_')))
+        assert(field.fitsInBounds(0, 0, 'H', "HELLO") === true)
+      }
+
+      "return true if the word fits within the bounds vertically" in {
+        val field = new ScrabbleField(Vector.fill(5)(Vector.fill(5)('_')))
+        assert(field.fitsInBounds(0, 0, 'V', "HELLO") === true)
+      }
+    }
+
+    "given invalid position or direction" should {
+      "return false if the word doesn't fit within the bounds horizontally" in {
+        val field = new ScrabbleField(Vector.fill(5)(Vector.fill(5)('_')))
+        assert(field.fitsInBounds(3, 3, 'H', "HELLO") === false)
+      }
+
+      "return false if the word doesn't fit within the bounds vertically" in {
+        val field = new ScrabbleField(Vector.fill(5)(Vector.fill(5)('_')))
+        assert(field.fitsInBounds(3, 3, 'V', "HELLO") === false)
+      }
+
+      "return false if the direction is invalid" in {
+        val field = new ScrabbleField(Vector.fill(5)(Vector.fill(5)('_')))
+        assert(field.fitsInBounds(0, 0, 'D', "HELLO") === false)
+      }
+
+      "return false if both position and direction are invalid" in {
+        val field = new ScrabbleField(Vector.fill(5)(Vector.fill(5)('_')))
+        assert(field.fitsInBounds(6, 6, 'D', "HELLO") === false)
+      }
+    }
+  }
+  
+  
+  
+  
   "placing a word vertically" should {
     "correctly update the field" in {
       val field = new ScrabbleField(Vector.fill(5)(Vector.fill(5)('_')))

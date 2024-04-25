@@ -35,7 +35,6 @@ class ScrabbleField(field: Vector[Vector[Char]]) {
       placeVertically(xPosition, yPosition+1, word, index+1, matrix.updated(yPosition, newVector))
     }
   }
-
   def fitsInBounds(xPosition: Int, yPosition: Int, direction: Char, word: String): Boolean = {
     val validX = xPosition >= 0 && xPosition < columns
     val validY = yPosition >= 0 && yPosition < rows

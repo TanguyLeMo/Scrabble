@@ -1,13 +1,18 @@
 package de.htwg.se.scrabble
-import de.htwg.se.scrabble.ScrabbleField
+
+import de.htwg.se.scrabble.model.ScrabbleField
+
+import scala.annotation.tailrec
 import scala.io.StdIn.readLine
 
-@main def run: Unit = {
-  val field = new ScrabbleField(Vector.fill(15)(Vector.fill(15)('_')))
+@main def run(): Unit = {
+  val field = new ScrabbleField(15)
   println(field)
   getInputAndPrintLoop(field)
 }
 
+
+@tailrec
 def getInputAndPrintLoop(field: ScrabbleField): Unit = {
   println("Enter your Word, Coordinate and Direction(H|V) example: myWord A 0 H")
   val input = readLine()
@@ -37,8 +42,8 @@ def parseInput(input: String, field: ScrabbleField): Option[ScrabbleField] = {
 
         val word = inputArray(0)
         val coordinates = field.translateCoordinate(inputArray(1) + " " + inputArray(2))
-        val xCoordinate = coordinates._1
-        val yCoordinate = coordinates._2
+        val yCoordinate = coordinates._1
+        val xCoordinate = coordinates._2
         if (!(direction == "H" | direction == "V")) {
           println(direction)
           Some(field)

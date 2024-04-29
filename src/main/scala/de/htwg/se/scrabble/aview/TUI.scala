@@ -1,4 +1,5 @@
 package de.htwg.se.scrabble
+package aview
 
 import de.htwg.se.scrabble.model.ScrabbleField
 

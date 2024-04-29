@@ -12,7 +12,7 @@ class Matrix(val field: Vector[Vector[Stone]]) :
       case 'V' => val newMatrix = placeVertically(xPosition, yPosition, word, 0, this)
         newMatrix
   def getStone(col: Int, row: Int): Stone = field(row)(col)
-  def wordFits(xPosition: Int, yPosition: Int, direction: Char, word: String): Boolean = 
+  def wordFits(xPosition: Int, yPosition: Int, direction: Char, word: String): Boolean =
     if (!fitsInBounds(xPosition, yPosition, direction, word)) return false
     direction.toUpper match {
       case 'H' =>

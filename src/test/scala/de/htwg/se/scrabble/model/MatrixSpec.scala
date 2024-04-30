@@ -132,6 +132,5 @@ class MatrixSpec extends AnyWordSpec {
         assert(!standardSizedMatrix.equals(Stone()))
       }
     }
-
   }
 }

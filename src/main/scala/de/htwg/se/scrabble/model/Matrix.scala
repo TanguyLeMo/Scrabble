@@ -9,8 +9,7 @@ class Matrix(val field: Vector[Vector[Stone]]) :
       case 'H' => val prefix = this.field(yPosition).take(xPosition)
         val updatedRow: Vector[Stone] = prefix ++ word.toVector.map(j => Stone(j)) ++ field(yPosition).takeRight(columns - (xPosition + word.length))
         new Matrix(field.updated(yPosition, updatedRow))
-      case 'V' => val newMatrix = placeVertically(xPosition, yPosition, word, 0, this)
-        newMatrix
+      case 'V' => val newMatrix = placeVertically(xPosition, yPosition, word, 0, this); newMatrix
   def getStone(col: Int, row: Int): Stone = field(row)(col)
   def wordFits(xPosition: Int, yPosition: Int, direction: Char, word: String): Boolean = 
     if (!fitsInBounds(xPosition, yPosition, direction, word)) return false

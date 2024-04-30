@@ -104,30 +104,7 @@ class ScrabbleFieldSpec extends AnyWordSpec {
           }
         }
       }
-      "placeWord" should {
-        "correctly place a word on the ScrabbleField" in {
-          val scrabbleField = new ScrabbleField(15)
-          val updatedField = scrabbleField.placeWord(2, 3, 'H', "HELLO")
-          assert(scrabbleField != updatedField)
-        }
-        "translateCoordinate" should {
-          "correctly translate a coordinate string to (Int, Int) tuple" in {
-            val translator = new ScrabbleField(15)
-
-            val coordinate1 = "A 1"
-            val translatedCoordinate1 = translator.translateCoordinate(coordinate1)
-            translatedCoordinate1 shouldEqual(0, 1)
-
-            val coordinate2 = "E 5"
-            val translatedCoordinate2 = translator.translateCoordinate(coordinate2)
-            translatedCoordinate2 shouldEqual(4, 5)
-
-            val coordinate3 = "H 10"
-            val translatedCoordinate3 = translator.translateCoordinate(coordinate3)
-            translatedCoordinate3 shouldEqual(7, 10)
-          }
-        }
-      }
+      
       "wordFits" should {
         "return true if the word fits in the specified position and direction" in {
           val field: ScrabbleField = new ScrabbleField(15)

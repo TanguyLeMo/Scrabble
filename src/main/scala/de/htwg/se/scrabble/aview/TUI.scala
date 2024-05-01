@@ -9,31 +9,30 @@ import scala.annotation.tailrec
 import scala.io.StdIn.readLine
 
 
-class TUI(controller: Controller) extends Observer {
+class TUI(val controller: Controller) extends Observer {
   controller.add(this)
 
-  def run =
+  def run(): Unit =
     println(controller.toString)
-    getInputAndPrintLoop()
+    println("Enter your Word, Coordinate and Direction(H|V) example: myWord A 0 H")
+    getInputAndPrintLoop(readLine())
 
   override def update(): Unit = {
     println(controller.toString)
   }
 
-  def getInputAndPrintLoop(): Unit = {
-    println("Enter your Word, Coordinate and Direction(H|V) example: myWord A 0 H")
-    val input = readLine()
+  def getInputAndPrintLoop(input : String): Unit = {
     input match
-      case "exit" =>
+      case "exit" => return
       case _ =>
         val inputVector = input.split(" ")
         if (inputVector.length != 4) {
           println("invalid input")
-          getInputAndPrintLoop()
+          getInputAndPrintLoop(readLine())
         }
         if (!validCoordinateInput(inputVector(1),inputVector(2))) {
           println("invalid coordinates")
-          getInputAndPrintLoop()
+          getInputAndPrintLoop(readLine())
         }
           val direction = inputVector(3) match
             case "H" => "H"
@@ -51,7 +50,9 @@ class TUI(controller: Controller) extends Observer {
           } else {
             controller.placeWordController(xCoordinate, yCoordinate, direction.charAt(0), word)
           }
-          getInputAndPrintLoop()
+        println("Enter your Word, Coordinate and Direction(H|V) example: myWord A 0 H")
+        val newInput = readLine()
+        getInputAndPrintLoop(newInput)
   }
   def translateCoordinate(coordinate: String): (Int, Int) = {
     val coordinates = coordinate.split(" ")

@@ -5,7 +5,6 @@ package aview
 import de.htwg.se.scrabble.util.Observer
 import de.htwg.se.scrabble.controller.Controller
 
-import scala.annotation.tailrec
 import scala.io.StdIn.readLine
 
 
@@ -23,7 +22,7 @@ class TUI(val controller: Controller) extends Observer {
 
   def getInputAndPrintLoop(input : String): Unit = {
     input match
-      case "exit" => return
+      case "exit" =>
       case _ =>
         val inputVector = input.split(" ")
         if (inputVector.length != 4) {

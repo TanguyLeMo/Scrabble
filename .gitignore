@@ -12,6 +12,11 @@ project/metals.sbt
 #java
 *.class
 
+#streams
+
+*.stream
+stream
+.stream
 # scala 3
 *.tasty
 

@@ -6,7 +6,6 @@ import org.scalatest.matchers.should.Matchers._
 class ObservableSpec extends AnyWordSpec:
 
   "An Observable" when {
-
     "created" should {
 
       "have no subscribers" in {
@@ -36,7 +35,6 @@ class ObservableSpec extends AnyWordSpec:
     }
 
     "notified" should {
-
       "trigger update on subscribers" in {
         var updateTriggered = false
         val observable = new Observable {}

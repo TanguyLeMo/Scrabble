@@ -75,7 +75,7 @@ class TUISpec extends AnyWordSpec{
       verify(tuiMock, times(1)).translateCoordinate(inputVector(1) + " " + inputVector(2))
 
     }
-    "run the application appropriately and the meantime check the mock for correctnes" in {
+    "run the application appropriately and the meantime check the mock for correctness" in {
       assert(tuiMock.update().equals(new TUI(new Controller(new ScrabbleField(0))).update() ))
     }
 

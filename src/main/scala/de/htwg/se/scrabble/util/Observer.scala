@@ -1,10 +1,7 @@
 package de.htwg.se.scrabble
 package util
-
-import scala.language.postfixOps
-
 trait Observer:
-  def update(): Unit
+  def update(): String
 
 trait Observable:
   var subscribers: Vector[Observer] = Vector()

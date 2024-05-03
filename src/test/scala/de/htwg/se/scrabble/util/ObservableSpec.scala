@@ -8,29 +8,28 @@ class ObservableSpec extends AnyWordSpec:
   "An Observable" when {
     "created" should {
 
-      "have no subscribers" in {
+      "have no subscribers and assert of no exception thrown" in {
         val observable = new Observable {}
-        observable.notifyObservers() // No exceptions should be thrown
+        observable.notifyObservers()
       }
     }
 
     "subscribed to" should {
-      "have one subscriber" in {
+      "have one subscriber and assert of no exception thrown" in {
         val observable = new Observable {}
-        val observer = new Observer { def update(): Unit = () }
+        val observer = new Observer { def update(): String = "" }
         observable.add(observer)
-        observable.notifyObservers() // No exceptions should be thrown
+        observable.notifyObservers()
       }
     }
 
     "unsubscribed from" should {
-
-      "have no subscribers" in {
+      "have no subscribers and assert of no exception thrown" in {
         val observable = new Observable {}
-        val observer = new Observer { def update(): Unit = () }
+        val observer = new Observer { def update(): String = "" }
         observable.add(observer)
         observable.remove(observer)
-        observable.notifyObservers() // No exceptions should be thrown
+        observable.notifyObservers() 
       }
     }
 
@@ -38,7 +37,12 @@ class ObservableSpec extends AnyWordSpec:
       "trigger update on subscribers" in {
         var updateTriggered = false
         val observable = new Observable {}
-        val observer = new Observer { def update(): Unit = updateTriggered = true }
+        val observer = new Observer {
+          def update(): String = {
+            updateTriggered = true
+            ""
+          }
+        }
         observable.add(observer)
         observable.notifyObservers()
         updateTriggered should be(true)

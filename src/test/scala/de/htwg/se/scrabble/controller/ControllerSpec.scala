@@ -29,14 +29,14 @@ class ControllerSpec extends AnyWordSpec:
       "update subscribers" in {
         val field = new ScrabbleField(15)
         val controller = new Controller(field)
-        val observer = new Observer { def update(): Unit = () }
+        val observer = new Observer { def update(): String = "" }
         controller.add(observer)
 
-        controller.placeWordController(0, 0, 'H', "hello")
+        controller.placeWord(0, 0, 'H', "hello")
         // Assuming Observer's update method sets a flag or performs some action
         // We should check if the update method has been called
         // For simplicity, we'll just check if there are subscribers
-        controller.subscribers should not be (empty)
+        controller.subscribers should not be empty
 
       }
     }
@@ -52,7 +52,7 @@ class ControllerSpec extends AnyWordSpec:
         val direction = 'H'
         val word = "hello"
 
-        val fits = controller.wordFitsController(xPosition, yPosition, direction, word)
+        val fits = controller.wordFits(xPosition, yPosition, direction, word)
         fits should be(true)
       }
 
@@ -66,7 +66,7 @@ class ControllerSpec extends AnyWordSpec:
         val direction = 'v'
         val word = "hello"
 
-        val fits = controller.wordFitsController(xPosition, yPosition, direction, word)
+        val fits = controller.wordFits(xPosition, yPosition, direction, word)
         fits should be(false)
       }
     }
@@ -82,7 +82,7 @@ class ControllerSpec extends AnyWordSpec:
         val direction = 'h'
         val word = "hello"
 
-        val fits = controller.fitsinBoundsController(xPosition, yPosition, direction, word)
+        val fits = controller.fitsinBounds(xPosition, yPosition, direction, word)
         fits should be(true)
       }
 
@@ -96,7 +96,7 @@ class ControllerSpec extends AnyWordSpec:
         val direction = 'v'
         val word = "hello"
 
-        val fits = controller.fitsinBoundsController(xPosition, yPosition, direction, word)
+        val fits = controller.fitsinBounds(xPosition, yPosition, direction, word)
         fits should be(false)
       }
     }
@@ -104,7 +104,7 @@ class ControllerSpec extends AnyWordSpec:
       "print the same lines as the Class Scrabblefield does." in {
         val field = new ScrabbleField(15)
         val controller = new Controller(field)
-        field.toString shouldEqual(controller.toString)
+        field.toString shouldEqual controller.toString
       }
     }
   }

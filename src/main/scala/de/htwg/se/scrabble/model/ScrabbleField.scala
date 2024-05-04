@@ -20,4 +20,8 @@ class ScrabbleField(val matrix: Matrix):
     if (currentColumn >= matrix.columns) ""
     else matrix.getStone(currentRow, currentColumn).symbol + addSpace(numSymbolPerColumn - 1) + concatenateColumnsOfCurrentRow(currentRow, nextCol)
   override def toString: String =s"    ${labelingXAxis(1)}\n${concatenateRows(0)}"
-  
+  override def equals(that: Any): Boolean =
+    that match
+      case that: ScrabbleField => this.matrix.equals(that.matrix)
+      case _ => false
+

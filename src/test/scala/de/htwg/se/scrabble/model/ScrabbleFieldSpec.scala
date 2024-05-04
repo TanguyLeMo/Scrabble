@@ -111,6 +111,24 @@ class ScrabbleFieldSpec extends AnyWordSpec {
           assert(field.wordFits(1, 2, 'H', "HEINRICH"))
         }
       }
+      "The equal methods should check for equality" should {
+        "be true if the fields are equal" in {
+          val field1: ScrabbleField = new ScrabbleField(15)
+          val field2: ScrabbleField = new ScrabbleField(15)
+          field1 shouldEqual field2
+        }
+        "be false if the fields are not equal" in {
+          val field1: ScrabbleField = new ScrabbleField(15)
+          val field2: ScrabbleField = new ScrabbleField(1)
+          field1 should not equal field2
+        }
+        "Just return false if the type do not match" in {
+          val field1: ScrabbleField = new ScrabbleField(15)
+          val field2: String = "Test"
+          field1 should not equal field2
+        }
+      }
+
     }
   }
 }

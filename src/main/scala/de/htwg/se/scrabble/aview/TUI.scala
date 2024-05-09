@@ -29,6 +29,7 @@ class TUI(val controller: Controller) extends Observer {
     }
     word
   }
+  
 
   override def update(): String = {
     println(controller.toString)

@@ -21,8 +21,8 @@ class TUISpec extends AnyWordSpec with Matchers {
         tui.processInputLine("word A 1 H")
         val finalState: ScrabbleField = controller.field
         finalState shouldEqual testfield
-      }
 
+      }
       "not modify the state of the Controller when invalid input is given" in {
         val controller = new Controller(scrabbleField)
         val tui = new TUI(controller)

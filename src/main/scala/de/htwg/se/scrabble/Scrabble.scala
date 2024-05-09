@@ -12,8 +12,7 @@ import model.ScrabbleField
     println("Welcome to Scrabble")
     println(controller.toString)
     println("Enter your Word, Coordinate and Direction(H|V) example: myWord A 0 H")
-    while(!tui.processInputLine(readLine()).equals("exit")) {
-    }
+    while(!tui.processInputLine(readLine()).equals("exit"))
     println("Goodbye")
 }
 

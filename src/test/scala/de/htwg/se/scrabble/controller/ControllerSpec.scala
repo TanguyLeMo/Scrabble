@@ -100,6 +100,7 @@ class ControllerSpec extends AnyWordSpec:
         fits should be(false)
       }
     }
+    
     "The toString method " should {
       "print the same lines as the Class Scrabblefield does." in {
         val field = new ScrabbleField(15)
@@ -107,4 +108,13 @@ class ControllerSpec extends AnyWordSpec:
         field.toString shouldEqual controller.toString
       }
     }
+    "adding a word to the dictionary" should {
+      "have the word in the dictionary" in {
+        val field = new ScrabbleField(15)
+        val controller = new Controller(field)
+        controller.add("testword")
+        controller.field.dictionary.set should contain("testword")
+      }
+    }
+    
   }

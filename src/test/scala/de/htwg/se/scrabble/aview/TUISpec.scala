@@ -11,6 +11,41 @@ class TUISpec extends AnyWordSpec with Matchers {
   val scrabbleField = new ScrabbleField(15)
 
   "A TUI" when {
+    "creating a new TUI by using the auxiliary method" should {
+      "be the same field as" in {
+        val tui = new TUI()
+        val nonAuxiliaryTui = new TUI(new Controller(new ScrabbleField(15)))
+        tui shouldEqual nonAuxiliaryTui
+      }
+    }
+    "start is called" should {
+      "print the welcome message and not do anything else" in {
+        val controller = new Controller(scrabbleField)
+        val tui = new TUI(controller)
+        tui.start shouldEqual tui
+      }
+    }
+    "dictionaryAddWords is called" should {
+      "add a word to the dictionary" in {
+        val controller = new Controller(scrabbleField)
+        val tui = new TUI(controller)
+        tui.dictionaryAddWords("trigonometricFunction")
+        tui.controller.field.dictionary.set should contain("trigonometricFunction")
+      }
+      "not add a word to the dictionary if it is already in there" in {
+        val controller = new Controller(scrabbleField)
+        val tui = new TUI(controller)
+        tui.dictionaryAddWords("word")
+        tui.dictionaryAddWords("word") shouldEqual new TUI().dictionaryAddWords("word")
+      }
+      "return stop if the input is stop" in {
+        val controller = new Controller(scrabbleField)
+        val tui = new TUI(controller)
+        tui.dictionaryAddWords("stop") shouldEqual "stop"
+      }
+    }
+
+
     "processInputLine is called" should{
       "modify the state of the Controller when valid input is given" in {
         val controller = new Controller(scrabbleField)
@@ -63,6 +98,14 @@ class TUISpec extends AnyWordSpec with Matchers {
       tui.controller.field should equal(scrabbleField)
     }
 
+    "do nothing when the word is not in the dictionary" in {
+      val controller = new Controller(scrabbleField)
+
+      val tui = new TUI(controller)
+      tui.processInputLine("notAWord A 1 H")
+      tui.controller.field should equal(scrabbleField)
+    }
+
     "translateCoordinate is called" should {
       "return correct coordinates for valid input" in {
         val controller = new Controller(scrabbleField)
@@ -97,6 +140,18 @@ class TUISpec extends AnyWordSpec with Matchers {
         tui.validCoordinateInput("A", "1A") shouldBe false
         tui.validCoordinateInput("1", "A") shouldBe false
         tui.validCoordinateInput("A", "A") shouldBe false
+      }
+
+      "The equals method should return true if the controller fields are equal" in {
+        val controller = new Controller(scrabbleField)
+        val tui = new TUI(controller)
+        val tui2 = new TUI(controller)
+        tui.equals(tui2) shouldBe true
+      }
+      "and just return false if the types are different" in {
+        val controller = new Controller(scrabbleField)
+        val tui = new TUI(controller)
+        tui.equals("test") shouldBe false
       }
     }
   }

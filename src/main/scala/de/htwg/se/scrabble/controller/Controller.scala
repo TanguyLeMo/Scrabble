@@ -1,7 +1,5 @@
 package de.htwg.se.scrabble
 package controller
-
-
 import util.Observable
 import model.ScrabbleField
 class Controller(var field: ScrabbleField) extends Observable:

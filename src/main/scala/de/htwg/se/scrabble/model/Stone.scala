@@ -1,5 +1,4 @@
 package de.htwg.se.scrabble.model
-
 class Stone (letter: Char):
   def symbol: Char = letter
   def this() =this('_')

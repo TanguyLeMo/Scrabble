@@ -132,5 +132,12 @@ class MatrixSpec extends AnyWordSpec {
         assert(!standardSizedMatrix.equals(Stone()))
       }
     }
+    "adding a word to the dictionary" should {
+      "have the word in the dictionary" in {
+        val field = new ScrabbleField(15)
+        val updatedField = field.addDictionaryWord("testword")
+        updatedField.dictionary.set should contain("testword")
+      }
+    }
   }
 }

@@ -1,10 +1,9 @@
 package de.htwg.se.scrabble
 package controller
 
-import de.htwg.se.scrabble.util.Observer
+
 import util.Observable
 import model.ScrabbleField
-
 class Controller(var field: ScrabbleField) extends Observable:
 
   override def toString: String = field.toString
@@ -18,3 +17,8 @@ class Controller(var field: ScrabbleField) extends Observable:
 
   def fitsinBounds(xPosition: Int, yPosition: Int, direction : Char, word : String): Boolean =
     field.matrix.fitsInBounds(xPosition, yPosition, direction, word)
+    
+  def contains(word: String): Boolean = field.dictionary.contains(word)
+
+  def add(word: String): String = 
+    field = field.addDictionaryWord(word); word

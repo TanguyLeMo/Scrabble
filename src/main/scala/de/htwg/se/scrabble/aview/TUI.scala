@@ -1,11 +1,34 @@
 package de.htwg.se.scrabble
 package aview
-
 import de.htwg.se.scrabble.util.Observer
 import de.htwg.se.scrabble.controller.Controller
-
+import de.htwg.se.scrabble.model.ScrabbleField
 class TUI(val controller: Controller) extends Observer {
   controller.add(this)
+
+  def this() = this(new Controller(new ScrabbleField(15)))
+
+  def start: TUI = {
+    println("Welcome to Scrabble")
+    println("Enter your personal words, which should be available in the dictionary, apart from the default words")
+    println("type: \u001B[1m stop \u001B[0m to finish the input of your personal words")
+    this
+    }
+
+  def dictionaryAddWords(word: String): String = {
+    if (word == "stop") {
+      println("Enter your Word, Coordinate and Direction(H|V) example: myWord A 0 H")
+      return "stop"
+    }
+
+    if(controller.contains(word)) {
+      println( word + " already in dictionary")
+    } else{
+      controller.add(word)
+      println(word + " is added to dictionary")
+    }
+    word
+  }
 
   override def update(): String = {
     println(controller.toString)
@@ -33,7 +56,9 @@ class TUI(val controller: Controller) extends Observer {
           val coordinates = translateCoordinate(inputVector(1) + " " + inputVector(2))
           val yCoordinate = coordinates._1
           val xCoordinate = coordinates._2
-          if (!(direction == "H" | direction == "V")) {
+          if(!controller.contains(word)) {
+            println(word + " is not in dictionary, sorry!")
+          } else if (!(direction == "H" | direction == "V")) {
             println(direction)
           } else if (!controller.wordFits(xCoordinate, yCoordinate, direction.charAt(0), word)) {
             println("Word doesnt fit")
@@ -51,4 +76,12 @@ class TUI(val controller: Controller) extends Observer {
   def validCoordinateInput(xCoordinate: String, yCoordinate: String): Boolean = {
     ("""[A-Z,a-z]+""".r matches xCoordinate) && ("""[0-9]+""".r matches yCoordinate)
   }
+
+  override def equals(obj: Any): Boolean = {
+    obj match {
+      case obj: TUI => obj.controller.field == this.controller.field
+      case _ => false
+    }
+  }
+  
 }

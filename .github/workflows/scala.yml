@@ -27,5 +27,5 @@ jobs:
       - name: Upload coveralls
         run: sbt coverageReport coveralls
       - name: secret test
-        run : echo ${{ secrets.COVERALLS_REPO_TOKEN }}
+        run : echo hallo && echo ${{ secrets.COVERALLS_REPO_TOKEN }}
 

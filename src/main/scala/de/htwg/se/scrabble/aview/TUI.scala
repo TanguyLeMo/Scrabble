@@ -20,7 +20,6 @@ class TUI(val controller: Controller) extends Observer {
       println("Enter your Word, Coordinate and Direction(H|V) example: myWord A 0 H")
       return "stop"
     }
-
     if(controller.contains(word)) {
       println( word + " already in dictionary")
     } else{

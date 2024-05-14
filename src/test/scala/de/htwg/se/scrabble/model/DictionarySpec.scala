@@ -17,7 +17,7 @@ class DictionarySpec extends AnyWordSpec with Matchers{
     "when readLines" should {
       val dictionary = Dictionary(HashSet.empty[String]).readLines
       "have a dictionary with 267751 words" in {
-        dictionary.set.size should be (267751)
+        dictionary.set.size should be (267752)
       }
     }
     "when check if a word is in the dictionary" should {

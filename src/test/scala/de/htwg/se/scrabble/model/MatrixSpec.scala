@@ -6,9 +6,9 @@ import org.scalatest.matchers.should.Matchers.*
 
 class MatrixSpec extends AnyWordSpec {
   val standardSquareFractory = new StandardSquareFactory()
-  val standardSizedMatrix = new Matrix(Vector.fill(15)(Vector.fill(15)(standardSquareFractory.createDoubleSquare(Stone('_'))))).init()
-  val matrix3x3 = new Matrix(Vector.fill(3)(Vector.fill(3)(standardSquareFractory.createDoubleSquare(Stone('_'))))).init()
-  val matrix5x5 = new Matrix(Vector.fill(5)(Vector.fill(5)(standardSquareFractory.createDoubleSquare(Stone('_'))))).init()
+  val standardSizedMatrix: Matrix = new Matrix(Vector.fill(15)(Vector.fill(15)(standardSquareFractory.createDoubleSquare(Stone('_'))))).init()
+  val matrix3x3: Matrix = new Matrix(Vector.fill(3)(Vector.fill(3)(standardSquareFractory.createDoubleSquare(Stone('_'))))).init()
+  val matrix5x5: Matrix = new Matrix(Vector.fill(5)(Vector.fill(5)(standardSquareFractory.createDoubleSquare(Stone('_'))))).init()
   
   
   "fitsInBounds" when {

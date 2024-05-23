@@ -62,12 +62,12 @@ class ScrabbleFieldSpec extends AnyWordSpec {
         "create the columns of the playing field" in {
           val numRowCols = 1
           val field = new ScrabbleField(scrabbleFieldSize1)
-          field.concatenateColumnsOfCurrentRow(0, 0) should not be("_  ")
+          field.concatenateColumnsOfCurrentRow(0, 0) should not be "_  "
         }
         " and be scalable" in {
           val numRowsCols = 3
           val field = new ScrabbleField(scrabblefieldSize3)
-          field.concatenateColumnsOfCurrentRow(0, 0) should not be("_  " + "_  " + "_  ")
+          field.concatenateColumnsOfCurrentRow(0, 0) should not be "_  " + "_  " + "_  "
         }
       }
       "concatenateRows concatenates every row as a string thus " should {

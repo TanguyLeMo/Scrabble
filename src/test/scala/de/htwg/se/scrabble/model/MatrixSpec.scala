@@ -92,7 +92,7 @@ class MatrixSpec extends AnyWordSpec {
     }
     "same conditions goes for vertical" in {
       val field = standardSizedMatrix.placeWord(1, 0, 'V', "AT")
-      assert(field.wordFits(0, 0, 'V', "CAT") && field.getStone(1,0).symbol === 'A')
+      assert(field.wordFits(0, 0, 'V', "CAT") && field.getSquare(1,0).symbol === 'A')
     }
     "and return false if the direction is at random" in {
       val field = matrix5x5.placeWord(1, 0, 'V', "AT")

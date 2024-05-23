@@ -2,21 +2,18 @@ package de.htwg.se.scrabble.model
 
 import de.htwg.se.scrabble.model.square.*
 
-class Matrix(rowsAndColumn: Int, Dim : Int) :
-  val columns, rows: Int = rowsAndColumn
+class Matrix(val field: Vector[Vector[ScrabbleSquare]]):
+  val columns, rows, rowsAndColumn: Int = field.length
   private val letterFactory = new LetterSquareFactory
   private val wordFactory = new WordSquareFactory
   private val standardSquareFactory = new StandardSquareFactory
   private val center = rowsAndColumn / 2
-  private val field: Vector[Vector[ScrabbleSquare]] =
-    if (rowsAndColumn == 15) initializeStandardBoard
-    else initializeNonStandardBoard
+
 
   private def updateBoard(board: Vector[Vector[ScrabbleSquare]], positions: List[(Int, Int)], factory: () => ScrabbleSquare): Vector[Vector[ScrabbleSquare]] =
     positions.foldLeft(board) { case (b, (row, col)) =>
       b.updated(row, b(row).updated(col, factory()))
     }
-
   private def initializeBoard(initialBoard: Vector[Vector[ScrabbleSquare]], positions: List[(Int, Int)], factory: () => ScrabbleSquare): Vector[Vector[ScrabbleSquare]] =
     updateBoard(initialBoard, symmetricPositions(positions), factory)
 
@@ -44,9 +41,7 @@ class Matrix(rowsAndColumn: Int, Dim : Int) :
       updateAtPosition(board, row, col, wordFactory.createTripleSquare(new Stone))
     }
   }
-
-  override def toString: String = field.map(_.map(_.toString).mkString(" ")).mkString("\n")
-
+  //override def toString: String = field.map(_.map(_.toString).mkString(" ")).mkString("\n")
   private def initializeDiagonalSquares(board: Vector[Vector[ScrabbleSquare]]): Vector[Vector[ScrabbleSquare]] = {
     val topLeftBottomRightDiagonal = (0 until rowsAndColumn).map(i => (i, i)).toList
     val topRightBottomLeftDiagonal = (0 until rowsAndColumn).map(i => (i, rowsAndColumn - 1 - i)).toList
@@ -71,26 +66,20 @@ class Matrix(rowsAndColumn: Int, Dim : Int) :
       ).distinct
     }.distinct
   
+  def init(size : Int): Matrix = new Matrix(if(size == 15) initializeStandardBoard else initializeNonStandardBoard)
   
   
-  
-  
-  
-  def this(rowsAndColums : Int) = this(rowsAndColums, rowsAndColums)
 
-  
   
   
   def placeWord(xPosition: Int, yPosition: Int, direction: Char, word: String): Matrix =
     if (!wordFits(xPosition, yPosition, direction, word)) this else
     direction.match
-      case 'H' => val prefix = this.field(yPosition).take(xPosition)
-        val updatedRow: Vector[Stone] = prefix ++ word.toVector.map(j => Stone(j)) ++ field(yPosition).takeRight(columns - (xPosition + word.length))
-        new Matrix(field.updated(yPosition, updatedRow))
+      case 'H' => val NewMatrix = placeHorizontally(xPosition, yPosition, word, 0, this); NewMatrix
       case 'V' => val newMatrix = placeVertically(xPosition, yPosition, word, 0, this); newMatrix
 
 
-  def getStone(col: Int, row: Int): Stone = field(row)(col)
+  def getSquare(col: Int, row: Int): ScrabbleSquare = field(row)(col)
 
 
   def wordFits(xPosition: Int, yPosition: Int, direction: Char, word: String): Boolean = 
@@ -98,21 +87,29 @@ class Matrix(rowsAndColumn: Int, Dim : Int) :
     direction.toUpper match {
       case 'H' =>
         field(yPosition).slice(xPosition, xPosition + word.length).zipWithIndex.forall {
-          case (element, index) => element.l == '_' || element.symbol == word.charAt(index)
+          case (element, index) => element.letter.symbol == '_' || element.letter.symbol == word.charAt(index)
         }
       case 'V' =>
         field.slice(yPosition, yPosition + word.length).zipWithIndex.forall {
-          case (element, index) => element(xPosition).symbol == word.charAt(index) || '_' == element(xPosition).symbol
+          case (element, index) => element(xPosition).letter.symbol == word.charAt(index) || '_' == element(xPosition).letter.symbol
         }
     }
-
 
   def placeVertically(xPosition: Int, yPosition: Int, word: String, index: Int, updatedMatrix: Matrix): Matrix =
     if (word.length <= index) updatedMatrix 
       else 
-      val newVector = updatedMatrix.field(yPosition).updated(xPosition, Stone(word.charAt(index)))
+      val newVector = updatedMatrix.field(yPosition).updated(xPosition, field(yPosition)(xPosition).update(Stone(word.charAt(index))))
       placeVertically(xPosition, yPosition + 1, word, index + 1, Matrix (updatedMatrix.field.updated(yPosition, newVector)))
-  override def equals(obj: Any): Boolean = obj match 
+
+  def placeHorizontally(xPosition: Int, yPosition: Int, word: String, index: Int, updatedMatrix: Matrix): Matrix =
+    if (word.length <= index) updatedMatrix
+    else {
+      val newVector = updatedMatrix.field(yPosition).updated(xPosition, field(yPosition)(xPosition).update(Stone(word.charAt(index))))
+      placeHorizontally(xPosition + 1, yPosition, word, index + 1, Matrix(updatedMatrix.field.updated(yPosition, newVector)))
+    }
+  
+
+  override def equals(obj: Any): Boolean = obj match
     case other: Matrix => this.columns == other.columns && this.rows == other.rows && this.field.zip(other.field).forall
       { case (row1, row2) => row1.zip(row2).forall { case (stone1, stone2) => stone1 == stone2}}
     case _ => false

@@ -5,4 +5,5 @@ class StandardSquare(betterletter: Stone) extends ScrabbleSquare{
   override def scoreModifier: Int = 1
   override def toString: String = letter.toString
   override def letter: Stone = betterletter
+  override def update(stone: Stone): ScrabbleSquare = new StandardSquare(stone)
 }

@@ -7,4 +7,5 @@ class TripleWordSquare(betterletter : Stone) extends ScrabbleSquare {
   override def color: String = Console.RED
   override def toString: String = color + letter.toString + Console.RESET
   override def letter: Stone = betterletter
+  override def update(stone: Stone): ScrabbleSquare = new TripleWordSquare(stone)
 }

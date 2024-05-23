@@ -7,4 +7,5 @@ trait ScrabbleSquare {
   def color : String
   override def toString: String
   def letter : Stone
+  def update(stone: Stone): ScrabbleSquare
 }

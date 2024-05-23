@@ -1,5 +1,7 @@
 package de.htwg.se.scrabble.model
 class Matrix(val field: Vector[Vector[Stone]]) :
+
+  
   val columns: Int = field.length
   val rows: Int = if (columns > 0) field(0).length else 0
   def this(rowsAndColums : Int) = this(Vector.fill(rowsAndColums)(Vector.fill(rowsAndColums)(Stone('_'))))

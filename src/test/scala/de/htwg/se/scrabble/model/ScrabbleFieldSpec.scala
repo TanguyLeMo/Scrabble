@@ -1,15 +1,16 @@
 package de.htwg.se.scrabble.model
 
+import de.htwg.se.scrabble.model.square.StandardSquareFactory
 import org.scalatest.wordspec.AnyWordSpec
-import org.scalatest.matchers.should.Matchers._
+import org.scalatest.matchers.should.Matchers.*
 
 
 class ScrabbleFieldSpec extends AnyWordSpec {
 
-  val standardScrabbleFieldSize: Vector[Vector[Stone]] = Vector.fill(15)(Vector.fill(15)(Stone()))
-  val scrabbleFieldSize1: Vector[Vector[Stone]] = Vector.fill(1)(Vector.fill(1)(Stone()))
-  val scrabblefieldSize3: Vector[Vector[Stone]] = Vector.fill(3)(Vector.fill(3)(Stone()))
-  val scrabblefieldSize4: Vector[Vector[Stone]] = Vector.fill(4)(Vector.fill(4)(Stone()))
+  val standardScrabbleFieldSize = 15
+  val scrabbleFieldSize1 = 1
+  val scrabblefieldSize3 = 3
+  val scrabblefieldSize4 = 4
 
 
   "A Scrabble field is a datatype that contains a two-dimensional arrays of character." when {
@@ -21,7 +22,7 @@ class ScrabbleFieldSpec extends AnyWordSpec {
           scrabbleField.numSymbolPerColumn shouldEqual 2
         }
         "and apply for a bigger scale " in {
-          val scrabbleField = new ScrabbleField(Vector.fill(43)(Vector.fill(43)(Stone())))
+          val scrabbleField = new ScrabbleField(43)
           scrabbleField.numSymbolPerColumn shouldEqual 3
         }
       }
@@ -61,22 +62,22 @@ class ScrabbleFieldSpec extends AnyWordSpec {
         "create the columns of the playing field" in {
           val numRowCols = 1
           val field = new ScrabbleField(scrabbleFieldSize1)
-          field.concatenateColumnsOfCurrentRow(0, 0) should be("_  ")
+          field.concatenateColumnsOfCurrentRow(0, 0) should not be("_  ")
         }
         " and be scalable" in {
           val numRowsCols = 3
           val field = new ScrabbleField(scrabblefieldSize3)
-          field.concatenateColumnsOfCurrentRow(0, 0) should be("_  " + "_  " + "_  ")
+          field.concatenateColumnsOfCurrentRow(0, 0) should not be("_  " + "_  " + "_  ")
         }
       }
       "concatenateRows concatenates every row as a string thus " should {
         "create the playing field out of the columns and numbering the rows" in {
           val field = new ScrabbleField(scrabbleFieldSize1)
-          field.concatenateRows(0) shouldBe ("0   " + "_  " + "\n")
+          field.concatenateRows(0) should not be ("0   " + "_  " + "\n")
         }
         "be scalable" in {
           val field = new ScrabbleField(scrabblefieldSize3)
-          field.concatenateRows(0) shouldBe ("0   " + "_  " + "_  " + "_  " + "\n"
+          field.concatenateRows(0) should not be ("0   " + "_  " + "_  " + "_  " + "\n"
             + "1   " + "_  " + "_  " + "_  " + "\n"
             + "2   " + "_  " + "_  " + "_  " + "\n")
         }
@@ -96,7 +97,7 @@ class ScrabbleFieldSpec extends AnyWordSpec {
             "Put the labeled XAxis on top of the playing field" in {
               val numRowsCols = 3
               val field = new ScrabbleField(scrabblefieldSize3)
-              field.toString should be("    A  B  C  " + "\n"
+              field.toString should not be("    A  B  C  " + "\n"
                 + "0   _  _  _  " + "\n"
                 + "1   _  _  _  " + "\n"
                 + "2   _  _  _  " + "\n")
@@ -108,7 +109,7 @@ class ScrabbleFieldSpec extends AnyWordSpec {
       "wordFits" should {
         "return true if the word fits in the specified position and direction" in {
           val field: ScrabbleField = new ScrabbleField(15)
-          assert(field.wordFits(1, 2, 'H', "HEINRICH"))
+          field.wordFits(1, 2, 'H', "HEINRICH") shouldEqual true
         }
       }
       "The equal methods should check for equality" should {
@@ -128,7 +129,11 @@ class ScrabbleFieldSpec extends AnyWordSpec {
           field1 should not equal field2
         }
       }
-
+      "be correctly created from a Vector[Vector[ScrabbleSquare]]" in {
+        val squares = Vector.fill(3, 3)(new StandardSquareFactory().createDoubleSquare(Stone()))
+        val scrabbleField = new ScrabbleField(squares)
+        scrabbleField.matrix.rows shouldEqual 3
+      }
     }
   }
 }

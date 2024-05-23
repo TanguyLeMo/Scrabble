@@ -8,7 +8,7 @@ class ScrabbleField(val matrix: Matrix, val dictionary: Dictionary, squareFactor
   def this(field: Vector[Vector[ScrabbleSquare]]) = this(new Matrix(field), new Dictionary().readLines)
 
 
-  def this(rowsAndColumns : Int) = this(new Matrix(Vector.fill(rowsAndColumns, rowsAndColumns)(new StandardSquareFactory().createDoubleSquare(Stone()))).init(rowsAndColumns), new Dictionary().readLines)
+  def this(rowsAndColumns : Int) = this(new Matrix(Vector.fill(rowsAndColumns, rowsAndColumns)(new StandardSquareFactory().createDoubleSquare(Stone()))).init(), new Dictionary().readLines)
 
   def labelingXAxis(currcolum: Int): String =
     if(currcolum > matrix.columns)""
@@ -28,6 +28,8 @@ class ScrabbleField(val matrix: Matrix, val dictionary: Dictionary, squareFactor
   override def toString: String =s"    ${labelingXAxis(1)}\n${concatenateRows(0)}"
   override def equals(that: Any): Boolean =
     that match
-      case that: ScrabbleField => this.matrix.equals(that.matrix)
+      case that: ScrabbleField => this.matrix.equals(that.matrix) && this.numSymbolPerColumn == that.numSymbolPerColumn
       case _ => false
+      
+      
   def addDictionaryWord(word: String): ScrabbleField = new ScrabbleField(matrix, dictionary.addWord(word))

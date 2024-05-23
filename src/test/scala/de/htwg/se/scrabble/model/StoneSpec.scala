@@ -29,9 +29,9 @@ class StoneSpec extends AnyWordSpec {
         stone1 shouldNot equal(stone2)
       }
       "return false when comparing with another Type, without throwing an exception " in {
-        val matrix = new Matrix(1)
+        val scrabbleField = new ScrabbleField(1)
         val stone = Stone()
-        assert(! stone.equals(matrix))
+        assert(! stone.equals(scrabbleField))
       }
     }
 

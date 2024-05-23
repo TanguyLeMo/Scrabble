@@ -66,7 +66,7 @@ class Matrix(val field: Vector[Vector[ScrabbleSquare]]):
       ).distinct
     }.distinct
   
-  def init(size : Int): Matrix = new Matrix(if(size == 15) initializeStandardBoard else initializeNonStandardBoard)
+  def init(): Matrix = new Matrix(if(rows == 15) initializeStandardBoard else initializeNonStandardBoard)
   
   
 
@@ -111,9 +111,8 @@ class Matrix(val field: Vector[Vector[ScrabbleSquare]]):
 
   override def equals(obj: Any): Boolean = obj match
     case other: Matrix => this.columns == other.columns && this.rows == other.rows && this.field.zip(other.field).forall
-      { case (row1, row2) => row1.zip(row2).forall { case (stone1, stone2) => stone1 == stone2}}
+      { case (row1, row2) => row1.zip(row2).forall { case (square1, square2) => square1.letter == square2.letter}}
     case _ => false
-
 
   def fitsInBounds(xPosition: Int, yPosition: Int, direction: Char, word: String): Boolean = {
     val validX = xPosition >= 0 && xPosition < columns

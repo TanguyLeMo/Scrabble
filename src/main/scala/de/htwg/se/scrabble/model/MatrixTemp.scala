@@ -1,5 +1,6 @@
-import de.htwg.se.scrabble.model.Stone
-import de.htwg.se.scrabble.model.square._
+package de.htwg.se.scrabble.model
+
+import de.htwg.se.scrabble.model.square.*
 class MatrixTemp(rowsAndColumn: Int) {
   private val letterFactory = new LetterSquareFactory
   private val wordFactory = new WordSquareFactory

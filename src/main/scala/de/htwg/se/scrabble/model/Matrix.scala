@@ -1,10 +1,86 @@
 package de.htwg.se.scrabble.model
-class Matrix(val field: Vector[Vector[Stone]]) :
+
+import de.htwg.se.scrabble.model.square.*
+
+class Matrix(rowsAndColumn: Int, Dim : Int) :
+  val columns, rows: Int = rowsAndColumn
+  private val letterFactory = new LetterSquareFactory
+  private val wordFactory = new WordSquareFactory
+  private val standardSquareFactory = new StandardSquareFactory
+  private val center = rowsAndColumn / 2
+  private val field: Vector[Vector[ScrabbleSquare]] =
+    if (rowsAndColumn == 15) initializeStandardBoard
+    else initializeNonStandardBoard
+
+  private def updateBoard(board: Vector[Vector[ScrabbleSquare]], positions: List[(Int, Int)], factory: () => ScrabbleSquare): Vector[Vector[ScrabbleSquare]] =
+    positions.foldLeft(board) { case (b, (row, col)) =>
+      b.updated(row, b(row).updated(col, factory()))
+    }
+
+  private def initializeBoard(initialBoard: Vector[Vector[ScrabbleSquare]], positions: List[(Int, Int)], factory: () => ScrabbleSquare): Vector[Vector[ScrabbleSquare]] =
+    updateBoard(initialBoard, symmetricPositions(positions), factory)
+
+  private def initializeStandardBoard: Vector[Vector[ScrabbleSquare]] = {
+    val baseDoubleLetterPositions = List((0, 3), (2, 6), (3, 0), (6, 2), (6, 6), (7, 3), (8, 2))
+    val baseTripleLetterPositions = List((1, 5), (5, 1), (5, 5))
+    val baseDoubleWordPositions = List((1, 1), (2, 2), (3, 3), (4, 4))
+    val baseTripleWordPositions = List((0, 0), (0, 7))
+    val initialBoard = Vector.fill(rowsAndColumn, rowsAndColumn)(standardSquareFactory.createDoubleSquare(new Stone))
+    val boardWithDoubleLetters = initializeBoard(initialBoard, baseDoubleLetterPositions, () => letterFactory.createDoubleSquare(new Stone))
+    val boardWithTripleLetters = initializeBoard(boardWithDoubleLetters, baseTripleLetterPositions, () => letterFactory.createTripleSquare(new Stone))
+    val boardWithDoubleWords = initializeBoard(boardWithTripleLetters, baseDoubleWordPositions, () => wordFactory.createDoubleSquare(new Stone))
+    initializeBoard(boardWithDoubleWords, baseTripleWordPositions, () => wordFactory.createTripleSquare(new Stone))
+  }
+
+  private def initializeNonStandardBoard: Vector[Vector[ScrabbleSquare]] = {
+    val initBoard = Vector.fill(rowsAndColumn, rowsAndColumn)(standardSquareFactory.createDoubleSquare(new Stone))
+
+    def updateAtPosition(board: Vector[Vector[ScrabbleSquare]], row: Int, col: Int, square: ScrabbleSquare): Vector[Vector[ScrabbleSquare]] =
+      board.updated(row, board(row).updated(col, square))
+
+    val tripleSquarePositions = List((0, 0), (0, rowsAndColumn - 1), (rowsAndColumn - 1, 0), (rowsAndColumn - 1, rowsAndColumn - 1), (center, 0), (center, rowsAndColumn - 1), (0, center), (rowsAndColumn - 1, center))
+    val boardWithDiagonalSquares = initializeDiagonalSquares(initBoard)
+    tripleSquarePositions.foldLeft(boardWithDiagonalSquares) { case (board, (row, col)) =>
+      updateAtPosition(board, row, col, wordFactory.createTripleSquare(new Stone))
+    }
+  }
+
+  override def toString: String = field.map(_.map(_.toString).mkString(" ")).mkString("\n")
+
+  private def initializeDiagonalSquares(board: Vector[Vector[ScrabbleSquare]]): Vector[Vector[ScrabbleSquare]] = {
+    val topLeftBottomRightDiagonal = (0 until rowsAndColumn).map(i => (i, i)).toList
+    val topRightBottomLeftDiagonal = (0 until rowsAndColumn).map(i => (i, rowsAndColumn - 1 - i)).toList
+
+    def updateAtPosition(board: Vector[Vector[ScrabbleSquare]], row: Int, col: Int, square: ScrabbleSquare): Vector[Vector[ScrabbleSquare]] =
+      board.updated(row, board(row).updated(col, square))
+
+    val updatedBoard1 = topLeftBottomRightDiagonal.foldLeft(board) { case (b, (row, col)) =>
+      updateAtPosition(b, row, col, wordFactory.createTripleSquare(new Stone))
+    }
+    topRightBottomLeftDiagonal.foldLeft(updatedBoard1) { case (b, (row, col)) =>
+      updateAtPosition(b, row, col, wordFactory.createTripleSquare(new Stone))
+    }
+  }
+  private def symmetricPositions(basePositions: List[(Int, Int)]): List[(Int, Int)] =
+    basePositions.flatMap { case (row, col) =>
+      List(
+        (row, col),
+        (row, rowsAndColumn - 1 - col),
+        (rowsAndColumn - 1 - row, col),
+        (rowsAndColumn - 1 - row, rowsAndColumn - 1 - col)
+      ).distinct
+    }.distinct
+  
+  
+  
+  
+  
+  
+  def this(rowsAndColums : Int) = this(rowsAndColums, rowsAndColums)
 
   
-  val columns: Int = field.length
-  val rows: Int = if (columns > 0) field(0).length else 0
-  def this(rowsAndColums : Int) = this(Vector.fill(rowsAndColums)(Vector.fill(rowsAndColums)(Stone('_'))))
+  
+  
   def placeWord(xPosition: Int, yPosition: Int, direction: Char, word: String): Matrix =
     if (!wordFits(xPosition, yPosition, direction, word)) this else
     direction.match
@@ -12,19 +88,25 @@ class Matrix(val field: Vector[Vector[Stone]]) :
         val updatedRow: Vector[Stone] = prefix ++ word.toVector.map(j => Stone(j)) ++ field(yPosition).takeRight(columns - (xPosition + word.length))
         new Matrix(field.updated(yPosition, updatedRow))
       case 'V' => val newMatrix = placeVertically(xPosition, yPosition, word, 0, this); newMatrix
+
+
   def getStone(col: Int, row: Int): Stone = field(row)(col)
+
+
   def wordFits(xPosition: Int, yPosition: Int, direction: Char, word: String): Boolean = 
     if (!fitsInBounds(xPosition, yPosition, direction, word)) return false
     direction.toUpper match {
       case 'H' =>
         field(yPosition).slice(xPosition, xPosition + word.length).zipWithIndex.forall {
-          case (element, index) => element.symbol == '_' || element.symbol == word.charAt(index)
+          case (element, index) => element.l == '_' || element.symbol == word.charAt(index)
         }
       case 'V' =>
         field.slice(yPosition, yPosition + word.length).zipWithIndex.forall {
           case (element, index) => element(xPosition).symbol == word.charAt(index) || '_' == element(xPosition).symbol
         }
     }
+
+
   def placeVertically(xPosition: Int, yPosition: Int, word: String, index: Int, updatedMatrix: Matrix): Matrix =
     if (word.length <= index) updatedMatrix 
       else 
@@ -34,6 +116,8 @@ class Matrix(val field: Vector[Vector[Stone]]) :
     case other: Matrix => this.columns == other.columns && this.rows == other.rows && this.field.zip(other.field).forall
       { case (row1, row2) => row1.zip(row2).forall { case (stone1, stone2) => stone1 == stone2}}
     case _ => false
+
+
   def fitsInBounds(xPosition: Int, yPosition: Int, direction: Char, word: String): Boolean = {
     val validX = xPosition >= 0 && xPosition < columns
     val validY = yPosition >= 0 && yPosition < rows

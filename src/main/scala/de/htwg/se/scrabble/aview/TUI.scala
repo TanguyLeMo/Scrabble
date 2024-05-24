@@ -3,16 +3,25 @@ package aview
 import de.htwg.se.scrabble.util.Observer
 import de.htwg.se.scrabble.controller.Controller
 import de.htwg.se.scrabble.model.ScrabbleField
+import de.htwg.se.scrabble.aview.languages.LanguageContext
+
+import scala.io.StdIn.readLine
 class TUI(val controller: Controller) extends Observer {
+  val languageContext: LanguageContext = start
+  
   controller.add(this)
-
   def this() = this(new Controller(new ScrabbleField(15)))
-
-  def start: TUI = {
-    println("Welcome to Scrabble")
+  def start: LanguageContext = {
+    println("Welcome to Scrabble , Bienvenue à Scrabble, Willkommen bei Scrabble, Benvenuti a Scrabble")
+    
+    println("Please choose your language by typing either: English, German, French or Italian")
+    val language = readLine()
+    val languageContext = new LanguageContext(language)
+    println(languageContext.languageSetting + Console.YELLOW + language + Console.RESET)
+    println(languageContext.EnterYourWord)
     println("Enter your personal words, which should be available in the dictionary, apart from the default words")
     println("type: \u001B[1m stop \u001B[0m to finish the input of your personal words")
-    this
+    languageContext
     }
 
   def dictionaryAddWords(word: String): String = {

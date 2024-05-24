@@ -9,6 +9,12 @@ trait LanguageStrategy {
   def invalidInput: String
   def notInDictionary: String
   def wordNotInDictionary: String
-  def EnterYourWord:String
-  def ExitWord: String 
+  def enterWordforDictionary:String
+  def stop: String 
+  def enterWord: String
+  def NoCorrectDirection: String
+  def wordDoesntFit: String
+  def exit: String
+
+  
 }

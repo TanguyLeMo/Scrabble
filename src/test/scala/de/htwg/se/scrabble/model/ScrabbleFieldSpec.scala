@@ -4,6 +4,8 @@ import de.htwg.se.scrabble.model.square.StandardSquareFactory
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers.*
 
+import java.io.ByteArrayInputStream
+
 
 class ScrabbleFieldSpec extends AnyWordSpec {
 
@@ -11,6 +13,8 @@ class ScrabbleFieldSpec extends AnyWordSpec {
   val scrabbleFieldSize1 = 1
   val scrabblefieldSize3 = 3
   val scrabblefieldSize4 = 4
+  val in = new ByteArrayInputStream("Italian".getBytes)
+  System.setIn(in)
 
 
   "A Scrabble field is a datatype that contains a two-dimensional arrays of character." when {
@@ -18,6 +22,7 @@ class ScrabbleFieldSpec extends AnyWordSpec {
       "The immutable value numSymbolPerColumn expresses the Number needed for each Column to represent a pleasant scale for the playing" +
         " Field concerning the X axis labeling. It" should {
         "represent the minimum number needed " in {
+
           val scrabbleField = new ScrabbleField(standardScrabbleFieldSize)
           scrabbleField.numSymbolPerColumn shouldEqual 2
         }
@@ -131,7 +136,7 @@ class ScrabbleFieldSpec extends AnyWordSpec {
       }
       "be correctly created from a Vector[Vector[ScrabbleSquare]]" in {
         val squares = Vector.fill(3, 3)(new StandardSquareFactory().createDoubleSquare(Stone()))
-        val scrabbleField = new ScrabbleField(squares)
+        val scrabbleField = new ScrabbleField(3)
         scrabbleField.matrix.rows shouldEqual 3
       }
     }

@@ -4,9 +4,9 @@ class LanguageContext(languageStrat: String){
   val language: LanguageEnum = LanguageEnum.toLanguage(languageStrat)
   val languageStrategy: LanguageStrategy = language match {
     case LanguageEnum.ENGLISH => new EnglishStrategy()
-    case LanguageEnum.GERMAN => null
-    case LanguageEnum.FRENCH => null
-    case LanguageEnum.ITALIAN => null
+    case LanguageEnum.GERMAN => new GermanStrategy()
+    case LanguageEnum.FRENCH => new FrenchStrategy()
+    case LanguageEnum.ITALIAN => new ItalianStrategy()
   }
   def requestNewWord: String = languageStrategy.requestNewWord
   def wordAlreadyAddedToDictionary: String = languageStrategy.wordAlreadyAddedToDictionary
@@ -15,7 +15,11 @@ class LanguageContext(languageStrat: String){
   def invalidInput: String = languageStrategy.invalidInput
   def notInDictionary: String = languageStrategy.notInDictionary
   def wordNotInDictionary: String = languageStrategy.wordNotInDictionary
-  def EnterYourWord: String = languageStrategy.EnterYourWord
-  def ExitWord: String = languageStrategy.ExitWord
+  def enterWordforDictionary: String = languageStrategy.enterWordforDictionary
+  def stop: String = languageStrategy.stop
   def languageSetting: String = languageStrategy.languageSetting
+  def enterWord: String = languageStrategy.enterWord
+  def noCorrectDirection: String = languageStrategy.NoCorrectDirection
+  def wordDoesntFit: String = languageStrategy.wordDoesntFit
+  def exit: String = languageStrategy.exit
 }

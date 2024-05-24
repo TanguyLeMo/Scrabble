@@ -4,79 +4,74 @@ import de.htwg.se.scrabble.util.Observer
 import de.htwg.se.scrabble.controller.Controller
 import de.htwg.se.scrabble.model.ScrabbleField
 import de.htwg.se.scrabble.aview.languages.LanguageContext
+import de.htwg.se.scrabble.aview.languages.LanguageEnum.ENGLISH
 
 import scala.io.StdIn.readLine
 class TUI(val controller: Controller) extends Observer {
   val languageContext: LanguageContext = start
-  
+
   controller.add(this)
-  def this() = this(new Controller(new ScrabbleField(15)))
+
+  def this() = this(new Controller(new ScrabbleField(15, ENGLISH)))
   def start: LanguageContext = {
     println("Welcome to Scrabble , Bienvenue à Scrabble, Willkommen bei Scrabble, Benvenuti a Scrabble")
-    
     println("Please choose your language by typing either: English, German, French or Italian")
     val language = readLine()
     val languageContext = new LanguageContext(language)
     println(languageContext.languageSetting + Console.YELLOW + language + Console.RESET)
-    println(languageContext.EnterYourWord)
-    println("Enter your personal words, which should be available in the dictionary, apart from the default words")
-    println("type: \u001B[1m stop \u001B[0m to finish the input of your personal words")
+    println(languageContext.enterWordforDictionary)
+    controller.field = new ScrabbleField(15, languageContext.language)
     languageContext
     }
-
   def dictionaryAddWords(word: String): String = {
-    if (word == "stop") {
-      println("Enter your Word, Coordinate and Direction(H|V) example: myWord A 0 H")
+    if (word == languageContext.stop) {
+      println(languageContext.enterWord)
       return "stop"
     }
     if(controller.contains(word)) {
-      println( word + " already in dictionary")
+      println( languageContext.wordAlreadyAddedToDictionary)
     } else{
       controller.add(word)
-      println(word + " is added to dictionary")
+      println(languageContext.wordAddedToDictionary)
     }
     word
   }
-  
-
   override def update(): String = {
     println(controller.toString)
     controller.toString
   }
-
   def processInputLine(input : String): String = {
-    input match
-      case "exit" => "exit"
-      case _ =>
+    if(input == languageContext.exit) {"exit"} else{
         val inputVector = input.split(" ")
         if (inputVector.length != 4) {
-          println("invalid input")
-          println("Enter your Word, Coordinate and Direction(H|V) example: myWord A 0 H")
+          println(languageContext.invalidInput)
+          println(languageContext.enterWord)
         }
         else if (!validCoordinateInput(inputVector(1),inputVector(2))) {
-          println("invalid coordinates")
-          println("Enter your Word, Coordinate and Direction(H|V) example: myWord A 0 H")
+          println(languageContext.invalidcoordinates)
+          println(languageContext.enterWord)
         } else {
           val direction = inputVector(3) match
             case "H" => "H"
             case "V" => "V"
-            case _ => inputVector(3) + " is not a correct direction"
+            case _ => inputVector(3) + languageContext.noCorrectDirection
           val word = inputVector(0)
           val coordinates = translateCoordinate(inputVector(1) + " " + inputVector(2))
           val yCoordinate = coordinates._1
           val xCoordinate = coordinates._2
           if(!controller.contains(word)) {
-            println(word + " is not in dictionary, sorry!")
+            println(word + languageContext.notInDictionary)
           } else if (!(direction == "H" | direction == "V")) {
             println(direction)
           } else if (!controller.wordFits(xCoordinate, yCoordinate, direction.charAt(0), word)) {
-            println("Word doesnt fit")
+            println(languageContext.wordDoesntFit)
           } else {
             controller.placeWord(xCoordinate, yCoordinate, direction.charAt(0), word)
           }
-          println("Enter your Word, Coordinate and Direction(H|V) example: myWord A 0 H")
+          println(languageContext.enterWord)
         }
         ""
+    }
   }
   def translateCoordinate(coordinate: String): (Int, Int) = {
     val coordinates = coordinate.split(" ")
@@ -92,5 +87,6 @@ class TUI(val controller: Controller) extends Observer {
       case _ => false
     }
   }
+  
   
 }

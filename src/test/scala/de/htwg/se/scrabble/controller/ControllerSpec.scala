@@ -1,5 +1,6 @@
 package de.htwg.se.scrabble.controller
 
+import de.htwg.se.scrabble.aview.languages.LanguageEnum
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers.*
 import de.htwg.se.scrabble.model.ScrabbleField
@@ -8,17 +9,18 @@ import de.htwg.se.scrabble.util.Observer
 class ControllerSpec extends AnyWordSpec:
 
   "A Controller" when {
+    val english = LanguageEnum.ENGLISH
 
     "created" should {
 
       "have a valid ScrabbleField" in {
-        val field = new ScrabbleField(15)
+        val field = new ScrabbleField(15,english)
         val controller = new Controller(field)
         controller.field should be(field)
       }
 
       "have no subscribers initially" in {
-        val field = new ScrabbleField(15)
+        val field = new ScrabbleField(15,english)
         val controller = new Controller(field)
         controller.subscribers shouldBe empty
       }
@@ -27,7 +29,7 @@ class ControllerSpec extends AnyWordSpec:
     "a word is placed" should {
 
       "update subscribers" in {
-        val field = new ScrabbleField(15)
+        val field = new ScrabbleField(15,english)
         val controller = new Controller(field)
         val observer = new Observer { def update(): String = "" }
         controller.add(observer)
@@ -44,7 +46,7 @@ class ControllerSpec extends AnyWordSpec:
     "checking if a word fits" should {
 
       "return true if word fits" in {
-        val field = new ScrabbleField(15)
+        val field = new ScrabbleField(15,english)
         val controller = new Controller(field)
 
         val xPosition = 0
@@ -57,7 +59,7 @@ class ControllerSpec extends AnyWordSpec:
       }
 
       "return false if word doesn't fit" in {
-        val field = new ScrabbleField(15)
+        val field = new ScrabbleField(15,english)
         val controller = new Controller(field)
 
         // Assuming we're trying to place a word in a position where it doesn't fit
@@ -74,7 +76,7 @@ class ControllerSpec extends AnyWordSpec:
     "checking if word fits in bounds" should {
 
       "return true if word fits within bounds" in {
-        val field = new ScrabbleField(15)
+        val field = new ScrabbleField(15,english)
         val controller = new Controller(field)
 
         val xPosition = 0
@@ -87,7 +89,7 @@ class ControllerSpec extends AnyWordSpec:
       }
 
       "return false if word doesn't fit within bounds" in {
-        val field = new ScrabbleField(5)
+        val field = new ScrabbleField(5,english)
         val controller = new Controller(field)
 
         // Assuming we're trying to place a word that goes out of bounds
@@ -103,14 +105,14 @@ class ControllerSpec extends AnyWordSpec:
     
     "The toString method " should {
       "print the same lines as the Class Scrabblefield does." in {
-        val field = new ScrabbleField(15)
+        val field = new ScrabbleField(15,english)
         val controller = new Controller(field)
         field.toString shouldEqual controller.toString
       }
     }
     "adding a word to the dictionary" should {
       "have the word in the dictionary" in {
-        val field = new ScrabbleField(15)
+        val field = new ScrabbleField(15,english)
         val controller = new Controller(field)
         controller.add("testword")
         controller.field.dictionary.set should contain("testword")

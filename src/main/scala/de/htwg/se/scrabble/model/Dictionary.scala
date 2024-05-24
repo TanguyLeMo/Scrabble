@@ -9,9 +9,9 @@ class Dictionary(val set: HashSet[String]) {
   def readLines(languageEnum: LanguageEnum): Dictionary = {
     val source = scala.io.Source.fromResource(languageEnum match { 
       case LanguageEnum.ENGLISH => "englishWordList.txt"
-      case LanguageEnum.GERMAN => "GermanWordList.txt"
-      case LanguageEnum.FRENCH => "FrenchWordList.txt"
-      case LanguageEnum.ITALIAN => "ItalianWordList.txt"
+      case LanguageEnum.GERMAN => "germanWordList.txt"
+      case LanguageEnum.FRENCH => "frenchWordList.txt"
+      case LanguageEnum.ITALIAN => "italianWordList.txt"
       case null => "englishWordList.txt"
     })
 

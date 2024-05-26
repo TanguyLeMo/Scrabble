@@ -5,6 +5,7 @@ import scala.collection.immutable.HashSet
 import scala.language.postfixOps
 class Dictionary(val set: HashSet[String]) {
   val file: String = "englishWordList.txt"
+
   def this() = this(HashSet.empty[String])
   def readLines(languageEnum: LanguageEnum): Dictionary = {
     val source = scala.io.Source.fromResource(languageEnum match { 
@@ -16,10 +17,11 @@ class Dictionary(val set: HashSet[String]) {
     })
 
     val lines = try source.getLines.toList finally source.close()
-    val set = HashSet() ++ lines
+    val upperCase = lines.map(_.toUpperCase)
+    val set = HashSet() ++ upperCase
     new Dictionary(set)
   }
-  def contains(word: String): Boolean = set.contains(word)
-  def addWord(word: String): Dictionary = new Dictionary(set + word)
-  def removeWord(word: String): Dictionary = new Dictionary(set - word)
+  def contains(word: String): Boolean = set.contains(word.toUpperCase())
+  def addWord(word: String): Dictionary = new Dictionary(set + word.toUpperCase)
+  def removeWord(word: String): Dictionary = new Dictionary(set - word.toUpperCase())
 }

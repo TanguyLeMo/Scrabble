@@ -2,7 +2,7 @@ package de.htwg.se.scrabble.model.square
 
 import de.htwg.se.scrabble.model.Stone
 
-class TripleWordSquare(val stone : Stone) extends WordSquare {
+class TripleWordSquare(stone : Stone) extends WordSquare(stone) {
   override def scoreModifier: Int = 3
   override def color: String = Console.RED
   override def toString: String = color + letter.toString + Console.RESET

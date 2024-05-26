@@ -49,7 +49,7 @@ class LanguageContextSpec extends AnyWordSpec with Matchers {
     }
 
     "return a message to enter a word" in {
-      context.enterWord should be ("Enter your word: and Direction(H|V) example: myWord A 0 H")
+      context.enterWord should be ("Enter your word: and Direction (H|V) example: myWord A 0 H")
     }
 
     "return a message for no correct direction" in {

@@ -11,7 +11,7 @@ class GermanStrategy extends LanguageStrategy{
   override def wordNotInDictionary: String = "Das Wort ist nicht im Wörterbuch"
   override def enterWordforDictionary: String = "Sie können eigene Wörter in das Wörterbuch eintragen"
   override def stop: String = "stop"
-  override def enterWord: String = "Bitte geben Sie ein Wort ein"
+  override def enterWord: String = "Geben Sie Ihr Wort ein: und Richtung (H|V) Beispiel: meinWort A 0 H"
   override def NoCorrectDirection: String = " ist keine richtige Richtung"
   override def wordDoesntFit: String = "Das Wort passt nicht"
   override def exit: String = "exit"

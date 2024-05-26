@@ -49,7 +49,7 @@ class FrenchStrategySpec extends AnyWordSpec with Matchers {
     }
 
     "return a message to enter a word" in {
-      strategy.enterWord should be ("Entrez un mot")
+      strategy.enterWord should be ("Entrez votre mot: et Direction (H|V) exemple: monMot A 0 H")
     }
 
     "return a message for no correct direction" in {

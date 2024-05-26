@@ -33,7 +33,7 @@ class TUISpec extends AnyWordSpec with Matchers {
         val controller = new Controller(scrabbleField)
         val tui = new TUI(controller)
         tui.controller.add("trigonometricFunction")
-        tui.controller.field.dictionary.set should contain("trigonometricFunction")
+        tui.controller.field.dictionary.set should contain("trigonometricFunction".toUpperCase())
         }
       }
       "add weird words to the dictionary" in {
@@ -87,7 +87,7 @@ class TUISpec extends AnyWordSpec with Matchers {
         val controller = new Controller(scrabbleField)
         val tui = new TUI(controller)
 
-        val testfield: ScrabbleField = scrabbleField.placeWord(1, 0, 'H', "word")
+        val testfield: ScrabbleField = scrabbleField.placeWord(1, 0, 'V', "WORD")
         tui.processInputLine("word A 1 H")
         val finalState: ScrabbleField = controller.field
         finalState shouldEqual testfield

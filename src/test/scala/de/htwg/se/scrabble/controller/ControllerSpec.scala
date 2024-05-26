@@ -115,7 +115,7 @@ class ControllerSpec extends AnyWordSpec:
         val field = new ScrabbleField(15,english)
         val controller = new Controller(field)
         controller.add("testword")
-        controller.field.dictionary.set should contain("testword")
+        controller.field.dictionary.set should contain("testword".toUpperCase())
       }
     }
     

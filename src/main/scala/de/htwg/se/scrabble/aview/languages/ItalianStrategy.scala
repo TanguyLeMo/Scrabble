@@ -11,7 +11,7 @@ class ItalianStrategy extends LanguageStrategy{
   override def wordNotInDictionary: String = "Parola non presente nel dizionario"
   override def enterWordforDictionary: String = "Inserisci una parola per il dizionario"
   override def stop: String = "stop"
-  override def enterWord: String = "Inserisci la tua parola: e Direzione(H|V) esempio: miaParola A 0 H"
+  override def enterWord: String = "Inserisci la tua parola: e Direzione (H|V) esempio: miaParola A 0 H"
   override def NoCorrectDirection: String = " non è una direzione corretta"
   override def wordDoesntFit: String = "La parola non si adatta"
   override def exit: String = "uscire"

@@ -49,7 +49,7 @@ class ItalianStrategySpec extends AnyWordSpec with Matchers {
     }
 
     "return a message to enter a word" in {
-      strategy.enterWord should be ("Inserisci la tua parola: e Direzione(H|V) esempio: miaParola A 0 H")
+      strategy.enterWord should be ("Inserisci la tua parola: e Direzione (H|V) esempio: miaParola A 0 H")
     }
 
     "return a message for no correct direction" in {

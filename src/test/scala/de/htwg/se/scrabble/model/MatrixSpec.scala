@@ -90,7 +90,7 @@ class MatrixSpec extends AnyWordSpec {
       "have the word in the dictionary" in {
         val field = new ScrabbleField(15)
         val updatedField = field.addDictionaryWord("testword")
-        updatedField.dictionary.set should contain("testword")
+        updatedField.dictionary.set should contain("testword".toUpperCase())
       }
     }
   

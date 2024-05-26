@@ -49,7 +49,7 @@ class GermanStrategySpec extends AnyWordSpec with Matchers {
     }
 
     "return a message to enter a word" in {
-      strategy.enterWord should be ("Bitte geben Sie ein Wort ein")
+      strategy.enterWord should be ("Geben Sie Ihr Wort ein: und Richtung (H|V) Beispiel: meinWort A 0 H")
     }
 
     "return a message for no correct direction" in {

@@ -18,7 +18,7 @@ class TUI(val controller: Controller) extends Observer {
     println("Please choose your language by typing either: English, German, French or Italian")
     val language = readLine()
     val languageContext = new LanguageContext(language)
-    println(languageContext.languageSetting + Console.YELLOW + language + Console.RESET)
+    println(languageContext.languageSetting + Console.YELLOW + languageContext + Console.RESET)
     println(languageContext.enterWordforDictionary)
     controller.field = new ScrabbleField(15, languageContext.language)
     languageContext
@@ -41,7 +41,7 @@ class TUI(val controller: Controller) extends Observer {
     controller.toString
   }
   def processInputLine(input : String): String = {
-    if(input == languageContext.exit) {"exit"} else{
+    if(input.equalsIgnoreCase(languageContext.exit)) {"exit"} else{
         val inputVector = input.split(" ")
         if (inputVector.length != 4) {
           println(languageContext.invalidInput)
@@ -55,7 +55,7 @@ class TUI(val controller: Controller) extends Observer {
             case "H" => "V"
             case "V" => "H"
             case _ => inputVector(3) + languageContext.noCorrectDirection
-          val word = inputVector(0)
+          val word = inputVector(0).toUpperCase()
           val coordinates = translateCoordinate(inputVector(1) + " " + inputVector(2))
           val yCoordinate = coordinates._1
           val xCoordinate = coordinates._2
@@ -66,7 +66,7 @@ class TUI(val controller: Controller) extends Observer {
           } else if (!controller.wordFits(xCoordinate, yCoordinate, direction.charAt(0), word)) {
             println(languageContext.wordDoesntFit)
           } else {
-            controller.placeWord(xCoordinate, yCoordinate, direction.charAt(0), word)
+            controller.placeWord(xCoordinate, yCoordinate, direction.charAt(0), word.toUpperCase)
           }
           println(languageContext.enterWord)
         }

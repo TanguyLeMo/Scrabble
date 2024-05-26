@@ -104,7 +104,7 @@ class Matrix(val field: Vector[Vector[ScrabbleSquare]]):
   def placeHorizontally(xPosition: Int, yPosition: Int, word: String, index: Int, updatedMatrix: Matrix): Matrix =
     if (word.length <= index) updatedMatrix
     else {
-      val newVector = updatedMatrix.field(yPosition).updated(xPosition, field(yPosition)(xPosition).update(Stone(word.charAt(index))))
+      val newVector = updatedMatrix.field(yPosition).updated(xPosition, field(yPosition)(xPosition).update(Stone(word.charAt(index).toUpper)))
       placeHorizontally(xPosition + 1, yPosition, word, index + 1, Matrix(updatedMatrix.field.updated(yPosition, newVector)))
     }
   

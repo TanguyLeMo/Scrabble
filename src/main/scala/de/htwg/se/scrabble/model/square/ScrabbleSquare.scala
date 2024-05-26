@@ -8,4 +8,5 @@ trait ScrabbleSquare {
   override def toString: String
   def letter : Stone
   def update(stone: Stone): ScrabbleSquare
+  def isEmpty: Boolean
 }

@@ -20,3 +20,5 @@ class Controller(var field: ScrabbleField) extends Observable:
 
   def add(word: String): String = 
     field = field.addDictionaryWord(word); word
+    
+  

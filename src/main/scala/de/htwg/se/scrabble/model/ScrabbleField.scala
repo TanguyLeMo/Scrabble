@@ -1,13 +1,18 @@
 package de.htwg.se.scrabble.model
 
-import de.htwg.se.scrabble.aview.languages.LanguageEnum
-import de.htwg.se.scrabble.aview.languages.LanguageEnum.ENGLISH
+import de.htwg.se.scrabble.aview.languages._
+import de.htwg.se.scrabble.aview.languages.LanguageEnum._
+import de.htwg.se.scrabble.model.scoring._
 import de.htwg.se.scrabble.model.square.{ScrabbleSquare, StandardSquareFactory}
 
 class ScrabbleField(val matrix: Matrix, val dictionary: Dictionary, squareFactory: StandardSquareFactory, languageEnum: LanguageEnum):
   val numOfAlphabet: Int = 26
   val numSymbolPerColumn: Int = Math.ceil(matrix.rows.toDouble / numOfAlphabet.toDouble).toInt + 1
-//  def this(field: Vector[Vector[ScrabbleSquare]]) = this(new Matrix(field), new Dictionary().readLines(ENGLISH))
+  val scoringSystem: ScoringSystem = languageEnum match
+    case ENGLISH => new EnglishScoringSystem()
+    case FRENCH => new FrenchScoringSystem()
+    case GERMAN => new GermanScoringSystem()
+    case ITALIAN => new ItalianScoringSystem()
   def this(rowsAndColumns: Int) = this(new Matrix(Vector.fill(rowsAndColumns, rowsAndColumns)(new StandardSquareFactory().createDoubleSquare(Stone()))).init(), new Dictionary().readLines(ENGLISH), new StandardSquareFactory, ENGLISH)
   def this(rowsAndColumns : Int, languageEnum: LanguageEnum) = this(new Matrix(Vector.fill(rowsAndColumns, rowsAndColumns)(new StandardSquareFactory().createDoubleSquare(Stone()))).init(), new Dictionary().readLines(languageEnum), new StandardSquareFactory, languageEnum)
   def labelingXAxis(currcolum: Int): String =
@@ -16,7 +21,7 @@ class ScrabbleField(val matrix: Matrix, val dictionary: Dictionary, squareFactor
   def addSpace(numSpaceToAdd: Int): String = numSpaceToAdd match
     case n if n <= 0 => " "
     case n => " " + addSpace(n - 1)
-  def placeWord(xCoordinate: Int, yCoordinte : Int, direction :Char, word : String): ScrabbleField = new ScrabbleField(matrix.placeWord(xCoordinate, yCoordinte, direction, word), dictionary, squareFactory, languageEnum)
+  def placeWord(yPosition: Int, xPosition : Int, direction :Char, word : String): ScrabbleField = new ScrabbleField(matrix.placeWord(yPosition, xPosition, direction, word), dictionary, squareFactory, languageEnum)
   def wordFits(xPosition: Int, yPosition: Int, direction: Char, word: String) : Boolean = matrix.wordFits(xPosition, yPosition, direction, word)
   def translateLetter(n: Int): String = if (n <= 0) "" else translateLetter((n - 1) / 26) + ('A' + (n - 1) % 26).toChar
   def concatenateRows(currentRow: Int): String =

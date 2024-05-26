@@ -52,8 +52,8 @@ class TUI(val controller: Controller) extends Observer {
           println(languageContext.enterWord)
         } else {
           val direction = inputVector(3) match
-            case "H" => "H"
-            case "V" => "V"
+            case "H" => "V"
+            case "V" => "H"
             case _ => inputVector(3) + languageContext.noCorrectDirection
           val word = inputVector(0)
           val coordinates = translateCoordinate(inputVector(1) + " " + inputVector(2))

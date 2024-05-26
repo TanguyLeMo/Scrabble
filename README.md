@@ -47,7 +47,7 @@ We use GitHub Actions for continuous integration. The workflow is defined in the
 ### Code Coverage Status
 The code coverage status is displayed in the README file. The badge is generated using the following command:
 
-[![Coverage Status](https://coveralls.io/repos/github/TanguyLeMo/Scrabble/badge.svg?branch=master)](https://coveralls.io/github/TanguyLeMo/Scrabble?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/TanguyLeMo/Scrabble/badge.svg)](https://coveralls.io/github/TanguyLeMo/Scrabble)
 ![Build Status](https://github.com/TanguyLeMo/Scrabble/actions/workflows/scala.yml/badge.svg?branch=master)
 ### License
 This project is licensed under the MIT License - see the [LICENSE](LISCENCE) file for details.

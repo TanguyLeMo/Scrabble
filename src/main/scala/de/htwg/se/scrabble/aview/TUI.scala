@@ -3,6 +3,8 @@ package aview
 import de.htwg.se.scrabble.util.Observer
 import de.htwg.se.scrabble.controller.Controller
 import de.htwg.se.scrabble.model.ScrabbleField
+import de.htwg.se.scrabble.model.Player
+
 class TUI(val controller: Controller) extends Observer {
   controller.add(this)
 
@@ -76,6 +78,31 @@ class TUI(val controller: Controller) extends Observer {
   def validCoordinateInput(xCoordinate: String, yCoordinate: String): Boolean = {
     ("""[A-Z,a-z]+""".r matches xCoordinate) && ("""[0-9]+""".r matches yCoordinate)
   }
+
+  def inputNamesAndCreateList(numberPlayers: Int): List[Player] = {
+    controller.CreatePlayersListc(readPlayerNames(numberPlayers))
+  }
+
+  def numberOfPLayers(): Int = {
+    readLine("Enter number of players: ").toInt
+  }
+
+  def readPlayerNames(numberPlayers: Int): Vector[String] = {
+    if (numberPlayers > 0) {
+      val name = readLine()
+      Vector(name) ++ readPlayerNames(numberPlayers - 1)
+    } else {
+      Vector.empty
+    }
+
+  }
+
+  def displayLeaderboard(players: List[Player]): Unit = {
+    val sortedPlayers = controller.sortListAfterPoints(players)
+    println("Leaderboard:")
+    sortedPlayers.foreach(player => println(sortedPlayers.indexOf(player) + 1 + ". " + player))
+  }
+
 
   override def equals(obj: Any): Boolean = {
     obj match {

@@ -2,7 +2,8 @@ package de.htwg.se.scrabble
 package controller
 import util.Observable
 import model.ScrabbleField
-class Controller(var field: ScrabbleField) extends Observable:
+import model.Player
+class Controller(var field: ScrabbleField, var player: Player) extends Observable:
 
   override def toString: String = field.toString
 
@@ -20,3 +21,10 @@ class Controller(var field: ScrabbleField) extends Observable:
 
   def add(word: String): String = 
     field = field.addDictionaryWord(word); word
+
+
+  def CreatePlayersListc(playernames: Vector[String]): List[Player] =
+    player.CreatePlayersList(playernames)
+
+  def sortListAfterPoints(players: List[Player]): List[Player] =
+    player.sortListAfterPoints(players)  

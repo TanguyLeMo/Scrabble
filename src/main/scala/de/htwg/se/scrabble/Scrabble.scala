@@ -15,7 +15,7 @@ import model.Player
 @main def run(): Unit = {
 
 
-    val field = new ScrabbleField(15)
+    val field = new ScrabbleField(15,"english")
     val player = new Player("Someone", 0)
     val controller = Controller(field, player)
     val tui = TUI(controller)
@@ -28,7 +28,7 @@ import model.Player
 
     case class DictionaryEvent() extends Event
 
-    case class RoundsEvent() extends Event
+    case class RoundsEvent(player: Player, players: List[Player]) extends Event
 
     case class GameEndEvent(players: List[Player]) extends Event
 
@@ -40,7 +40,7 @@ import model.Player
                 case player: PlayerEvent => state = playerState
                 case language: LanguageEvent => state = languageState
                 case dictionary: DictionaryEvent => state = dictionaryState
-                case rounds: RoundsEvent => state = roundsState
+                case rounds: RoundsEvent => state = () => roundsState(rounds.player,rounds.players)
                 case gameEnd: GameEndEvent => state = () => gameEndState(gameEnd.players)
 
             }
@@ -49,10 +49,16 @@ import model.Player
             tui.inputNamesAndCreateList(tui.numberOfPLayers())
         }
         def languageState(): Unit = {
+            while(!tui.inputDictionaryLanguage()){}
         }
         def dictionaryState(): Unit = {
+            println("Enter your personal words, which should be available in the dictionary, apart from the default words")
+            println("type: \u001B[1m stop \u001B[0m to finish the input of your personal words")
+            while (!tui.dictionaryAddWords(readLine()).equals("stop")) {}
         }
-        def roundsState(): Unit = {
+        def roundsState(player: Player, players: List[Player]): Unit = {
+            println(controller.toString)
+            while (!tui.processInputLine(readLine(),player, players).equals("exit")) {}
         }
         def gameEndState(players: List[Player]): Unit = {
             tui.displayLeaderboard(players)
@@ -63,8 +69,15 @@ import model.Player
 
     println("Welcome to Scrabble")
     val playerList = StateContext.state().asInstanceOf[List[Player]]
-    println(controller.toString)
-    println("Enter your Word, Coordinate and Direction(H|V) example: myWord A 0 H")
+    StateContext.handle(LanguageEvent())
+    StateContext.state()
+    StateContext.handle(DictionaryEvent())
+    StateContext.state()
+    StateContext.handle(RoundsEvent(playerList(0),playerList))
+    StateContext.state()
+    StateContext.handle(GameEndEvent(playerList))
+    StateContext.state()
+    
 
 
 

@@ -11,12 +11,12 @@ class TUI(val controller: Controller) extends Observer {
 
   //def this() = this(new Controller(new ScrabbleField(15)))????
 
-  def start: TUI = {
+  /*def start: TUI = {
     println("Welcome to Scrabble")
     println("Enter your personal words, which should be available in the dictionary, apart from the default words")
     println("type: \u001B[1m stop \u001B[0m to finish the input of your personal words")
     this
-    }
+    }???*/
 
   def dictionaryAddWords(word: String): String = {
     if (word == "stop") {
@@ -38,7 +38,7 @@ class TUI(val controller: Controller) extends Observer {
     controller.toString
   }
 
-  def processInputLine(input : String): String = {
+  def processInputLine(input : String, currentPlayer : Player, PlayerList: List[Player]): String = {
     input match
       case "exit" => "exit"
       case _ =>
@@ -81,7 +81,7 @@ class TUI(val controller: Controller) extends Observer {
   }
 
   def inputNamesAndCreateList(numberPlayers: Int): List[Player] = {
-    controller.CreatePlayersListc(readPlayerNames(numberPlayers))
+    controller.CreatePlayersList(readPlayerNames(numberPlayers))
   }
 
   def numberOfPLayers(): Int = {
@@ -102,6 +102,32 @@ class TUI(val controller: Controller) extends Observer {
     val sortedPlayers = controller.sortListAfterPoints(players)
     println("Leaderboard:")
     sortedPlayers.foreach(player => println(sortedPlayers.indexOf(player) + 1 + ". " + player))
+  }
+
+  def inputDictionaryLanguage(): Boolean = {
+    val language = readLine("Enter language: ")
+
+    val availableLanguages = language match
+      case "english" =>
+        controller.setLanguageDictionary(language)
+        println("language set to " + language)
+        true
+      case "french" =>
+        controller.setLanguageDictionary(language)
+        println("language set to " + language)
+        true
+      case "german" =>
+        controller.setLanguageDictionary(language)
+        println("language set to " + language)
+        true
+      case "italian" =>
+        controller.setLanguageDictionary(language)
+        println("language set to " + language)
+        true
+      case _ =>
+        println(language + " is not a available language")
+        false
+    availableLanguages
   }
 
 

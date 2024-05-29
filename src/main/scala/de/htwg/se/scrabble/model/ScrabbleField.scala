@@ -1,9 +1,12 @@
 package de.htwg.se.scrabble.model
+
+import jdk.javadoc.internal.doclets.toolkit.taglets.SnippetTaglet.Language
+
 class ScrabbleField(val matrix: Matrix, val dictionary: Dictionary):
   val numOfAlphabet: Int = 26
   val numSymbolPerColumn: Int = Math.ceil(matrix.rows.toDouble / numOfAlphabet.toDouble).toInt + 1
-  def this(field: Vector[Vector[Stone]]) = this(new Matrix(field), new Dictionary().readLines)
-  def this(rowsAndColumns : Int) = this(new Matrix(rowsAndColumns), new Dictionary().readLines)
+  def this(field: Vector[Vector[Stone]],languageDictionary: String) = this(new Matrix(field), new Dictionary().readLines(languageDictionary))
+  def this(rowsAndColumns : Int, languageDictionary: String) = this(new Matrix(rowsAndColumns), new Dictionary().readLines(languageDictionary))
   def labelingXAxis(currcolum: Int): String =
     if(currcolum > matrix.columns)""
     else translateLetter(currcolum)+addSpace(numSymbolPerColumn-translateLetter(currcolum).length)+labelingXAxis(currcolum + 1)
@@ -24,4 +27,5 @@ class ScrabbleField(val matrix: Matrix, val dictionary: Dictionary):
     that match
       case that: ScrabbleField => this.matrix.equals(that.matrix)
       case _ => false
-  def addDictionaryWord(word: String): ScrabbleField = new ScrabbleField(matrix, dictionary.addWord(word,dictionary.dictionaryLanguage))
+  def addDictionaryWord(word: String): ScrabbleField = new ScrabbleField(matrix, dictionary.addWord(word))
+  def setLanguageDictionary(language: String): ScrabbleField = new ScrabbleField(matrix, new Dictionary().readLines(language))

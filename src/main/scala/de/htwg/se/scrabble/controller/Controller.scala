@@ -20,5 +20,13 @@ class Controller(var field: ScrabbleField) extends Observable:
 
   def add(word: String): String = 
     field = field.addDictionaryWord(word); word
-    
-  
+
+
+  def CreatePlayersList(playernames: Vector[String]): List[Player] =
+    player.CreatePlayersList(playernames)
+
+  def sortListAfterPoints(players: List[Player]): List[Player] =
+    player.sortListAfterPoints(players)
+
+  def setLanguageDictionary(language: String): ScrabbleField =
+    field.setLanguageDictionary(language)

@@ -24,4 +24,4 @@ class ScrabbleField(val matrix: Matrix, val dictionary: Dictionary):
     that match
       case that: ScrabbleField => this.matrix.equals(that.matrix)
       case _ => false
-  def addDictionaryWord(word: String): ScrabbleField = new ScrabbleField(matrix, dictionary.addWord(word))
+  def addDictionaryWord(word: String): ScrabbleField = new ScrabbleField(matrix, dictionary.addWord(word,dictionary.dictionaryLanguage))

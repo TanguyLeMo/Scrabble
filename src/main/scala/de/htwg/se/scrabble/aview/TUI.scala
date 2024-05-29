@@ -4,11 +4,12 @@ import de.htwg.se.scrabble.util.Observer
 import de.htwg.se.scrabble.controller.Controller
 import de.htwg.se.scrabble.model.ScrabbleField
 import de.htwg.se.scrabble.model.Player
+import scala.io.StdIn.readLine
 
 class TUI(val controller: Controller) extends Observer {
   controller.add(this)
 
-  def this() = this(new Controller(new ScrabbleField(15)))
+  //def this() = this(new Controller(new ScrabbleField(15)))????
 
   def start: TUI = {
     println("Welcome to Scrabble")

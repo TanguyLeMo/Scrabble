@@ -1,11 +1,11 @@
 package de.htwg.se.scrabble.controller
 
 import de.htwg.se.scrabble.aview.languages.LanguageEnum
+import de.htwg.se.scrabble.aview.languages.LanguageEnum.{ENGLISH, FRENCH, GERMAN}
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers.*
-import de.htwg.se.scrabble.model.ScrabbleField
+import de.htwg.se.scrabble.model.{Move, Player, ScrabbleField}
 import de.htwg.se.scrabble.util.Observer
-import de.htwg.se.scrabble.model.Player
 
 class ControllerSpec extends AnyWordSpec:
 
@@ -132,9 +132,10 @@ class ControllerSpec extends AnyWordSpec:
     }
     "collecting points" should {
       "return the correct amount of points" in {
-        val field = new ScrabbleField(15,english)
+        val field = new ScrabbleField(15,ENGLISH)
         val controller = new Controller(field)
-        val points = controller.collectPoints(field.matrix, 0, 0, 'H', "hello")
+        val newField = controller.placeWord(0, 0, 'V', "hello")
+        val points = controller.collectPoints(newField.matrix, 0, 0, 'V', "hello")
         points should be(27)
       }
     }
@@ -148,6 +149,7 @@ class ControllerSpec extends AnyWordSpec:
         newPlayerList.head.getPoints should be(10)
       }
     }
+
     "nextTurn" should {
       "return the next player in the list" in {
         val field = new ScrabbleField(15,english)
@@ -184,7 +186,29 @@ class ControllerSpec extends AnyWordSpec:
         controller.thisPlayerList should be(field.players)
       }
     }
-    
-    
-    
+    "doAndPublish" should {
+      "return the new field" in {
+        val field = new ScrabbleField(15, english)
+        val controller = new Controller(field)
+        val newField = controller.doAndPublish(controller.field)
+        newField should not be (controller.field)
+      }
+      "new" should {
+        val english = LanguageEnum.ENGLISH
+        val field = new ScrabbleField(15, english)
+        val controller = new Controller(field)
+        val move = Move(0, 0, 'H', "hello")
+
+        "have a valid doAndPublish method with two arguments" in {
+          val placeWordAsFunction: Move => ScrabbleField = move => {
+            controller.placeWord(move.xPosition, move.yPosition, move.direction, move.word)
+          }
+          val newField: Unit = controller.doAndPublish(placeWordAsFunction, move)
+          newField should not be field
+          1 should not equal move.word
+        }
+      }
+
+    }
   }
+

@@ -32,21 +32,19 @@ class TUI(val controller: Controller, val languageContext : LanguageContext) ext
 
   override def update(): String = {
     println(controller.toString)
-    displayLeaderboard(controller.field.players)
-    println("")
     controller.toString
   }
       def processInputLine(currentPlayer : Player) : TUI = {
-      println(currentPlayer)
+      println(currentPlayer.getName)
       println(languageContext.enterWord)
       val input = readLine()
       val exitWord: String = languageContext.exit
-      input.toLowerCase().replaceAll(" ", "") match {
+      input match {
         case "z" => controller.doAndPublish(controller.undo); processInputLine(currentPlayer)
         case "y" => controller.doAndPublish(controller.redo); processInputLine(currentPlayer)
         case _ =>
       }
-      if(input.equalsIgnoreCase(exitWord)) this else
+      if( input == null || input.equalsIgnoreCase(exitWord)) this else
       if (input.equalsIgnoreCase(languageContext.exit)) {
         this
       } else {
@@ -77,7 +75,6 @@ class TUI(val controller: Controller, val languageContext : LanguageContext) ext
             println(languageContext.wordDoesntFit)
             processInputLine(currentPlayer)
           } else {
-            
             val move = Move(yCoordinate, xCoordinate, direction.charAt(0), word)
             controller.doAndPublish(placeWordAsFunction, move)
             processInputLine(controller.nextTurn(controller.thisPlayerList,currentPlayer))

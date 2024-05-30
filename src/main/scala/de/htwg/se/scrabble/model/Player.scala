@@ -17,6 +17,7 @@ class Player (name: String, points: Int):
     
   def AddPoints(pointsToAdd: Int, player: Player, ListPlayers: List[Player]): List[Player] =
     val newPLayer = new Player(player.getName, player.getPoints+pointsToAdd)
+    if(!ListPlayers.contains(player)) return ListPlayers
     val newListPlayers = ListPlayers.updated(ListPlayers.indexOf(player),newPLayer)
     newListPlayers
     

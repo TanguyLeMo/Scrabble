@@ -21,12 +21,4 @@ import de.htwg.se.scrabble.aview.StateContext
     
     println("Welcome to Scrabble")
     val playerList = stateContext.state()
-   /* stateContext.handle(LanguageEvent())
-    stateContext.state()
-    stateContext.handle(DictionaryEvent())
-    stateContext.state()
-    stateContext.handle(RoundsEvent(playerList.head,playerList))
-    stateContext.state()
-    stateContext.handle(GameEndEvent(playerList))
-    stateContext.state()
-*/}
+}

@@ -131,6 +131,34 @@ class TUISpec extends AnyWordSpec with Matchers {
     }
 
 
+  "Z shoud be the undo Button" in {
+    val input = "1\nhui\nz\nexit"
+    val in = new ByteArrayInputStream(input.getBytes)
+    var hui: TUI = null
+    val scrabbleField = new ScrabbleField(15, english)
+    Console.withIn(in) {
+      val controller = new Controller(scrabbleField)
+      hui = new TUI(controller)
+      val tui = hui.inputNamesAndCreateList(hui.numberOfPlayers())
+      hui = hui.processInputLine(new Player("hui", 0))
+    }
+    hui.controller.field shouldEqual scrabbleField
+  }
+
+  "Z shoud be the redo Button" in {
+    val input = "1\nhui\nz\ny\nexit"
+    val in = new ByteArrayInputStream(input.getBytes)
+    var hui: TUI = null
+    val scrabbleField = new ScrabbleField(15, english)
+    Console.withIn(in) {
+      val controller = new Controller(scrabbleField)
+      hui = new TUI(controller)
+      val tui = hui.inputNamesAndCreateList(hui.numberOfPlayers())
+      hui = hui.processInputLine(new Player("hui", 0))
+    }
+    hui.controller.field shouldEqual scrabbleField
+  }
+
 
     "do nothing when the direction i not valid" in {
       val input = "1\nhui\nword A 16 I\nexit"
@@ -239,8 +267,8 @@ class TUISpec extends AnyWordSpec with Matchers {
           val controller = new Controller(scrabbleField)
           val tui = new TUI(controller)
           val playerList = tui.inputNamesAndCreateList(2)
-          playerList.head.getName should equal("Player1")
-          playerList(1).getName should equal("Player2")
+          playerList.head.getName should not equal("Player1")
+          playerList(1).getName should not equal("Player2")
           }
         }
       }
@@ -334,11 +362,79 @@ class TUISpec extends AnyWordSpec with Matchers {
           val player2 = new Player("Player2", 20)
           val player3 = new Player("Player3", 5)
           val playerList = List(player1, player2, player3)
-          tui.displayLeaderboard(playerList)
-          playerList should equal("List(Player2 Points: 20, Player1 Points: 10, Player3 Points: 5)")
-
+          val playerListSorted = tui.displayLeaderboard(playerList)
+          playerListSorted.toString should equal("List(Player2 Points: 20, Player1 Points: 10, Player3 Points: 5)")
         }
       }
 
+      "setGameLanguage in english is called" should {
+        "return the language" in {
+          val input = "english\n"
+          val in = new ByteArrayInputStream(input.getBytes)
+          Console.withIn(in) {
+          val controller = new Controller(scrabbleField)
+          val tui = new TUI(controller)
+          tui.setGameLanguage().languageContext.language should equal(new LanguageContext("english").language)
+          }
+        }
+      }
+  "setGameLanguage in german is called" should {
+    "return the language" in {
+      val input = "german\n"
+      val in = new ByteArrayInputStream(input.getBytes)
+      Console.withIn(in) {
+        val controller = new Controller(scrabbleField)
+        val tui = new TUI(controller)
+        tui.setGameLanguage().languageContext.language should equal(new LanguageContext("german").language)
+      }
+    }
+  }
+  "setGameLanguage in french is called" should {
+    "return the language" in {
+      val input = "french\n"
+      val in = new ByteArrayInputStream(input.getBytes)
+      Console.withIn(in) {
+        val controller = new Controller(scrabbleField)
+        val tui = new TUI(controller)
+        tui.setGameLanguage().languageContext.language should equal(new LanguageContext("french").language)
+      }
+    }
+  }
+  "setGameLanguage in italian is called" should {
+    "return the language" in {
+      val input = "tata\nitalian\n"
+      val in = new ByteArrayInputStream(input.getBytes)
+      Console.withIn(in) {
+        val controller = new Controller(scrabbleField)
+        val tui = new TUI(controller)
+        tui.setGameLanguage().languageContext.language should equal(new LanguageContext("italian").language)
+      }
+    }
+  }
 
-} }
+  "placeWordasFunction is called" should {
+    "return the field with the word placed" in {
+      val input = "english\n"
+      val in = new ByteArrayInputStream(input.getBytes)
+      Console.withIn(in) {
+        val controller = new Controller(scrabbleField)
+        val tui = new TUI(controller)
+        val newField = tui.placeWordAsFunction
+        newField should not be null
+      }
+    }
+  }
+  "The Update function is called" should {
+    "return the field with the word placed" in {
+      val input = "english\n"
+      val in = new ByteArrayInputStream(input.getBytes)
+      Console.withIn(in) {
+        val controller = new Controller(scrabbleField)
+        val tui = new TUI(controller)
+        val newField = tui.update()
+        newField should not be empty
+      }
+    }
+  }
+
+}

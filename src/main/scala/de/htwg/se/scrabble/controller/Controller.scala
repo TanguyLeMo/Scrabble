@@ -13,7 +13,8 @@ class Controller(var field: ScrabbleField) extends Observable:
   
   def doAndPublish(doThis: Move => ScrabbleField, move: Move): Unit =
     field = doThis(move)
-    AddPoints(collectPoints(thisMatrix, move.xPosition, move.yPosition, move.direction, move.word), field.player, field.players)
+    println(" die matrix { " + field + " }")
+    AddPoints(collectPoints(field.matrix, move.xPosition, move.yPosition, move.direction, move.word), field.player, field.players)
     notifyObservers()
 
   def doAndPublish(doThis: => ScrabbleField): Unit =
@@ -55,6 +56,7 @@ class Controller(var field: ScrabbleField) extends Observable:
 
   def collectPoints(matrix: Matrix, xPosition: Int, yPosition: Int, direction: Char, word: String): Int =
     field.scoringSystem.collectPoints(matrix, xPosition, yPosition, direction, word)
+    
 
   def AddPoints(pointsToAdd: Int, player: Player, ListPlayers: List[Player]): List[Player] =
     val playerList = player.AddPoints(pointsToAdd, player, ListPlayers)

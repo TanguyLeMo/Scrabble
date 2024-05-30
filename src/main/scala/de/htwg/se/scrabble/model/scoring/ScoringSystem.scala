@@ -20,7 +20,6 @@ trait ScoringSystem {
       case 'H' => (xCoordinates + 1, yCoordinates)
       case 'V' => (xCoordinates, yCoordinates + 1)
     }
-      print("xPosition: " + yCoordinates + " yPosition: " + xCoordinates + " direction: " + direction + " word: " + word + " currentIndex: " + currentIndex + " sum: " + sum + " multiplication: " + multiplication + "\n")
     val currentSquare = matrix.field(xCoordinates)(yCoordinates)
     val (newSum, newMultiplication) = currentSquare match {
       case wordSquare: WordSquare =>
@@ -32,8 +31,5 @@ trait ScoringSystem {
     }
     collectPointsR(matrix, newXPosition, newYPosition, direction, word, currentIndex + 1, newSum, newMultiplication)
   }
-
-
-
   def determinPoints(stone: Stone): Int
 }

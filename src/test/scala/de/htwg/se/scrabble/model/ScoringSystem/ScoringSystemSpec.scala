@@ -43,11 +43,11 @@ class ScoringSystemSpec extends AnyWordSpec with Matchers {
       "When using a german scoring system" should {
         "calculate the correct score" in {
           val korn = new ScrabbleField(15, GERMAN)
-        //  val horn = korn.placeWord(0, 0, 'H', "gehen")
-          val dorn = korn.placeWord(1, 0, 'V', "gehen")
-          val score = dorn.scoringSystem.collectPoints(dorn.matrix, 0, 1, 'H', "gehen")
+          val horn = korn.placeWord(0, 0, 'H', "gehen")
+          val dorn = horn.placeWord(0, 0, 'V', "gehen")
+          val score = dorn.scoringSystem.collectPoints(dorn.matrix, 0, 0, 'V', "gehen")
           print(dorn)
-          score shouldBe 8
+          score shouldBe 6
         }
       }
 

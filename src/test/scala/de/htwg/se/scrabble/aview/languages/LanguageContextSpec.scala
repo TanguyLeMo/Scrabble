@@ -75,4 +75,16 @@ class LanguageContextSpec extends AnyWordSpec with Matchers {
       italianContext.wordDoesntFit should be ("La parola non si adatta")
     }
   }
+  "nameAlreadyTaken" should {
+    "return a message if the name is already taken" in {
+      val context = new LanguageContext("ENGLISH")
+      context.nameAlreadyTaken should be ("Name already taken")
+    }
+  }
+  "enterNumberofPlayers" should {
+    "return a message to enter the number of players" in {
+      val context = new LanguageContext("ENGLISH")
+      context.enterNumberofPlayers should be ("Enter number of players: ")
+    }
+  }
 }

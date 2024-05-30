@@ -140,5 +140,14 @@ class ScrabbleFieldSpec extends AnyWordSpec {
         scrabbleField.matrix.rows shouldEqual 3
       }
     }
+    "removeWord" should {
+      "remove the word from the field" in {
+        val field = new ScrabbleField(15)
+        val newField = field.placeWord(0, 0, 'H', "HELLO")
+        val oldField = field.removeWord(0, 0, 'H', "HELLO")
+        oldField shouldEqual field
+
+      }
+    }
   }
 }

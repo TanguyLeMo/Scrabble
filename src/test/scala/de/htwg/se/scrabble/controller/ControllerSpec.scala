@@ -5,6 +5,7 @@ import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers.*
 import de.htwg.se.scrabble.model.ScrabbleField
 import de.htwg.se.scrabble.util.Observer
+import de.htwg.se.scrabble.model.Player
 
 class ControllerSpec extends AnyWordSpec:
 
@@ -118,5 +119,72 @@ class ControllerSpec extends AnyWordSpec:
         controller.field.dictionary.set should contain("testword".toUpperCase())
       }
     }
+    "sorting the list after points" should {
+      "return a list of players sorted descending by points" in {
+        val field = new ScrabbleField(15,english)
+        val controller = new Controller(field)
+        val player1 = new Player("Someone1", 10)
+        val player2 = new Player("Someone2", 20)
+        val players = List(player1, player2)
+        val sortedPlayers = controller.sortListAfterPoints(players)
+        sortedPlayers should be(List(player2, player1))
+      }
+    }
+    "collecting points" should {
+      "return the correct amount of points" in {
+        val field = new ScrabbleField(15,english)
+        val controller = new Controller(field)
+        val points = controller.collectPoints(field.matrix, 0, 0, 'H', "hello")
+        points should be(27)
+      }
+    }
+    "adding points" should {
+      "add the points to the player" in {
+        val field = new ScrabbleField(15,english)
+        val controller = new Controller(field)
+        val player = new Player("Someone", 0)
+        val playerList = List(player)
+        val newPlayerList = controller.AddPoints(10, player, playerList)
+        newPlayerList.head.getPoints should be(10)
+      }
+    }
+    "nextTurn" should {
+      "return the next player in the list" in {
+        val field = new ScrabbleField(15,english)
+        val controller = new Controller(field)
+        val player1 = new Player("Someone", 10)
+        val player2 = new Player("Someone else", 20)
+        val player3 = new Player("Another one", 5)
+        val playerList = List(player1, player2, player3)
+        val nextPlayer = controller.nextTurn(playerList, player1)
+        nextPlayer should be(player2)
+      }
+      "return the first player if the current turn is last player in the list" in {
+        val field = new ScrabbleField(15,english)
+        val controller = new Controller(field)
+        val player1 = new Player("Someone", 10)
+        val player2 = new Player("Someone else", 20)
+        val player3 = new Player("Another one", 5)
+        val playerList = List(player1, player2, player3)
+        val nextPlayer = controller.nextTurn(playerList, player3)
+        nextPlayer should be(player1)
+      }
+    }
+    "thisMatrix" should {
+      "return the matrix of the field" in {
+        val field = new ScrabbleField(15,english)
+        val controller = new Controller(field)
+        controller.thisMatrix should be(field.matrix)
+      }
+    }
+    "thisPlayerList" should {
+      "return the list of players" in {
+        val field = new ScrabbleField(15,english)
+        val controller = new Controller(field)
+        controller.thisPlayerList should be(field.players)
+      }
+    }
+    
+    
     
   }

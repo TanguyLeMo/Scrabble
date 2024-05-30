@@ -13,6 +13,7 @@ class Controller(var field: ScrabbleField) extends Observable:
   
   def doAndPublish(doThis: Move => ScrabbleField, move: Move): Unit =
     field = doThis(move)
+    AddPoints(collectPoints(thisMatrix, move.xPosition, move.yPosition, move.direction, move.word), field.player, field.players)
     notifyObservers()
 
   def doAndPublish(doThis: => ScrabbleField): Unit =

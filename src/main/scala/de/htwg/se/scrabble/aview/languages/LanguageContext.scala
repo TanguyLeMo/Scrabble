@@ -22,4 +22,6 @@ class LanguageContext(languageStrat: String){
   def noCorrectDirection: String = languageStrategy.NoCorrectDirection
   def wordDoesntFit: String = languageStrategy.wordDoesntFit
   def exit: String = languageStrategy.exit
+  def nameAlreadyTaken: String = languageStrategy.nameAlreadyTaken
+  def enterNumberofPlayers: String = languageStrategy.enterNumberofPlayers
 }

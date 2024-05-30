@@ -71,29 +71,27 @@ class TUI(val controller: Controller, val languageContext : LanguageContext,play
             controller.AddPoints(points,currentPlayer,controller.thisPlayerList)
             processInputLine(controller.nextTurn(controller.thisPlayerList,currentPlayer))
           }
-          println(languageContext.enterWord)
         }
         processInputLine(currentPlayer)
       }
     }
-
       def translateCoordinate(coordinate: String): (Int, Int) = {
         val coordinates = coordinate.split(" ")
         (coordinates(0).toUpperCase().toCharArray.sum - 'A', coordinates(1).toInt)
       }
-
       def validCoordinateInput(xCoordinate: String, yCoordinate: String): Boolean = {
         ("""[A-Z,a-z]+""".r matches xCoordinate) && ("""[0-9]+""".r matches yCoordinate)
       }
-      def inputNamesAndCreateList(numberPlayers: Int): List[Player] = controller.CreatePlayersList(readPlayerNames(numberPlayers))
-      def numberOfPLayers(): Int = readLine("Enter number of players: ").toInt
-      def readPlayerNames(numberPlayers: Int): Vector[String] = {
-        if (numberPlayers > 0) {
+      def inputNamesAndCreateList(numberPlayers: Int): List[Player] = controller.CreatePlayersList(readPlayerNames(numberPlayers,Vector().empty))
+      def numberOfPLayers(): Int = readLine(languageContext.enterNumberofPlayers + " ").toInt
+      def readPlayerNames(numberPlayers: Int, vector : Vector[String]): Vector[String] = {
+        if(numberPlayers < 1) vector else
           val name = readLine()
-          Vector(name) ++ readPlayerNames(numberPlayers - 1)
-        } else {
-          Vector.empty
-        }
+          if(vector.contains(name)) {
+            println(languageContext.nameAlreadyTaken + " ")
+            readPlayerNames(numberPlayers, vector)
+          } else
+            readPlayerNames(numberPlayers - 1, vector ++ Vector(name))
       }
       def displayLeaderboard(players: List[Player]): List[Player] = {
         val sortedPlayers = controller.sortListAfterPoints(players)
@@ -128,7 +126,6 @@ class TUI(val controller: Controller, val languageContext : LanguageContext,play
             setGameLanguage()
         newTUI
       }
-
   override def equals(obj: Any): Boolean = {
     obj match {
       case obj: TUI => obj.controller.field == this.controller.field

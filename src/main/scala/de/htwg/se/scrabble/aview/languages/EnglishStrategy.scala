@@ -15,4 +15,6 @@ class EnglishStrategy extends LanguageStrategy{
   override def NoCorrectDirection: String = " is not a correct direction"
   override def wordDoesntFit: String = "Word doesnt fit"
   override def exit: String = "exit"
+  override def enterNumberofPlayers: String = "Enter number of Players"
+  override def nameAlreadyTaken: String = "Name already taken"
 }

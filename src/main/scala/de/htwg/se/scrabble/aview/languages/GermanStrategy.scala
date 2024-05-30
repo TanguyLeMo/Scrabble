@@ -15,4 +15,6 @@ class GermanStrategy extends LanguageStrategy{
   override def NoCorrectDirection: String = " ist keine richtige Richtung"
   override def wordDoesntFit: String = "Das Wort passt nicht"
   override def exit: String = "exit"
+  override def nameAlreadyTaken: String = "Der Name ist bereits vergeben"
+  override def enterNumberofPlayers: String = "Geben Sie die Anzahl der Spieler ein"
 }

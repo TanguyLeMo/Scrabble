@@ -15,6 +15,7 @@ trait LanguageStrategy {
   def NoCorrectDirection: String
   def wordDoesntFit: String
   def exit: String
-
+  def nameAlreadyTaken : String
+  def enterNumberofPlayers : String
   
 }

@@ -3,7 +3,7 @@ import de.htwg.se.scrabble.model.{Player, ScrabbleField}
 
 
 class StateContext(tui: TUI) extends Event {
-  var state: () => StateContext = playerState
+  var state: () => StateContext = setLanguageState
   def handle(e: Event): StateContext = {
     e match {
       case player: PlayerEvent => state = playerState
@@ -17,11 +17,11 @@ class StateContext(tui: TUI) extends Event {
 
   def playerState(): StateContext = {
     tui.inputNamesAndCreateList(tui.numberOfPLayers())
-    new StateContext(tui).handle(LanguageEvent())
+    new StateContext(tui).handle(DictionaryEvent())
   }
 
   def setLanguageState(): StateContext = {
-    new StateContext(tui.setGameLanguage()).handle(DictionaryEvent())
+    new StateContext(tui.setGameLanguage()).handle(PlayerEvent())
   }
 
   def addWordInDictionaryState(): StateContext = {

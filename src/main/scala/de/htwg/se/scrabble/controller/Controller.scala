@@ -8,9 +8,7 @@ import model.Matrix
 import de.htwg.se.scrabble.model
 
 class Controller(var field: ScrabbleField) extends Observable:
-
   override def toString: String = field.toString
-
   def placeWord(xPosition: Int, yPosition: Int, direction: Char, word: String): Unit =
     field = field.placeWord(xPosition, yPosition, direction, word)
     notifyObservers()

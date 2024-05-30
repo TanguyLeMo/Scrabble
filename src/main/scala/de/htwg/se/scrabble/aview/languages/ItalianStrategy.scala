@@ -15,4 +15,6 @@ class ItalianStrategy extends LanguageStrategy{
   override def NoCorrectDirection: String = " non è una direzione corretta"
   override def wordDoesntFit: String = "La parola non si adatta"
   override def exit: String = "uscire"
+  override def nameAlreadyTaken: String = "Il nome è già stato preso"
+  override def enterNumberofPlayers: String = "Inserisci il numero di giocatori"
 }

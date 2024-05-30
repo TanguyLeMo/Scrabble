@@ -15,4 +15,6 @@ class FrenchStrategy extends LanguageStrategy{
   override def NoCorrectDirection: String = "Aucune direction correcte"
   override def wordDoesntFit: String = "Le mot ne convient pas"
   override def exit: String = "sortir"
+  override def nameAlreadyTaken: String = "Le nom est déjà pris"
+  override def enterNumberofPlayers: String = "Entrez le nombre de joueurs"
 }

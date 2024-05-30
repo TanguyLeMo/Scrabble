@@ -1,7 +1,9 @@
-import de.htwg.se.scrabble.model.square._
+package de.htwg.se.scrabble.model
+
 import de.htwg.se.scrabble.model.Stone
-import org.scalatest.wordspec.AnyWordSpec
+import de.htwg.se.scrabble.model.square.*
 import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
 class ScrabbleSquareSpec extends AnyWordSpec with Matchers {
   "A ScrabbleSquare" when {

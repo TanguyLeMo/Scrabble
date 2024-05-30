@@ -19,7 +19,7 @@ class Controller(var field: ScrabbleField) extends Observable:
     field = doThis
     notifyObservers()
 
-  def undo: ScrabbleField = { println("undooooo") ;undoManager.undoStep(field) }
+  def undo: ScrabbleField = {undoManager.undoStep(field) }
   
   def redo: ScrabbleField = undoManager.redoStep(field)
   

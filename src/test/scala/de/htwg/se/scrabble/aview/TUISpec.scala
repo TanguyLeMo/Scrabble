@@ -62,6 +62,7 @@ class TUISpec extends AnyWordSpec with Matchers {
         tui.controller.field.dictionary.set should contain("word".toUpperCase())
         }
       }
+
       "print that the word is added to the dictionary" in {
         val input = "english\nenglish\nstop\n"
         val in = new ByteArrayInputStream(input.getBytes)
@@ -75,80 +76,89 @@ class TUISpec extends AnyWordSpec with Matchers {
 
     "processInputLine is called" should{
       "modify the state of the Controller when valid input is given" in {
-        val input = "WORD B 1 H\nstop\n"
+
+        val input = "1\nhui\nWORD B 1 H\nstop\n"
         val in = new ByteArrayInputStream(input.getBytes)
+        var hui: TUI = null
         Console.withIn(in) {
         val controller = new Controller(scrabbleField)
-        val tui = new TUI(controller)
+        hui = new TUI(controller)
+        val tui = hui.inputNamesAndCreateList(hui.numberOfPlayers())
         val testfield: ScrabbleField = scrabbleField.placeWord(1, 0, 'V', "WORD")
-        tui.processInputLine(new Player("test", 0))
-        val finalState: ScrabbleField = tui.controller.field
-          an [IndexOutOfBoundsException] should be thrownBy tui
         }
-      } } /*
+        hui.controller.field shouldEqual scrabbleField
+      }
+    }
 
       "not modify the state of the Controller when invalid input is given" in {
-        val input = "english\nstop\n"
+        val input = "1\nhui\nmeme\nstop\n"
         val in = new ByteArrayInputStream(input.getBytes)
+        var hui: TUI = null
         Console.withIn(in) {
-        val controller = new Controller(scrabbleField)
-        val tui = new TUI(controller)
-        val initialState = controller.field
-        tui.processInputLine("invalid input")
-        val finalState = controller.field
-        finalState should equal(initialState)
+          val controller = new Controller(scrabbleField)
+          hui = new TUI(controller)
+          val tui = hui.inputNamesAndCreateList(hui.numberOfPlayers())
+          val testfield: ScrabbleField = scrabbleField.placeWord(1, 0, 'V', "WORD")
         }
+        hui.controller.field shouldEqual scrabbleField
       }
-      "returning the String exit when the input is exit" in {
-        val input = "english\n"
+      "returning the TUI instance exit when the input is exit" in {
+        val input = "1\nhui\nexit\n"
         val in = new ByteArrayInputStream(input.getBytes)
+        var hui: TUI = null
         Console.withIn(in) {
-        val controller = new Controller(scrabbleField)
-        val tui = new TUI(controller)
-        tui.processInputLine("exit") should equal("exit")
+          val controller = new Controller(scrabbleField)
+          hui = new TUI(controller)
+          val tui = hui.inputNamesAndCreateList(hui.numberOfPlayers())
+          hui = hui.processInputLine(new Player("hui", 0))
         }
-      }
-      "check the coordinates of the input and not change the state of the Scrabblefield if so" in {
-        val input = "english\n"
-        val in = new ByteArrayInputStream(input.getBytes)
-        Console.withIn(in) {
-        val controller = new Controller(scrabbleField)
-        val tui = new TUI(controller)
-        tui.processInputLine("word A 16 V")
-        tui.controller.field should equal(scrabbleField)
+        hui should not equal("exit")
         }
-      }
     }
+
+
     "do nothing when the coordinates are not valid" in {
-      val input = "english\n"
+      val input = "1\nhui\nword A 16 V\nexit"
       val in = new ByteArrayInputStream(input.getBytes)
-      Console.withIn(in) {
-      val controller = new Controller(scrabbleField)
-      val tui = new TUI(controller)
-      tui.processInputLine("word 3 16 V")
-      tui.controller.field should equal(scrabbleField)
-      }
-    }
-    "do nothing when the direction i not valid" in {
-      val input = "english\n"
-      val in = new ByteArrayInputStream(input.getBytes)
+      var hui: TUI = null
+      val scrabbleField = new ScrabbleField(15, english)
       Console.withIn(in) {
         val controller = new Controller(scrabbleField)
-        val tui = new TUI(controller)
-        tui.processInputLine("word A 1 G")
-        tui.controller.field should equal(scrabbleField)
+        hui = new TUI(controller)
+        val tui = hui.inputNamesAndCreateList(hui.numberOfPlayers())
+        hui = hui.processInputLine(new Player("hui", 0))
       }
+      hui.controller.field shouldEqual scrabbleField
+    }
+
+
+
+    "do nothing when the direction i not valid" in {
+      val input = "1\nhui\nword A 16 I\nexit"
+      val in = new ByteArrayInputStream(input.getBytes)
+      var hui: TUI = null
+      val scrabbleField = new ScrabbleField(15, english)
+      Console.withIn(in) {
+        val controller = new Controller(scrabbleField)
+        hui = new TUI(controller)
+        val tui = hui.inputNamesAndCreateList(hui.numberOfPlayers())
+        hui = hui.processInputLine(new Player("hui", 0))
+      }
+      hui.controller.field shouldEqual scrabbleField
     }
 
     "do nothing when the word is not in the dictionary" in {
-      val input = "english\n"
+      val input = "1\nhui\nRAMBAZAMBA A 16 V\nexit"
       val in = new ByteArrayInputStream(input.getBytes)
+      var hui: TUI = null
+      val scrabbleField = new ScrabbleField(15, english)
       Console.withIn(in) {
-      val controller = new Controller(scrabbleField)
-      val tui = new TUI(controller)
-      tui.processInputLine("notAWord A 1 H")
-      tui.controller.field should equal(scrabbleField)
+        val controller = new Controller(scrabbleField)
+        hui = new TUI(controller)
+        val tui = hui.inputNamesAndCreateList(hui.numberOfPlayers())
+        hui = hui.processInputLine(new Player("hui", 0))
       }
+      hui.controller.field shouldEqual scrabbleField
     }
 
     "translateCoordinate is called" should {
@@ -221,5 +231,5 @@ class TUISpec extends AnyWordSpec with Matchers {
         }
       }
     }
-  */
-} }
+  
+}

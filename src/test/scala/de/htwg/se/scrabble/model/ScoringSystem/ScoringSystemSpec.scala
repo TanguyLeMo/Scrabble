@@ -15,60 +15,73 @@ class ScoringSystemSpec extends AnyWordSpec with Matchers {
       "calculate the correct score for a word" in {
 
         val horn = scrabbleField.placeWord(7, 5, 'V', "HORN")
-        val score = horn.scoringSystem.collectPoints(horn.matrix, 5, 7, 'H', "HORN")
+        val score = horn.scoringSystem.collectPoints(horn.matrix, 5, 7, 'V', "HORN")
         score shouldBe 7
       }
       " calculate the correct score for a word with a double word square" in {
         val horn = scrabbleField.placeWord(0, 0, 'V', "HORN")
         print(horn)
-        val score = horn.scoringSystem.collectPoints(horn.matrix, 0, 0, 'H', "horn")
+        val score = horn.scoringSystem.collectPoints(horn.matrix, 0, 0, 'V', "horn")
         score shouldBe 24
       }
 
       " When placed HORN on the board" should {
         "calculate the correct score" in {
-          val horn = scrabbleField.placeWord(0, 0, 'H', "DBKJQ")
+          val horn = scrabbleField.placeWord(0, 0, 'V', "DBKJQ")
           val score = horn.scoringSystem.collectPoints(horn.matrix, 0, 0, 'V', "DBKJQ_")
           score shouldBe 108
         }
       }
       "When using a french scoring system" should {
         "calculate the correct score" in {
-          val horn = scrabbleField.placeWord(0, 0, 'H', "ADBFJK")
+          val korn = new ScrabbleField(15, FRENCH)
+          val horn = korn.placeWord(0, 0, 'V', "ADBFJK")
           val score = horn.scoringSystem.collectPoints(horn.matrix, 0, 0, 'V', "ADBFJK")
           score shouldBe 96
         }
       }
-      
       "When using a german scoring system" should {
         "calculate the correct score" in {
-
-          val horn = scrabbleField.placeWord(0, 0, 'H', "EHMCÄÖY")
-          val score = horn.scoringSystem.collectPoints(horn.matrix, 0, 0, 'V', "EHMCÄÖY")
-          score shouldBe 114
+          val korn = new ScrabbleField(15, GERMAN)
+        //  val horn = korn.placeWord(0, 0, 'H', "gehen")
+          val dorn = korn.placeWord(1, 0, 'V', "gehen")
+          val score = dorn.scoringSystem.collectPoints(dorn.matrix, 0, 1, 'H', "gehen")
+          print(dorn)
+          score shouldBe 8
         }
+      }
+
+      "When using a german scoring system with the word gehen" should {
+        "calculate the correct score" in {
+          val korn = new ScrabbleField(15, GERMAN)
+          val horn = korn.placeWord(0, 0, 'H', "EHMCÄÖY")
+          val score = horn.scoringSystem.collectPoints(horn.matrix, 0, 0, 'H', "EHMCÄÖY")
+          score shouldBe 114
+
+        } // TODO: Check BUgs
         "return 0 when the word is empty" in {
           val horn = scrabbleField.placeWord(0, 0, 'H', " ")
-          val score = horn.scoringSystem.collectPoints(horn.matrix, 0, 0, 'V', " ")
+          val score = horn.scoringSystem.collectPoints(horn.matrix, 0, 0, 'H', " ")
           score shouldBe 0
           }
         "return 0 for French" in {
-          
-          val horn = scrabbleField.placeWord(0, 0, 'H', " ")
+
+          val horn = scrabbleField.placeWord(0, 0, 'V', " ")
           val score = horn.scoringSystem.collectPoints(horn.matrix, 0, 0, 'V', " ")
           score shouldBe 0
         }
         "return 0 for English" in {
           val horn = scrabbleField.placeWord(0, 0, 'H', " ")
-          val score = horn.scoringSystem.collectPoints(horn.matrix, 0, 0, 'V', " ")
+          val score = horn.scoringSystem.collectPoints(horn.matrix, 0, 0, 'H', " ")
           score shouldBe 0
         }
 
       }
       "When using an Italian scoring system" should {
         "calculate the correct score" in {
-          val horn = scrabbleField.placeWord(0, 0, 'H', "OCLBGQ.")
-          val score = horn.scoringSystem.collectPoints(horn.matrix, 0, 0, 'V', "OCLBGQ.")
+          val korn = new ScrabbleField(15, LanguageEnum.ITALIAN)
+          val horn = korn.placeWord(0, 0, 'H', "OCLBGQ.")
+          val score = horn.scoringSystem.collectPoints(horn.matrix, 0, 0, 'H', "OCLBGQ.")
           score shouldBe 102
         }
         "When there is no stone placed on a square the isEmpty method should return true" in {

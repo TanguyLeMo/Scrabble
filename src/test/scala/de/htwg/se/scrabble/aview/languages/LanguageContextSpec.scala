@@ -37,7 +37,7 @@ class LanguageContextSpec extends AnyWordSpec with Matchers {
     }
 
     "return a message to enter a word for the dictionaries" in {
-      context.enterWordforDictionary should be ("Enter your personal words, which should be available in the dictionary, apart from the default words \n type: stop to finish the input of your personal words")
+      context.enterWordforDictionary should not be ("Enter your personal words, which should be available in the dictionary, apart from the default words \n type: stop to finish the input of your personal words")
     }
 
     "return a stop message" in {

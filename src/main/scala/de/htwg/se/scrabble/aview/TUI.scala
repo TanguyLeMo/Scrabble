@@ -13,8 +13,8 @@ class TUI(val controller: Controller, val languageContext : LanguageContext) ext
   controller.add(this)
   def this(controller: Controller) = this(controller, new LanguageContext("english"))
   controller.setLanguageDictionary(languageContext.language)
-  
-  
+
+
   def dictionaryAddWords: TUI = {
     println(languageContext.enterWordforDictionary)
     val word = readLine()
@@ -53,9 +53,11 @@ class TUI(val controller: Controller, val languageContext : LanguageContext) ext
         val inputVector = input.split(" ")
         if (inputVector.length != 4) {
           println(languageContext.invalidInput)
+          processInputLine(currentPlayer)
         }
         else if (!validCoordinateInput(inputVector(1), inputVector(2))) {
           println(languageContext.invalidcoordinates)
+          processInputLine(currentPlayer)
         } else {
           val direction = inputVector(3) match
             case "H" => "V"
@@ -67,10 +69,13 @@ class TUI(val controller: Controller, val languageContext : LanguageContext) ext
           val xCoordinate = coordinates._2
           if (!controller.contains(word)) {
             println(word + languageContext.notInDictionary)
+            processInputLine(currentPlayer)
           } else if (!(direction == "H" | direction == "V")) {
             println(direction)
+            processInputLine(currentPlayer)
           } else if (!controller.wordFits(xCoordinate, yCoordinate, direction.charAt(0), word)) {
             println(languageContext.wordDoesntFit)
+            processInputLine(currentPlayer)
           } else {
             val move = Move(yCoordinate, xCoordinate, direction.charAt(0), word)
             controller.doAndPublish(placeWordAsFunction, move)
@@ -81,7 +86,6 @@ class TUI(val controller: Controller, val languageContext : LanguageContext) ext
             processInputLine(controller.nextTurn(controller.thisPlayerList,currentPlayer))
           }
         }
-        processInputLine(currentPlayer)
       }
     }
 

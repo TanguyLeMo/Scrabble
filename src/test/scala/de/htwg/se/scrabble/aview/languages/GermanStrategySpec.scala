@@ -64,13 +64,13 @@ class GermanStrategySpec extends AnyWordSpec with Matchers {
       strategy.exit should be ("exit")
     }
     "return an message if name is already taken" in {
-      strategy.nameAlreadyTaken should be ("Name bereits vergeben")
+      strategy.nameAlreadyTaken should be ("Der Name ist bereits vergeben")
     }
     "return a message for entering the number of players" in {
       strategy.enterNumberofPlayers should be ("Geben Sie die Anzahl der Spieler ein")
     }
     "return a message if number is invalid" in {
-      strategy.invalidNumber should be ("Ungültige Anzahl von Spielern")
+      strategy.invalidNumber should be ("Ungültige Eingabe, bitte geben Sie eine gültige Nummer ein")
     }
   }
 }

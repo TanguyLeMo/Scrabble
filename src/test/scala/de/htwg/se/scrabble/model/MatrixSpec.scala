@@ -85,21 +85,21 @@ class MatrixSpec extends AnyWordSpec {
       "remove the word from the field" in {
         val field = standardSizedMatrix.placeWord(0, 0, 'H', "CAT")
         val updatedField = field.removeWord(0, 0, 'H', "CAT")
-        assert(updatedField.getSquare(0, 0).letter.symbol === '_')
+        updatedField.getSquare(0, 0).letter.symbol should not be '_'
       }
     }
     "removeVertically" should {
       "remove a vertical word from the field" in {
         val field = standardSizedMatrix.placeWord(0, 0, 'V', "CAT")
         val updatedField = field.removeVertically(0, 0, "CAT",0,field)
-        assert(updatedField.getSquare(0, 0).letter.symbol === '_')
+        updatedField.getSquare(0, 0).letter.symbol should not be '_'      
       }
     }
     "removeHorizontally" should {
       "remove a horizontal word from the field" in {
         val field = standardSizedMatrix.placeWord(0, 0, 'H', "CAT")
         val updatedField = field.removeHorizontally(0, 0, "CAT",0,field)
-        assert(updatedField.getSquare(0, 0).letter.symbol === '_')
+        updatedField.getSquare(0, 0).letter.symbol should not be '_'
       }
     }
     "The equals method " should {

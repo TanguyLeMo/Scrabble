@@ -64,13 +64,13 @@ class ItalianStrategySpec extends AnyWordSpec with Matchers {
       strategy.exit should be ("uscire")
     }
     "return a message if name is aready taken" in {
-      strategy.nameAlreadyTaken should be ("Questo nome è già stato preso")
+      strategy.nameAlreadyTaken should be ("Il nome è già stato preso")
     }
     "return a message for entering the number of players" in {
       strategy.enterNumberofPlayers should be ("Inserisci il numero di giocatori")
     }
     "return a message if number is invalid" in {
-      strategy.invalidNumber should be ("Numero non valido")
+      strategy.invalidNumber should be ("Input non valido, inserisci un numero valido")
     }
 
   }

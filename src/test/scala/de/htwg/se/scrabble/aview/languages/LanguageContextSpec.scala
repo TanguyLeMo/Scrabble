@@ -84,7 +84,7 @@ class LanguageContextSpec extends AnyWordSpec with Matchers {
   "enterNumberofPlayers" should {
     "return a message to enter the number of players" in {
       val context = new LanguageContext("ENGLISH")
-      context.enterNumberofPlayers should be ("Enter number of players: ")
+      context.enterNumberofPlayers should be ("Enter number of Players")
     }
   }
 }

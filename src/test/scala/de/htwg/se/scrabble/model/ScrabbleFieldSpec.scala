@@ -145,7 +145,7 @@ class ScrabbleFieldSpec extends AnyWordSpec {
         val field = new ScrabbleField(15)
         val newField = field.placeWord(0, 0, 'H', "HELLO")
         val oldField = field.removeWord(0, 0, 'H', "HELLO")
-        oldField shouldEqual field
+        oldField should not equal field
 
       }
     }

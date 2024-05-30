@@ -6,12 +6,27 @@ import model.ScrabbleField
 import model.Player
 import model.Matrix
 import de.htwg.se.scrabble.model
+import de.htwg.se.scrabble.model.Move
 
 class Controller(var field: ScrabbleField) extends Observable:
-  override def toString: String = field.toString
-  def placeWord(xPosition: Int, yPosition: Int, direction: Char, word: String): Unit =
-    field = field.placeWord(xPosition, yPosition, direction, word)
+  val undoManager = new util.UndoManager[ScrabbleField]
+  
+  def doAndPublish(doThis: Move => ScrabbleField, move: Move): Unit =
+    field = doThis(move)
     notifyObservers()
+
+  def doAndPublish(doThis: => ScrabbleField): Unit =
+    field = doThis
+    notifyObservers()
+
+  def undo: ScrabbleField = { println("undooooo") ;undoManager.undoStep(field) }
+  
+  def redo: ScrabbleField = undoManager.redoStep(field)
+  
+  override def toString: String = field.toString
+
+  def placeWord(xPosition: Int, yPosition: Int, direction: Char, word: String): ScrabbleField =
+    undoManager.doStep(field, PutCommand(Move(xPosition, yPosition, direction, word)))
 
   def wordFits(xPosition: Int, yPosition: Int, direction: Char, word: String): Boolean =
     field.wordFits(xPosition, yPosition, direction, word)
@@ -34,7 +49,8 @@ class Controller(var field: ScrabbleField) extends Observable:
     field.player.sortListAfterPoints(players)
 
   def setLanguageDictionary(language: LanguageEnum): ScrabbleField =
-    field.setLanguageDictionary(language)
+    field = field.setLanguageDictionary(language)
+    field
 
   def collectPoints(matrix: Matrix, xPosition: Int, yPosition: Int, direction: Char, word: String): Int =
     field.scoringSystem.collectPoints(matrix, xPosition, yPosition, direction, word)
@@ -52,4 +68,6 @@ class Controller(var field: ScrabbleField) extends Observable:
   def thisMatrix:Matrix =
     field.matrix
 
+  
+  
   def thisPlayerList : List[Player] = field.players

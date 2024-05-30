@@ -19,6 +19,7 @@ class Player (name: String, points: Int):
     val newPLayer = new Player(player.getName, player.getPoints+pointsToAdd)
     val newListPlayers = ListPlayers.updated(ListPlayers.indexOf(player),newPLayer)
     newListPlayers
+    
   def CreatePlayersList (playerNames : Vector[String]) : List[Player] =
     playerNames.map(name => new Player(name, 0)).toList
 

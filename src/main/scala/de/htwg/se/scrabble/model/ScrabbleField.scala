@@ -36,6 +36,6 @@ class ScrabbleField(val matrix: Matrix, val dictionary: Dictionary, val squareFa
     that match
       case that: ScrabbleField => this.matrix.equals(that.matrix) && this.numSymbolPerColumn == that.numSymbolPerColumn
       case _ => false
-      
+  def removeWord (yPosition: Int, xPosition: Int, direction: Char, word: String): ScrabbleField = new ScrabbleField(matrix.removeWord(yPosition, xPosition, direction, word), dictionary, squareFactory, languageEnum, player, players)
   def addDictionaryWord(word: String): ScrabbleField = new ScrabbleField(matrix, dictionary.addWord(word))
   def setLanguageDictionary(language: LanguageEnum): ScrabbleField = new ScrabbleField(matrix, new Dictionary().readLines(language))

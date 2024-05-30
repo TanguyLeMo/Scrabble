@@ -68,10 +68,6 @@ class Matrix(val field: Vector[Vector[ScrabbleSquare]]):
   
   def init(): Matrix = new Matrix(if(rows == 15) initializeStandardBoard else initializeNonStandardBoard)
   
-  
-
-  
-  
   def placeWord(xPosition: Int, yPosition: Int, direction: Char, word: String): Matrix =
     if (!wordFits(xPosition, yPosition, direction, word)) this else
     direction.match
@@ -107,6 +103,25 @@ class Matrix(val field: Vector[Vector[ScrabbleSquare]]):
       val newVector = updatedMatrix.field(yPosition).updated(xPosition, field(yPosition)(xPosition).update(Stone(word.charAt(index).toUpper)))
       placeHorizontally(xPosition + 1, yPosition, word, index + 1, Matrix(updatedMatrix.field.updated(yPosition, newVector)))
     }
+    
+  def removeWord(xPosition: Int, yPosition: Int, direction: Char, word: String): Matrix = if(direction == 'H') removeHorizontally(xPosition, yPosition, word, 0, this) else removeVertically(xPosition, yPosition, word, 0, this)
+    
+    def removeVertically(xPosition: Int, yPosition: Int, word: String, index: Int, updatedMatrix: Matrix): Matrix =
+      if (word.length <= index) updatedMatrix
+      else
+        val newVector = updatedMatrix.field(yPosition).updated(xPosition, field(yPosition)(xPosition).update(Stone(word.charAt(index))))
+        removeVertically(xPosition, yPosition + 1, word, index + 1, Matrix(updatedMatrix.field.updated(yPosition, newVector)))
+
+  def removeHorizontally(xPosition: Int, yPosition: Int, word: String, index: Int, updatedMatrix: Matrix): Matrix =
+    if (word.length <= index) updatedMatrix
+    else {
+      val newVector = updatedMatrix.field(yPosition).updated(xPosition, field(yPosition)(xPosition).update(Stone(word.charAt(index).toUpper)))
+      removeHorizontally(xPosition + 1, yPosition, word, index + 1, Matrix(updatedMatrix.field.updated(yPosition, newVector)))
+    }
+    
+    
+    
+    
   
 
   override def equals(obj: Any): Boolean = obj match

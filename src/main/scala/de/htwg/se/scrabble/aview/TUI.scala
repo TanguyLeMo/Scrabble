@@ -2,8 +2,7 @@ package de.htwg.se.scrabble
 package aview
 import de.htwg.se.scrabble.util.Observer
 import de.htwg.se.scrabble.controller.Controller
-import de.htwg.se.scrabble.model.ScrabbleField
-import de.htwg.se.scrabble.model.Player
+import de.htwg.se.scrabble.model.{Move, Player, ScrabbleField}
 
 import scala.io.StdIn.readLine
 import de.htwg.se.scrabble.aview.languages.*
@@ -39,17 +38,22 @@ class TUI(val controller: Controller, val languageContext : LanguageContext,play
       println(currentPlayer)
       println(languageContext.enterWord)
       val input = readLine()
+      val exitWord = languageContext.exit
+      input.toUpperCase.replaceAll(" ", "") match {
+        case `exitWord` => return this
+        case "Z" => controller.doAndPublish(controller.undo); processInputLine(currentPlayer)
+        case "Y" => controller.doAndPublish(controller.redo); processInputLine(currentPlayer)
+        case _ =>
+      }
       if (input.equalsIgnoreCase(languageContext.exit)) {
         this
       } else {
         val inputVector = input.split(" ")
         if (inputVector.length != 4) {
           println(languageContext.invalidInput)
-          println(languageContext.enterWord)
         }
         else if (!validCoordinateInput(inputVector(1), inputVector(2))) {
           println(languageContext.invalidcoordinates)
-          println(languageContext.enterWord)
         } else {
           val direction = inputVector(3) match
             case "H" => "V"
@@ -66,7 +70,8 @@ class TUI(val controller: Controller, val languageContext : LanguageContext,play
           } else if (!controller.wordFits(xCoordinate, yCoordinate, direction.charAt(0), word)) {
             println(languageContext.wordDoesntFit)
           } else {
-            controller.placeWord(xCoordinate, yCoordinate, direction.charAt(0), word.toUpperCase)
+            val move = Move(yCoordinate, xCoordinate, direction.charAt(0), word)
+            controller.doAndPublish(placeWordAsFunction, move)
             val points = controller.collectPoints(controller.thisMatrix,xCoordinate,yCoordinate,direction.charAt(0),word)
             controller.AddPoints(points,currentPlayer,controller.thisPlayerList)
             val currentleaderboard = controller.sortListAfterPoints(controller.field.players)
@@ -74,12 +79,10 @@ class TUI(val controller: Controller, val languageContext : LanguageContext,play
             println("")
             processInputLine(controller.nextTurn(controller.thisPlayerList,currentPlayer))
           }
-          println(languageContext.enterWord)
         }
         processInputLine(currentPlayer)
       }
     }
-
       def translateCoordinate(coordinate: String): (Int, Int) = {
         val coordinates = coordinate.split(" ")
         (coordinates(0).toUpperCase().toCharArray.sum - 'A', coordinates(1).toInt)
@@ -137,5 +140,9 @@ class TUI(val controller: Controller, val languageContext : LanguageContext,play
       case obj: TUI => obj.controller.field == this.controller.field
       case _ => false
     }
+  }
+
+  def placeWordAsFunction: Move => ScrabbleField = move => {
+    controller.placeWord(move.xPosition, move.yPosition, move.direction, move.word)
   }
 }

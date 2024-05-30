@@ -20,8 +20,8 @@ import de.htwg.se.scrabble.aview.StateContext
     val stateContext = new StateContext(tui)
     
     println("Welcome to Scrabble")
-    val playerList = stateContext.state().asInstanceOf[List[Player]]
-    stateContext.handle(LanguageEvent())
+    val playerList = stateContext.state()
+   /* stateContext.handle(LanguageEvent())
     stateContext.state()
     stateContext.handle(DictionaryEvent())
     stateContext.state()
@@ -29,4 +29,4 @@ import de.htwg.se.scrabble.aview.StateContext
     stateContext.state()
     stateContext.handle(GameEndEvent(playerList))
     stateContext.state()
-}
+*/}

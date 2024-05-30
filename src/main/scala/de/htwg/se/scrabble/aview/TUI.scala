@@ -69,16 +69,22 @@ class TUI(val controller: Controller, val languageContext : LanguageContext,play
             controller.placeWord(xCoordinate, yCoordinate, direction.charAt(0), word.toUpperCase)
             val points = controller.collectPoints(controller.thisMatrix,xCoordinate,yCoordinate,direction.charAt(0),word)
             controller.AddPoints(points,currentPlayer,controller.thisPlayerList)
+            val currentleaderboard = controller.sortListAfterPoints(controller.field.players)
+            displayLeaderboard(currentleaderboard)
+            println("")
             processInputLine(controller.nextTurn(controller.thisPlayerList,currentPlayer))
           }
+          println(languageContext.enterWord)
         }
         processInputLine(currentPlayer)
       }
     }
+
       def translateCoordinate(coordinate: String): (Int, Int) = {
         val coordinates = coordinate.split(" ")
         (coordinates(0).toUpperCase().toCharArray.sum - 'A', coordinates(1).toInt)
       }
+
       def validCoordinateInput(xCoordinate: String, yCoordinate: String): Boolean = {
         ("""[A-Z,a-z]+""".r matches xCoordinate) && ("""[0-9]+""".r matches yCoordinate)
       }
@@ -126,6 +132,7 @@ class TUI(val controller: Controller, val languageContext : LanguageContext,play
             setGameLanguage()
         newTUI
       }
+
   override def equals(obj: Any): Boolean = {
     obj match {
       case obj: TUI => obj.controller.field == this.controller.field

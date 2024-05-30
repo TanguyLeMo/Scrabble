@@ -77,12 +77,9 @@ class TUI(val controller: Controller, val languageContext : LanguageContext) ext
             println(languageContext.wordDoesntFit)
             processInputLine(currentPlayer)
           } else {
+            
             val move = Move(yCoordinate, xCoordinate, direction.charAt(0), word)
             controller.doAndPublish(placeWordAsFunction, move)
-            val points = controller.collectPoints(controller.thisMatrix,xCoordinate,yCoordinate,direction.charAt(0),word)
-            controller.AddPoints(points,currentPlayer,controller.thisPlayerList)
-            val currentleaderboard = controller.sortListAfterPoints(controller.field.players)
-            println("")
             processInputLine(controller.nextTurn(controller.thisPlayerList,currentPlayer))
           }
         }
@@ -113,11 +110,16 @@ class TUI(val controller: Controller, val languageContext : LanguageContext) ext
       def readPlayerNames(numberPlayers: Int, vector: Vector[String]): Vector[String] = {
         if(numberPlayers < 1) vector else
           val name = readLine("Player " + (vector.length+1) + ": ")
-          if(vector.contains(name)) {
-            println("Name already taken")
-            readPlayerNames(numberPlayers, vector)
-          } else
-            readPlayerNames(numberPlayers - 1, vector ++ Vector(name))
+          name match {
+            case "" =>
+              println("Name cant be empty")
+              readPlayerNames(numberPlayers, vector)
+            case _ if vector.contains(name) =>
+              println("Name already taken")
+              readPlayerNames(numberPlayers, vector)
+            case _ =>
+              readPlayerNames(numberPlayers - 1, vector ++ Vector(name))
+         }     
       }
       def displayLeaderboard(players: List[Player]): List[Player] = {
         val sortedPlayers = controller.sortListAfterPoints(players)

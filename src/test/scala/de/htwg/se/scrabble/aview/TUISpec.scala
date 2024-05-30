@@ -62,7 +62,6 @@ class TUISpec extends AnyWordSpec with Matchers {
         tui.controller.field.dictionary.set should contain("word".toUpperCase())
         }
       }
-
       "print that the word is added to the dictionary" in {
         val input = "english\nenglish\nstop\n"
         val in = new ByteArrayInputStream(input.getBytes)
@@ -231,5 +230,115 @@ class TUISpec extends AnyWordSpec with Matchers {
         }
       }
     }
-  
-}
+
+      "inputNamesAndCreateList is called" should {
+        "return a list of players with the given names" in {
+          val input = "2\nPlayer1\nPlayer2\n"
+          val in = new ByteArrayInputStream(input.getBytes)
+          Console.withIn(in) {
+          val controller = new Controller(scrabbleField)
+          val tui = new TUI(controller)
+          val playerList = tui.inputNamesAndCreateList(2)
+          playerList.head.getName should equal("Player1")
+          playerList(1).getName should equal("Player2")
+          }
+        }
+      }
+      "numberOfPlayers is called" should {
+        "return the number of players" in {
+          val input = "2\n"
+          val in = new ByteArrayInputStream(input.getBytes)
+          Console.withIn(in) {
+          val controller = new Controller(scrabbleField)
+          val tui = new TUI(controller)
+          tui.numberOfPlayers() should equal(2)
+          }
+        }
+        "call the Function again if the input is not a number" in {
+          val input = "notANumber\n2\n"
+          val in = new ByteArrayInputStream(input.getBytes)
+          Console.withIn(in) {
+          val controller = new Controller(scrabbleField)
+          val tui = new TUI(controller)
+          tui.numberOfPlayers() should equal(2)
+          }
+        }
+        "call the Function again if the input is a negative number" in {
+          val input = "-2\n2\n"
+          val in = new ByteArrayInputStream(input.getBytes)
+          Console.withIn(in) {
+          val controller = new Controller(scrabbleField)
+          val tui = new TUI(controller)
+          tui.numberOfPlayers() should equal(2)
+          }
+        }
+        "call the Function again if the input is 0" in {
+          val input = "0\n2\n"
+          val in = new ByteArrayInputStream(input.getBytes)
+          Console.withIn(in) {
+          val controller = new Controller(scrabbleField)
+          val tui = new TUI(controller)
+          tui.numberOfPlayers() should equal(2)
+          }
+        }
+        "call the Function again if the input is a float" in {
+          val input = "2.5\n2\n"
+          val in = new ByteArrayInputStream(input.getBytes)
+          Console.withIn(in) {
+          val controller = new Controller(scrabbleField)
+          val tui = new TUI(controller)
+          tui.numberOfPlayers() should equal(2)
+          }
+        }
+      }
+      "readPlayerNames is called" should {
+        "return a Vector of Strings with the given names" in {
+          val input = "Player1\nPlayer2\n"
+          val in = new ByteArrayInputStream(input.getBytes)
+          Console.withIn(in) {
+          val controller = new Controller(scrabbleField)
+          val tui = new TUI(controller)
+          val playerNames = tui.readPlayerNames(2, Vector[String]())
+          playerNames.head should equal("Player1")
+          playerNames(1) should equal("Player2")
+          }
+        }
+        "call the Function again if the input is empty" in {
+          val input = "\nPlayer1\nPlayer2\n"
+          val in = new ByteArrayInputStream(input.getBytes)
+          Console.withIn(in) {
+          val controller = new Controller(scrabbleField)
+          val tui = new TUI(controller)
+          val playerNames = tui.readPlayerNames(2, Vector[String]())
+          playerNames.head should equal("Player1")
+          playerNames(1) should equal("Player2")
+          }
+        }
+        "call the Function again if the input is already in the Vector" in {
+          val input = "Player1\nPlayer1\nPlayer2\n"
+          val in = new ByteArrayInputStream(input.getBytes)
+          Console.withIn(in) {
+          val controller = new Controller(scrabbleField)
+          val tui = new TUI(controller)
+          val playerNames = tui.readPlayerNames(2, Vector[String]())
+          playerNames.head should equal("Player1")
+          playerNames(1) should equal("Player2")
+          }
+        }
+      }
+      "displayLeaderboard is called" should {
+        "print the leaderboard und returns it" in {
+          val controller = new Controller(scrabbleField)
+          val tui = new TUI(controller)
+          val player1 = new Player("Player1", 10)
+          val player2 = new Player("Player2", 20)
+          val player3 = new Player("Player3", 5)
+          val playerList = List(player1, player2, player3)
+          tui.displayLeaderboard(playerList)
+          playerList should equal("List(Player2 Points: 20, Player1 Points: 10, Player3 Points: 5)")
+
+        }
+      }
+
+
+} }

@@ -24,10 +24,14 @@ class Player (name: String, points: Int):
     playerNames.map(name => new Player(name, 0)).toList
 
   def nextTurn(playerList: List[Player], lastTurn: Player): Player =
-    if (playerList.indexOf(lastTurn) + 1 >= playerList.size)
-      playerList.head
-    else playerList(playerList.indexOf(lastTurn) + 1)
+    val index = playerList.indexOf(lastTurn) + 1
+    val playerOption = playerList.lift(index)
 
+    playerOption match 
+      case Some(player) => player
+      case None => playerList.head
+    
+    
   def sortListAfterPoints(players: List[Player]) : List[Player] =
     val sortedPlayers = players.sortBy(-_.getPoints)
     sortedPlayers

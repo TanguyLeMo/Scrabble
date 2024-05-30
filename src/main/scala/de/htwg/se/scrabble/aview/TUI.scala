@@ -8,6 +8,10 @@ import scala.io.StdIn.readLine
 import de.htwg.se.scrabble.aview.languages.*
 import de.htwg.se.scrabble.aview.languages.LanguageEnum.{ENGLISH, FRENCH, GERMAN, ITALIAN}
 
+
+import scala.util.{Try,Success,Failure}
+
+
 class TUI(val controller: Controller, val languageContext : LanguageContext,player: Player) extends Observer {
   controller.add(this)
   def this(controller: Controller) = this(controller, new LanguageContext("english"), new Player("Someone", 0))
@@ -83,23 +87,36 @@ class TUI(val controller: Controller, val languageContext : LanguageContext,play
         processInputLine(currentPlayer)
       }
     }
+
       def translateCoordinate(coordinate: String): (Int, Int) = {
         val coordinates = coordinate.split(" ")
         (coordinates(0).toUpperCase().toCharArray.sum - 'A', coordinates(1).toInt)
       }
+
       def validCoordinateInput(xCoordinate: String, yCoordinate: String): Boolean = {
         ("""[A-Z,a-z]+""".r matches xCoordinate) && ("""[0-9]+""".r matches yCoordinate)
       }
-      def inputNamesAndCreateList(numberPlayers: Int): List[Player] = controller.CreatePlayersList(readPlayerNames(numberPlayers,Vector().empty))
-      def numberOfPLayers(): Int = readLine(languageContext.enterNumberofPlayers + " ").toInt
-      def readPlayerNames(numberPlayers: Int, vector : Vector[String]): Vector[String] = {
+      def inputNamesAndCreateList(numberPlayers: Int): List[Player] = controller.CreatePlayersList(readPlayerNames(numberPlayers, Vector[String]()))
+      def numberOfPlayers(): Int =
+        val isNumber : Try[Int] =  Try(readLine("Enter number of players: ").toInt)
+        isNumber match {
+          case Success(value) =>
+            if(value>0) value
+            else
+              println("Invalid input. Please enter a valid number.")
+              numberOfPlayers()
+          case Failure(exception) =>
+            println("Invalid input. Please enter a valid number.")
+            numberOfPlayers()
+        }
+      def readPlayerNames(numberPlayers: Int, vector: Vector[String]): Vector[String] = {
         if(numberPlayers < 1) vector else
-          val name = readLine()
+          val name = readLine("Player " + (vector.length+1) + ": ")
           if(vector.contains(name)) {
-            println(languageContext.nameAlreadyTaken + " ")
+            println("Name already taken")
             readPlayerNames(numberPlayers, vector)
           } else
-            readPlayerNames(numberPlayers - 1, vector ++ Vector(name))
+            Vector(name) ++ readPlayerNames(numberPlayers - 1, vector ++ Vector(name))
       }
       def displayLeaderboard(players: List[Player]): List[Player] = {
         val sortedPlayers = controller.sortListAfterPoints(players)

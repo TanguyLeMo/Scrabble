@@ -17,4 +17,5 @@ class EnglishStrategy extends LanguageStrategy{
   override def exit: String = "exit"
   override def enterNumberofPlayers: String = "Enter number of Players"
   override def nameAlreadyTaken: String = "Name already taken"
+  override def invalidNumber: String = "Invalid input, please enter a valid number"
 }

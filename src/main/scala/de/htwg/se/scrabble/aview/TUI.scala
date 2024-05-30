@@ -3,26 +3,22 @@ package aview
 import de.htwg.se.scrabble.util.Observer
 import de.htwg.se.scrabble.controller.Controller
 import de.htwg.se.scrabble.model.{Move, Player, ScrabbleField}
-
 import scala.io.StdIn.readLine
 import de.htwg.se.scrabble.aview.languages.*
 import de.htwg.se.scrabble.aview.languages.LanguageEnum.{ENGLISH, FRENCH, GERMAN, ITALIAN}
-
-
 import scala.util.{Try,Success,Failure}
 
 
-class TUI(val controller: Controller, val languageContext : LanguageContext,player: Player) extends Observer {
+class TUI(val controller: Controller, val languageContext : LanguageContext) extends Observer {
   controller.add(this)
-  def this(controller: Controller) = this(controller, new LanguageContext("english"), new Player("Someone", 0))
-  def this(controller: Controller, languageContext:LanguageContext) = this(controller, languageContext, new Player("Someone", 0))
+  def this(controller: Controller) = this(controller, new LanguageContext("english"))
   controller.setLanguageDictionary(languageContext.language)
-
+  
+  
   def dictionaryAddWords: TUI = {
     println(languageContext.enterWordforDictionary)
     val word = readLine()
     if (word == languageContext.stop) {
-      println(languageContext.enterWord)
       return this
     }
     if(controller.contains(word)) {
@@ -36,19 +32,21 @@ class TUI(val controller: Controller, val languageContext : LanguageContext,play
 
   override def update(): String = {
     println(controller.toString)
+    displayLeaderboard(controller.field.players)
+    println("")
     controller.toString
   }
       def processInputLine(currentPlayer : Player) : TUI = {
       println(currentPlayer)
       println(languageContext.enterWord)
       val input = readLine()
-      val exitWord = languageContext.exit
-      input.toUpperCase.replaceAll(" ", "") match {
-        case `exitWord` => return this
-        case "Z" => controller.doAndPublish(controller.undo); processInputLine(currentPlayer)
-        case "Y" => controller.doAndPublish(controller.redo); processInputLine(currentPlayer)
+      val exitWord: String = languageContext.exit
+      input.toLowerCase().replaceAll(" ", "") match {
+        case "z" => controller.doAndPublish(controller.undo); processInputLine(currentPlayer)
+        case "y" => controller.doAndPublish(controller.redo); processInputLine(currentPlayer)
         case _ =>
       }
+      if(input.equalsIgnoreCase(exitWord)) this else
       if (input.equalsIgnoreCase(languageContext.exit)) {
         this
       } else {
@@ -79,7 +77,6 @@ class TUI(val controller: Controller, val languageContext : LanguageContext,play
             val points = controller.collectPoints(controller.thisMatrix,xCoordinate,yCoordinate,direction.charAt(0),word)
             controller.AddPoints(points,currentPlayer,controller.thisPlayerList)
             val currentleaderboard = controller.sortListAfterPoints(controller.field.players)
-            displayLeaderboard(currentleaderboard)
             println("")
             processInputLine(controller.nextTurn(controller.thisPlayerList,currentPlayer))
           }
@@ -103,7 +100,7 @@ class TUI(val controller: Controller, val languageContext : LanguageContext,play
           case Success(value) =>
             if(value>0) value
             else
-              println("Invalid input. Please enter a valid number.")
+              println(languageContext.invalidNumber)
               numberOfPlayers()
           case Failure(exception) =>
             println("Invalid input. Please enter a valid number.")
@@ -116,7 +113,7 @@ class TUI(val controller: Controller, val languageContext : LanguageContext,play
             println("Name already taken")
             readPlayerNames(numberPlayers, vector)
           } else
-            Vector(name) ++ readPlayerNames(numberPlayers - 1, vector ++ Vector(name))
+            readPlayerNames(numberPlayers - 1, vector ++ Vector(name))
       }
       def displayLeaderboard(players: List[Player]): List[Player] = {
         val sortedPlayers = controller.sortListAfterPoints(players)
@@ -133,15 +130,15 @@ class TUI(val controller: Controller, val languageContext : LanguageContext,play
             new TUI(controller, new LanguageContext(language))
           case "french" =>
             controller.setLanguageDictionary(FRENCH)
-            println("language set to " + language)
+            println("La langue sera " + language)
             new TUI(controller, new LanguageContext(language))
           case "german" =>
             controller.setLanguageDictionary(GERMAN)
-            println("language set to " + language)
+            println("Eingestellte Sprache: " + language)
             new TUI(controller, new LanguageContext(language))
           case "italian" =>
             controller.setLanguageDictionary(ITALIAN)
-            println("language set to " + language)
+            println("La lingua e " + language)
             new TUI(controller, new LanguageContext(language))
           case _ =>
             println(language + " is not a available language")

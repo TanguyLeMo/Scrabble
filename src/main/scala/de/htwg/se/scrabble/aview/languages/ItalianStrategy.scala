@@ -17,4 +17,5 @@ class ItalianStrategy extends LanguageStrategy{
   override def exit: String = "uscire"
   override def nameAlreadyTaken: String = "Il nome è già stato preso"
   override def enterNumberofPlayers: String = "Inserisci il numero di giocatori"
+  override def invalidNumber: String = "Input non valido, inserisci un numero valido"
 }

@@ -17,5 +17,5 @@ trait LanguageStrategy {
   def exit: String
   def nameAlreadyTaken : String
   def enterNumberofPlayers : String
-  
+  def invalidNumber: String
 }

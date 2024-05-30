@@ -8,7 +8,7 @@ trait ScoringSystem {
 
   def collectPoints(matrix: Matrix, xPosition: Int, yPosition: Int, direction: Char, word: String): Int = {
     // Collect points for the newly placed word
-    val (newWordSum, newWordMultiplication) = collectPointsR(matrix, xPosition, yPosition, direction, word, 0, 0, 1)
+    val (newWordSum, newWordMultiplication) = collectPointsR(matrix, xPosition, yPosition, if(direction == 'H') 'V' else 'H', word, 0, 0, 1)
     val totalPointsNewWord = newWordSum * newWordMultiplication
     totalPointsNewWord
   }

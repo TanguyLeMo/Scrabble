@@ -84,7 +84,6 @@ class TUI(val controller: Controller, val languageContext : LanguageContext,play
         val coordinates = coordinate.split(" ")
         (coordinates(0).toUpperCase().toCharArray.sum - 'A', coordinates(1).toInt)
       }
-
       def validCoordinateInput(xCoordinate: String, yCoordinate: String): Boolean = {
         ("""[A-Z,a-z]+""".r matches xCoordinate) && ("""[0-9]+""".r matches yCoordinate)
       }

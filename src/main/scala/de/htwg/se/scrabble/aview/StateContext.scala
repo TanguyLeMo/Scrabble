@@ -16,7 +16,7 @@ class StateContext(tui: TUI) extends Event {
   }
 
   def playerState(): StateContext = {
-    tui.inputNamesAndCreateList(tui.numberOfPLayers())
+    tui.inputNamesAndCreateList(tui.numberOfPlayers())
     new StateContext(tui).handle(LanguageEvent())
   }
 

@@ -15,7 +15,7 @@ import de.htwg.se.scrabble.aview.StateContext
 
     val field = new ScrabbleField(15, ENGLISH)
     val player = new Player("Someone", 0)
-    val controller = Controller(field, player)
+    val controller = Controller(field)
     val tui = TUI(controller)
     val stateContext = new StateContext(tui)
     

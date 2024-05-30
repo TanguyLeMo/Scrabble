@@ -5,7 +5,7 @@ import de.htwg.se.scrabble.aview.languages.LanguageEnum._
 import de.htwg.se.scrabble.model.scoring._
 import de.htwg.se.scrabble.model.square.{ScrabbleSquare, StandardSquareFactory}
 
-class ScrabbleField(val matrix: Matrix, val dictionary: Dictionary, squareFactory: StandardSquareFactory, languageEnum: LanguageEnum):
+class ScrabbleField(val matrix: Matrix, val dictionary: Dictionary, val squareFactory: StandardSquareFactory, val languageEnum: LanguageEnum, val player : Player, val players : List[Player]):
   val numOfAlphabet: Int = 26
   val numSymbolPerColumn: Int = Math.ceil(matrix.rows.toDouble / numOfAlphabet.toDouble).toInt + 1
   val scoringSystem: ScoringSystem = languageEnum match

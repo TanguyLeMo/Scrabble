@@ -5,8 +5,12 @@ trait Observer:
 
 trait Observable:
   var subscribers: Vector[Observer] = Vector()
-  def add(s: Observer): Unit = subscribers = subscribers :+ s
+  def add(s: Observer): Unit = {
+    subscribers = subscribers.filterNot(_.getClass == s.getClass)
+    subscribers = subscribers :+ s
+  }
   def remove(s: Observer): Unit = subscribers = subscribers.filter(o => o == s)
   def notifyObservers(): Unit =
     subscribers.foreach(o => o.update())
+    
 

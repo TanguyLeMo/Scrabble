@@ -28,10 +28,30 @@ class Controller(var field: ScrabbleField) extends Observable:
     word
   
   def CreatePlayersList(playernames: Vector[String]): List[Player] =
-    player.CreatePlayersList(playernames)
+    val playerList = field.player.CreatePlayersList(playernames)
+    field = new ScrabbleField(field.matrix,field.dictionary,field.squareFactory, field.languageEnum, playerList.head,playerList)
+    playerList
 
   def sortListAfterPoints(players: List[Player]): List[Player] =
     field.player.sortListAfterPoints(players)
 
   def setLanguageDictionary(language: LanguageEnum): ScrabbleField =
     field.setLanguageDictionary(language)
+
+  def collectPoints(matrix: Matrix, xPosition: Int, yPosition: Int, direction: Char, word: String): Int =
+    field.scoringSystem.collectPoints(matrix, xPosition, yPosition, direction, word)
+
+  def AddPoints(pointsToAdd: Int, player: Player, ListPlayers: List[Player]): List[Player] =
+    val playerList = player.AddPoints(pointsToAdd, player, ListPlayers)
+    field = new ScrabbleField(field.matrix,field.dictionary,field.squareFactory, field.languageEnum, field.player , playerList)
+    playerList
+
+  def nextTurn(playerList: List[Player], lastTurn: Player): Player =
+    val nextPlayer = field.player.nextTurn(playerList, lastTurn)
+    field = new ScrabbleField(field.matrix,field.dictionary,field.squareFactory, field.languageEnum, nextPlayer,field.players)
+    nextPlayer
+
+  def thisMatrix:Matrix =
+    field.matrix
+
+  def thisPlayerList : List[Player] = field.players

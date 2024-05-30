@@ -67,6 +67,9 @@ class TUI(val controller: Controller, val languageContext : LanguageContext,play
             println(languageContext.wordDoesntFit)
           } else {
             controller.placeWord(xCoordinate, yCoordinate, direction.charAt(0), word.toUpperCase)
+            val points = controller.collectPoints(controller.thisMatrix,xCoordinate,yCoordinate,direction.charAt(0),word)
+            controller.AddPoints(points,currentPlayer,controller.thisPlayerList)
+            processInputLine(controller.nextTurn(controller.thisPlayerList,currentPlayer))
           }
           println(languageContext.enterWord)
         }

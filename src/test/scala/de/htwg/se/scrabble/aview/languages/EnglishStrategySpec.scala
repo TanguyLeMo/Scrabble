@@ -63,5 +63,11 @@ class EnglishStrategySpec extends AnyWordSpec with Matchers {
     "return an exit message" in {
       strategy.exit should be ("exit")
     }
+    "return a message for entering the number of players" in {
+      strategy.enterNumberofPlayers should be ("Enter number of Players: ")
+    }
+    "return a message if name is already taken" in {
+      strategy.nameAlreadyTaken should be ("Name already taken")
+    }
   }
 }

@@ -39,6 +39,11 @@ class ScoringSystemSpec extends AnyWordSpec with Matchers {
           val score = horn.scoringSystem.collectPoints(horn.matrix, 0, 0, 'V', "ADBFJK")
           score shouldBe 96
         }
+        "return 0 when the word is empty" in {
+          val horn = scrabbleField.placeWord(0, 0, 'H', " ")
+          val score = horn.scoringSystem.collectPoints(horn.matrix, 0, 0, 'H', " ")
+          score shouldBe 0
+        }
       }
       "When using a german scoring system" should {
         "calculate the correct score" in {
@@ -48,6 +53,11 @@ class ScoringSystemSpec extends AnyWordSpec with Matchers {
           val score = dorn.scoringSystem.collectPoints(dorn.matrix, 0, 0, 'V', "gehen")
           print(dorn)
           score shouldBe 6
+        }
+        "return 0 when the word is empty" in {
+          val horn = scrabbleField.placeWord(0, 0, 'H', " ")
+          val score = horn.scoringSystem.collectPoints(horn.matrix, 0, 0, 'H', " ")
+          score shouldBe 0
         }
       }
 
@@ -66,12 +76,12 @@ class ScoringSystemSpec extends AnyWordSpec with Matchers {
           }
         "return 0 for French" in {
 
-          val horn = scrabbleField.placeWord(0, 0, 'V', " ")
+          val horn = scrabbleField.placeWord(0, 0, 'H', " ")
           val score = horn.scoringSystem.collectPoints(horn.matrix, 0, 0, 'V', " ")
           score shouldBe 0
         }
         "return 0 for English" in {
-          val horn = scrabbleField.placeWord(0, 0, 'H', " ")
+          val horn = scrabbleField.placeWord(0, 0, 'V', " ")
           val score = horn.scoringSystem.collectPoints(horn.matrix, 0, 0, 'H', " ")
           score shouldBe 0
         }

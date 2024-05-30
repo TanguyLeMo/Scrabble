@@ -11,6 +11,10 @@ class Player (name: String, points: Int):
 
   def getName: String = name
 
+  override def equals(obj: Any): Boolean = obj match
+    case obj: Player => obj.getPoints == this.getPoints && obj.getName == this.getName
+    case _ => false
+    
   def AddPoints(pointsToAdd: Int, player: Player, ListPlayers: List[Player]): List[Player] =
     val newPLayer = new Player(player.getName, player.getPoints+pointsToAdd)
     val newListPlayers = ListPlayers.updated(ListPlayers.indexOf(player),newPLayer)
@@ -20,7 +24,7 @@ class Player (name: String, points: Int):
 
   def nextTurn(playerList: List[Player], lastTurn: Player): Player =
     if (playerList.indexOf(lastTurn) + 1 > playerList.size)
-      playerList(0)
+      playerList.head
     playerList(playerList.indexOf(lastTurn) + 1)
 
   def sortListAfterPoints(players: List[Player]) : List[Player] =

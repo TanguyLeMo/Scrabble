@@ -29,8 +29,6 @@ trait ScoringSystem {
       case _ =>
         (sum + determinPoints(currentSquare.letter) , multiplication)
     }
-
-    print("newSum " + newSum + " newMultiplication " + newMultiplication + "\n")
     collectPointsR(matrix, newXPosition, newYPosition, direction, word, currentIndex + 1, newSum, newMultiplication)
   }
 

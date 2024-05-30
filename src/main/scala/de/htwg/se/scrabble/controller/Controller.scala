@@ -1,7 +1,12 @@
 package de.htwg.se.scrabble
 package controller
+import de.htwg.se.scrabble.aview.languages.LanguageEnum
 import util.Observable
 import model.ScrabbleField
+import model.Player
+import model.Matrix
+import de.htwg.se.scrabble.model
+
 class Controller(var field: ScrabbleField) extends Observable:
 
   override def toString: String = field.toString
@@ -18,15 +23,15 @@ class Controller(var field: ScrabbleField) extends Observable:
     
   def contains(word: String): Boolean = field.dictionary.contains(word)
 
-  def add(word: String): String = 
-    field = field.addDictionaryWord(word); word
-
-
+  def add(word: String): String =
+    field = new ScrabbleField(field.matrix, field.dictionary.addWord(word), field.squareFactory, field.languageEnum, field.player, field.players)
+    word
+  
   def CreatePlayersList(playernames: Vector[String]): List[Player] =
     player.CreatePlayersList(playernames)
 
   def sortListAfterPoints(players: List[Player]): List[Player] =
-    player.sortListAfterPoints(players)
+    field.player.sortListAfterPoints(players)
 
-  def setLanguageDictionary(language: String): ScrabbleField =
+  def setLanguageDictionary(language: LanguageEnum): ScrabbleField =
     field.setLanguageDictionary(language)

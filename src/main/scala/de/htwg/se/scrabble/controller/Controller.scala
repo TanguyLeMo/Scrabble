@@ -13,7 +13,8 @@ class Controller(var field: ScrabbleField) extends Observable:
   val undoManager = new util.UndoManager[ScrabbleField]
   
   def doAndPublish(doThis: placeWordsAsMove => ScrabbleField, move: placeWordsAsMove): Unit =
-    field = doThis(move)
+    val newState = doThis(move)
+    field = undoManager.doStep(field, newState)
     AddPoints(collectPoints(field.matrix, move.xPosition, move.yPosition, move.direction, move.word), field.player, field.players)
     notifyObservers(new RoundsEvent)
 
@@ -21,14 +22,21 @@ class Controller(var field: ScrabbleField) extends Observable:
     field = doThis
     notifyObservers(new RoundsEvent)
 
-  def undo: ScrabbleField = {undoManager.undoStep(field) }
-  
+  def undo: ScrabbleField = {
+    println(undoManager.getUndoStack.size)
+    field = undoManager.undoStep(field)
+    field
+  }
   def redo: ScrabbleField = undoManager.redoStep(field)
   
   override def toString: String = field.toString
 
   def placeWord(xPosition: Int, yPosition: Int, direction: Char, word: String): ScrabbleField =
-    undoManager.doStep(field, PutCommand(placeWordsAsMove(xPosition, yPosition, direction, word)))
+    val move = placeWordsAsMove(xPosition, yPosition, direction, word)
+    val newState = field.placeWord(move.yPosition, move.xPosition, move.direction, move.word)
+    field = undoManager.doStep(field, newState)
+    notifyObservers(new RoundsEvent)
+    field
 
   def wordFits(xPosition: Int, yPosition: Int, direction: Char, word: String): Boolean =
     field.wordFits(xPosition, yPosition, direction, word)
@@ -70,7 +78,7 @@ class Controller(var field: ScrabbleField) extends Observable:
     nextPlayer
 
   def thisMatrix:Matrix = field.matrix
-    
+
   def requestLanguage: ScrabbleField =
     notifyObservers(RequestEnterLanguage())
     field
@@ -140,5 +148,5 @@ class Controller(var field: ScrabbleField) extends Observable:
   def nameCantBeEmptycontroller: ScrabbleField =
     notifyObservers(NameCantBeEmpty())
     field
-    
+
   def thisPlayerList : List[Player] = field.players

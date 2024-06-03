@@ -71,8 +71,8 @@ class TUI(val controller: Controller, val languageContext : LanguageContext) ext
       controller.toString
   }
       def processInputLine(currentPlayer : Player) : TUI = {
-      controller.currentPlayercontroller//println(currentPlayer.getName)
-      controller.enterWordcontroller//println(languageContext.enterWord)
+      controller.currentPlayercontroller
+      controller.enterWordcontroller
       val input = readLine()
       val exitWord: String = languageContext.exit
       input match {
@@ -88,11 +88,11 @@ class TUI(val controller: Controller, val languageContext : LanguageContext) ext
       } else {
         val inputVector = input.split(" ")
         if (inputVector.length != 4) {
-          controller.invalidInputcontroller//println(languageContext.invalidInput)
+          controller.invalidInputcontroller
           processInputLine(currentPlayer)
         }
         else if (!validCoordinateInput(inputVector(1), inputVector(2))) {
-          controller.invalidcoordinatescontroller //println(languageContext.invalidcoordinates)
+          controller.invalidcoordinatescontroller 
           processInputLine(currentPlayer)
         } else {
           val direction = inputVector(3) match
@@ -104,17 +104,16 @@ class TUI(val controller: Controller, val languageContext : LanguageContext) ext
           val yCoordinate = coordinates._1
           val xCoordinate = coordinates._2
           if (!controller.contains(word)) {
-            controller.notInDictionarycontroller//println(languageContext.notInDictionary)
+            controller.notInDictionarycontroller
             processInputLine(currentPlayer)
           } else if (!(direction == "H" | direction == "V")) {
-            controller.NoCorrectDirectioncontroller//println(direction)
+            controller.NoCorrectDirectioncontroller
             processInputLine(currentPlayer)
           } else if (!controller.wordFits(xCoordinate, yCoordinate, direction.charAt(0), word)) {
-            controller.wordDoesntFitcontroller//println(languageContext.wordDoesntFit)
+            controller.wordDoesntFitcontroller
             processInputLine(currentPlayer)
           } else {
-            val move = placeWordsAsMove(yCoordinate, xCoordinate, direction.charAt(0), word)
-            controller.doAndPublish(placeWordAsFunction, move)
+            controller.placeWord(xCoordinate, yCoordinate, direction.charAt(0), word)
             processInputLine(controller.nextTurn(controller.thisPlayerList,currentPlayer))
           }
         }

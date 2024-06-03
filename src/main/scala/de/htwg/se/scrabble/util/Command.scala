@@ -7,30 +7,29 @@ trait Command[T]:
   def redoStep(t: T): T
 
 class UndoManager[T]:
-  private var undoStack: List[Command[T]] = Nil
-  private var redoStack: List[Command[T]] = Nil
-  
-  def doStep(t: T, command: Command[T]): T =
-    undoStack = command :: undoStack
-    command.doStep(t)
-    
-    
+  private var undoStack: List[T] = Nil
+  private var redoStack: List[T] = Nil
+
+  def doStep(t: T, newState: T): T =
+    undoStack = t :: undoStack
+    redoStack = Nil // Clear the redo stack on a new operation
+    newState
+
   def undoStep(t: T): T =
     undoStack match {
       case Nil => t
-      case head :: stack => 
-        val result = head.undoStep(t)
+      case head :: stack =>
+        redoStack = t :: redoStack
         undoStack = stack
-        redoStack = head :: redoStack
-        result
+        head
     }
+
   def redoStep(t: T): T =
     redoStack match {
       case Nil => t
-      case head :: stack => 
-        val result = head.redoStep(t)
+      case head :: stack =>
+        undoStack = t :: undoStack
         redoStack = stack
-        undoStack = head :: undoStack
-        result
-      
+        head
     }
+  def getUndoStack: List[T] = undoStack

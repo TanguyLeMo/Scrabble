@@ -3,10 +3,10 @@ package de.htwg.se.scrabble.aview.languages
 class LanguageContext(languageStrat: String){
   val language: LanguageEnum = LanguageEnum.toLanguage(languageStrat)
   val languageStrategy: LanguageStrategy = language match {
-    case LanguageEnum.ENGLISH => new EnglishStrategy()
-    case LanguageEnum.GERMAN => new GermanStrategy()
-    case LanguageEnum.FRENCH => new FrenchStrategy()
-    case LanguageEnum.ITALIAN => new ItalianStrategy()
+    case LanguageEnum.ENGLISH => EnglishStrategy()
+    case LanguageEnum.GERMAN => GermanStrategy()
+    case LanguageEnum.FRENCH => FrenchStrategy()
+    case LanguageEnum.ITALIAN => ItalianStrategy()
   }
   def requestNewWord: String = languageStrategy.requestNewWord
   def wordAlreadyAddedToDictionary: String = languageStrategy.wordAlreadyAddedToDictionary

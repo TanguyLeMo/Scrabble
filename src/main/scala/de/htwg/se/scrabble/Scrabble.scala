@@ -11,8 +11,6 @@ import de.htwg.se.scrabble.aview.StateContext
 
 
 @main def run(): Unit = {
-
-
     val field = new ScrabbleField(15, ENGLISH)
     val player = new Player("Someone", 0)
     val controller = Controller(field)

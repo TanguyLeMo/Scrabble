@@ -44,7 +44,7 @@ class TUI(val controller: Controller, val languageContext : LanguageContext) ext
         case "y" => controller.doAndPublish(controller.redo); processInputLine(currentPlayer)
         case _ =>
       }
-      if( input == null || input.equalsIgnoreCase(exitWord)) this else
+      if(input.equalsIgnoreCase(exitWord)) this else
       if (input.equalsIgnoreCase(languageContext.exit)) {
         this
       } else {
@@ -93,7 +93,7 @@ class TUI(val controller: Controller, val languageContext : LanguageContext) ext
       }
       def inputNamesAndCreateList(numberPlayers: Int): List[Player] = controller.CreatePlayersList(readPlayerNames(numberPlayers, Vector[String]()))
       def numberOfPlayers(): Int =
-        val isNumber : Try[Int] =  Try(readLine("Enter number of players: ").toInt)
+        val isNumber : Try[Int] =  Try(readLine(languageContext.enterNumberofPlayers).toInt)
         isNumber match {
           case Success(value) =>
             if(value>0) value
@@ -101,7 +101,7 @@ class TUI(val controller: Controller, val languageContext : LanguageContext) ext
               println(languageContext.invalidNumber)
               numberOfPlayers()
           case Failure(exception) =>
-            println("Invalid input. Please enter a valid number.")
+            println(languageContext.invalidNumber)
             numberOfPlayers()
         }
       def readPlayerNames(numberPlayers: Int, vector: Vector[String]): Vector[String] = {

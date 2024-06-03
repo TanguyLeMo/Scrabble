@@ -1,7 +1,7 @@
 package de.htwg.se.scrabble.aview.languages
 
 class FrenchStrategy extends LanguageStrategy{
-  override def languageSetting: String = "Langue: "
+  override val languageSetting: String = "Langue: "
   override def requestNewWord: String = "Entrez un nouveau mot"
   override def wordAlreadyAddedToDictionary: String = "Le mot a déjà été ajouté au dictionnaire"
   override def wordAddedToDictionary: String = "Le mot a été ajouté au dictionnaire"

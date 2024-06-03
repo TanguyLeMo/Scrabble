@@ -18,4 +18,6 @@ class EnglishStrategy extends LanguageStrategy{
   override def enterNumberofPlayers: String = "Enter number of Players"
   override def nameAlreadyTaken: String = "Name already taken"
   override def invalidNumber: String = "Invalid input, please enter a valid number"
+  override def enterPlayernames: String = "Enter the names of the first / next player"
+  override def nameCantBeEmpty: String = "Name cant be empty"
 }

@@ -4,7 +4,7 @@ import de.htwg.se.scrabble.aview.languages.LanguageEnum
 import de.htwg.se.scrabble.aview.languages.LanguageEnum.{ENGLISH, FRENCH, GERMAN}
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers.*
-import de.htwg.se.scrabble.model.{Move, Player, ScrabbleField}
+import de.htwg.se.scrabble.model.{placeWordsAsMove, Player, ScrabbleField}
 import de.htwg.se.scrabble.util.Observer
 
 class ControllerSpec extends AnyWordSpec:
@@ -197,10 +197,10 @@ class ControllerSpec extends AnyWordSpec:
         val english = LanguageEnum.ENGLISH
         val field = new ScrabbleField(15, english)
         val controller = new Controller(field)
-        val move = Move(0, 0, 'H', "hello")
+        val move = placeWordsAsMove(0, 0, 'H', "hello")
 
         "have a valid doAndPublish method with two arguments" in {
-          val placeWordAsFunction: Move => ScrabbleField = move => {
+          val placeWordAsFunction: placeWordsAsMove => ScrabbleField = move => {
             controller.placeWord(move.xPosition, move.yPosition, move.direction, move.word)
           }
           val newField: Unit = controller.doAndPublish(placeWordAsFunction, move)

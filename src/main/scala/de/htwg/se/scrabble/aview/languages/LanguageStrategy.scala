@@ -18,4 +18,6 @@ trait LanguageStrategy {
   def nameAlreadyTaken : String
   def enterNumberofPlayers : String
   def invalidNumber: String
+  def enterPlayernames: String
+  def nameCantBeEmpty: String
 }

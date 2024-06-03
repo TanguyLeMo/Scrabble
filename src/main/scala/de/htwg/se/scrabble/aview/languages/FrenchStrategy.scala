@@ -18,4 +18,6 @@ class FrenchStrategy extends LanguageStrategy{
   override def nameAlreadyTaken: String = "Le nom est déjà pris"
   override def enterNumberofPlayers: String = "Entrez le nombre de joueurs"
   override def invalidNumber: String = "Entrée invalide, veuillez entrer un nombre valide"
+  override def enterPlayernames: String = "Entrez les noms du premier / prochain joueur "
+  override def nameCantBeEmpty: String = "Le nom ne peut pas être vide"
 }

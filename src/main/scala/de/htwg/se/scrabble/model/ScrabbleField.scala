@@ -13,6 +13,12 @@ class ScrabbleField(val matrix: Matrix, val dictionary: Dictionary, val squareFa
     case FRENCH => new FrenchScoringSystem()
     case GERMAN => new GermanScoringSystem()
     case ITALIAN => new ItalianScoringSystem()
+  val languageSettings : String = languageEnum match {
+    case ENGLISH => "Language is set to" + Console.YELLOW  + " English" + Console.RESET
+    case FRENCH => "Language is set to"+ Console.YELLOW +" French" + Console.RESET
+    case GERMAN => "Language is set to" + Console.YELLOW + " German" + Console.RESET
+    case ITALIAN => "Language is set to" + Console.YELLOW + " Italian" + Console.RESET 
+  }
   def this(rowsAndColumns: Int) = this(new Matrix(Vector.fill(rowsAndColumns, rowsAndColumns)(new StandardSquareFactory().createDoubleSquare(Stone()))).init(), new Dictionary().readLines(ENGLISH), new StandardSquareFactory, ENGLISH, new Player("someone",0), Nil)
   def this(matrix : Matrix, newDictionary: Dictionary) = this(matrix, newDictionary, new StandardSquareFactory, ENGLISH, new Player("someone",0), Nil)
   def this(rowsAndColumns : Int, languageEnum: LanguageEnum) = this(new Matrix(Vector.fill(rowsAndColumns, rowsAndColumns)(new StandardSquareFactory().createDoubleSquare(Stone()))).init(), new Dictionary().readLines(languageEnum), new StandardSquareFactory, languageEnum, new Player("someone",0), Nil)

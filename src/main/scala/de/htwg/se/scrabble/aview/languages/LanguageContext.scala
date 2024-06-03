@@ -25,4 +25,6 @@ class LanguageContext(languageStrat: String){
   def nameAlreadyTaken: String = languageStrategy.nameAlreadyTaken
   def enterNumberofPlayers: String = languageStrategy.enterNumberofPlayers
   def invalidNumber: String = languageStrategy.invalidNumber
+  def enterPlayerNames: String = languageStrategy.enterPlayernames
+  def nameCantBeEmpty: String = languageStrategy.nameCantBeEmpty
 }

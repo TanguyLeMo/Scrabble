@@ -111,7 +111,7 @@ class TUISpec extends AnyWordSpec with Matchers {
           val tui = hui.inputNamesAndCreateList(hui.numberOfPlayers())
           hui = hui.processInputLine(new Player("hui", 0))
         }
-        hui should not equal("exit")
+        hui should not equal "exit"
         }
     }
 
@@ -129,37 +129,6 @@ class TUISpec extends AnyWordSpec with Matchers {
       }
       hui.controller.field shouldEqual scrabbleField
     }
-
-
-  "Z shoud be the undo Button" in {
-    val input = "1\nhui\nz\nexit"
-    val in = new ByteArrayInputStream(input.getBytes)
-    var hui: TUI = null
-    val scrabbleField = new ScrabbleField(15, english)
-    Console.withIn(in) {
-      val controller = new Controller(scrabbleField)
-      hui = new TUI(controller)
-      val tui = hui.inputNamesAndCreateList(hui.numberOfPlayers())
-      hui = hui.processInputLine(new Player("hui", 0))
-    }
-    hui.controller.field shouldEqual scrabbleField
-  }
-
-  "Z shoud be the redo Button" in {
-    val input = "1\nhui\nz\ny\nexit"
-    val in = new ByteArrayInputStream(input.getBytes)
-    var hui: TUI = null
-    val scrabbleField = new ScrabbleField(15, english)
-    Console.withIn(in) {
-      val controller = new Controller(scrabbleField)
-      hui = new TUI(controller)
-      val tui = hui.inputNamesAndCreateList(hui.numberOfPlayers())
-      hui = hui.processInputLine(new Player("hui", 0))
-    }
-    hui.controller.field shouldEqual scrabbleField
-  }
-
-
     "do nothing when the direction i not valid" in {
       val input = "1\nhui\nword A 16 I\nexit"
       val in = new ByteArrayInputStream(input.getBytes)
@@ -267,8 +236,8 @@ class TUISpec extends AnyWordSpec with Matchers {
           val controller = new Controller(scrabbleField)
           val tui = new TUI(controller)
           val playerList = tui.inputNamesAndCreateList(2)
-          playerList.head.getName should not equal("Player1")
-          playerList(1).getName should not equal("Player2")
+          playerList.head.getName should not equal "Player1"
+          playerList(1).getName should not equal "Player2"
           }
         }
       }

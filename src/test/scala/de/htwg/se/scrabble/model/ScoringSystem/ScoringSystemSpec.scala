@@ -68,7 +68,7 @@ class ScoringSystemSpec extends AnyWordSpec with Matchers {
           val score = horn.scoringSystem.collectPoints(horn.matrix, 0, 0, 'H', "EHMCÄÖY")
           score shouldBe 114
 
-        } // TODO: Check BUgs
+        } 
         "return 0 when the word is empty" in {
           val horn = scrabbleField.placeWord(0, 0, 'H', " ")
           val score = horn.scoringSystem.collectPoints(horn.matrix, 0, 0, 'H', " ")

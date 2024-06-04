@@ -24,11 +24,6 @@ class ScrabbleField(val matrix: Matrix, val dictionary: Dictionary, val squareFa
   def this(rowsAndColumns: Int) = this(new Matrix(Vector.fill(rowsAndColumns, rowsAndColumns)(new StandardSquareFactory().createDoubleSquare(Stone()))).init(), new Dictionary().readLines(ENGLISH), new StandardSquareFactory, ENGLISH, new Player("someone",0,List[Stone]()), Nil,new StoneContainer(List[Stone]()))
   def this(matrix : Matrix, newDictionary: Dictionary) = this(matrix, newDictionary, new StandardSquareFactory, ENGLISH, new Player("someone",0,List[Stone]()), Nil, new StoneContainer(List[Stone]()))
   def this(rowsAndColumns : Int, languageEnum: LanguageEnum) = this(new Matrix(Vector.fill(rowsAndColumns, rowsAndColumns)(new StandardSquareFactory().createDoubleSquare(Stone()))).init(), new Dictionary().readLines(languageEnum), new StandardSquareFactory, languageEnum, new Player("someone",0,List[Stone]()), Nil,new StoneContainer(List[Stone]()))
-
-  def this(rowsAndColumns: Int) = this(new Matrix(Vector.fill(rowsAndColumns, rowsAndColumns)(new StandardSquareFactory().createDoubleSquare(Stone()))).init(), new Dictionary().readLines(ENGLISH), new StandardSquareFactory, ENGLISH, new Player("someone",0), Nil)
-  def this(matrix : Matrix, newDictionary: Dictionary) = this(matrix, newDictionary, new StandardSquareFactory, ENGLISH, new Player("someone",0), Nil)
-  def this(rowsAndColumns : Int, languageEnum: LanguageEnum) = this(new Matrix(Vector.fill(rowsAndColumns, rowsAndColumns)(new StandardSquareFactory().createDoubleSquare(Stone()))).init(), new Dictionary().readLines(languageEnum), new StandardSquareFactory, languageEnum, new Player("someone",0), Nil)
-
   def labelingXAxis(currcolum: Int): String =
     if(currcolum > matrix.columns)""
     else translateLetter(currcolum)+addSpace(numSymbolPerColumn-translateLetter(currcolum).length)+labelingXAxis(currcolum + 1)
@@ -52,10 +47,10 @@ class ScrabbleField(val matrix: Matrix, val dictionary: Dictionary, val squareFa
   def removeWord (yPosition: Int, xPosition: Int, direction: Char, word: String): ScrabbleField = new ScrabbleField(matrix.removeWord(yPosition, xPosition, direction, word), dictionary, squareFactory, languageEnum, player, players,stoneContainer)
   def addDictionaryWord(word: String): ScrabbleField = new ScrabbleField(matrix, dictionary.addWord(word))
   def setLanguageDictionary(languagee: LanguageEnum): ScrabbleField = new ScrabbleField(matrix, dictionary.readLines(languagee), squareFactory, languagee, player, players,stoneContainer)
-  def previousTurn(currentTurn: Player): ScrabbleField = new ScrabbleField(matrix, dictionary, squareFactory, languageEnum, players.last, players)
+  def previousTurn(currentTurn: Player): ScrabbleField = new ScrabbleField(matrix, dictionary, squareFactory, languageEnum, players.last, players, stoneContainer)
 
   def addPoints(pointsToAdd: Int, player: Player, ListPlayers: List[Player]): ScrabbleField =
-    val newPlayer = new Player(player.getName, player.getPoints + pointsToAdd)
+    val newPlayer = new Player(player.getName, player.getPoints + pointsToAdd, player.playerTiles)
     if (!ListPlayers.contains(player)) return this
     val newListPlayers = ListPlayers.updated(ListPlayers.indexOf(player), newPlayer)
-    new ScrabbleField(matrix, dictionary, squareFactory, languageEnum, newPlayer, newListPlayers)
+    new ScrabbleField(matrix, dictionary, squareFactory, languageEnum, newPlayer, newListPlayers, stoneContainer)

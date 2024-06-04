@@ -12,15 +12,17 @@ trait ScoringSystem {
     val totalPointsNewWord = newWordSum * newWordMultiplication
     totalPointsNewWord
   }
-    def collectPointsR(matrix: Matrix, xCoordinates: Int, yCoordinates: Int, direction: Char, word: String, currentIndex: Int, sum: Int, multiplication: Int): (Int, Int) = {
-    if (currentIndex >= word.length || yCoordinates >= matrix.columns || xCoordinates >= matrix.rows || matrix.field(xCoordinates)(yCoordinates).isEmpty) {
+    def collectPointsR(matrix: Matrix, yPosition: Int, xCoordinates: Int, direction: Char, word: String, currentIndex: Int, sum: Int, multiplication: Int): (Int, Int) = {
+
+
+      if (currentIndex >= word.length || xCoordinates >= matrix.columns || yPosition >= matrix.rows || matrix.field(yPosition)(xCoordinates).isEmpty) {
       return (sum, multiplication)
     }
     val (newXPosition, newYPosition) = direction match {
-      case 'H' => (xCoordinates + 1, yCoordinates)
-      case 'V' => (xCoordinates, yCoordinates + 1)
+      case 'V' => (yPosition + 1, xCoordinates)
+      case 'H' => (yPosition, xCoordinates + 1)
     }
-    val currentSquare = matrix.field(xCoordinates)(yCoordinates)
+    val currentSquare = matrix.field(yPosition)(xCoordinates)
     val (newSum, newMultiplication) = currentSquare match {
       case wordSquare: WordSquare =>
         (sum + determinPoints(currentSquare.letter) , multiplication * currentSquare.scoreModifier)

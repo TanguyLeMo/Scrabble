@@ -1,7 +1,7 @@
 package de.htwg.se.scrabble
 package util
 trait Observer:
-  def update(): String
+  def update(event : Event): String
 
 trait Observable:
   var subscribers: Vector[Observer] = Vector()
@@ -10,7 +10,7 @@ trait Observable:
     subscribers = subscribers :+ s
   }
   def remove(s: Observer): Unit = subscribers = subscribers.filter(o => o == s)
-  def notifyObservers(): Unit =
-    subscribers.foreach(o => o.update())
+  def notifyObservers(event: Event): Unit =
+    subscribers.foreach(o => o.update(event))
     
 

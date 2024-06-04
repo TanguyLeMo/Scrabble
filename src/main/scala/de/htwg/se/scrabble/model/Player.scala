@@ -61,3 +61,12 @@ class Player (val name: String,val points: Int,val playerTiles: List[Stone]):
 
   override def toString: String =
     name + " Points: " + points
+
+  def previousTurn(playerList: List[Player], currentTurn: Player): Player = {
+    val index = playerList.indexOf(currentTurn) - 1
+    val playerOption = playerList.lift(index)
+
+    playerOption match
+      case Some(player) => player
+      case None => playerList.last
+  }

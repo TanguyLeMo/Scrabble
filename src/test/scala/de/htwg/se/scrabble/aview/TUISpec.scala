@@ -110,7 +110,7 @@ class TUISpec extends AnyWordSpec with Matchers {
           val controller = new Controller(scrabbleField)
           hui = new TUI(controller)
           val tui = hui.inputNamesAndCreateList(hui.numberOfPlayers())
-          hui = hui.processInputLine(new Player("hui", 0, List[Stone]()))
+          hui = hui.processInputLine(new Player("hui", 0))
         }
         hui should not equal("exit")
         }
@@ -268,8 +268,8 @@ class TUISpec extends AnyWordSpec with Matchers {
           val controller = new Controller(scrabbleField)
           val tui = new TUI(controller)
           val playerList = tui.inputNamesAndCreateList(2)
-          playerList.head.getName should not equal("Player1")
-          playerList(1).getName should not equal("Player2")
+          playerList.head.getName should not equal "Player1"
+          playerList(1).getName should not equal "Player2"
           }
         }
       }

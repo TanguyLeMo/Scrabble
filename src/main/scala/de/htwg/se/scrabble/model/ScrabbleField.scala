@@ -3,9 +3,10 @@ package de.htwg.se.scrabble.model
 import de.htwg.se.scrabble.aview.languages._
 import de.htwg.se.scrabble.aview.languages.LanguageEnum._
 import de.htwg.se.scrabble.model.scoring._
+import de.htwg.se.scrabble.model.StoneContainer
 import de.htwg.se.scrabble.model.square.{ScrabbleSquare, StandardSquareFactory}
 
-class ScrabbleField(val matrix: Matrix, val dictionary: Dictionary, val squareFactory: StandardSquareFactory, val languageEnum: LanguageEnum, val player : Player, val players : List[Player]):
+class ScrabbleField(val matrix: Matrix, val dictionary: Dictionary, val squareFactory: StandardSquareFactory, val languageEnum: LanguageEnum, val player : Player, val players : List[Player],val stoneContainer: StoneContainer):
   val numOfAlphabet: Int = 26
   val numSymbolPerColumn: Int = Math.ceil(matrix.rows.toDouble / numOfAlphabet.toDouble).toInt + 1
   val scoringSystem: ScoringSystem = languageEnum match
@@ -13,9 +14,9 @@ class ScrabbleField(val matrix: Matrix, val dictionary: Dictionary, val squareFa
     case FRENCH => new FrenchScoringSystem()
     case GERMAN => new GermanScoringSystem()
     case ITALIAN => new ItalianScoringSystem()
-  def this(rowsAndColumns: Int) = this(new Matrix(Vector.fill(rowsAndColumns, rowsAndColumns)(new StandardSquareFactory().createDoubleSquare(Stone()))).init(), new Dictionary().readLines(ENGLISH), new StandardSquareFactory, ENGLISH, new Player("someone",0), Nil)
-  def this(matrix : Matrix, newDictionary: Dictionary) = this(matrix, newDictionary, new StandardSquareFactory, ENGLISH, new Player("someone",0), Nil)
-  def this(rowsAndColumns : Int, languageEnum: LanguageEnum) = this(new Matrix(Vector.fill(rowsAndColumns, rowsAndColumns)(new StandardSquareFactory().createDoubleSquare(Stone()))).init(), new Dictionary().readLines(languageEnum), new StandardSquareFactory, languageEnum, new Player("someone",0), Nil)
+  def this(rowsAndColumns: Int) = this(new Matrix(Vector.fill(rowsAndColumns, rowsAndColumns)(new StandardSquareFactory().createDoubleSquare(Stone()))).init(), new Dictionary().readLines(ENGLISH), new StandardSquareFactory, ENGLISH, new Player("someone",0,List[Stone]()), Nil,new StoneContainer(List[Stone]()))
+  def this(matrix : Matrix, newDictionary: Dictionary) = this(matrix, newDictionary, new StandardSquareFactory, ENGLISH, new Player("someone",0,List[Stone]()), Nil, new StoneContainer(List[Stone]()))
+  def this(rowsAndColumns : Int, languageEnum: LanguageEnum) = this(new Matrix(Vector.fill(rowsAndColumns, rowsAndColumns)(new StandardSquareFactory().createDoubleSquare(Stone()))).init(), new Dictionary().readLines(languageEnum), new StandardSquareFactory, languageEnum, new Player("someone",0,List[Stone]()), Nil,new StoneContainer(List[Stone]()))
 
   def labelingXAxis(currcolum: Int): String =
     if(currcolum > matrix.columns)""
@@ -23,7 +24,7 @@ class ScrabbleField(val matrix: Matrix, val dictionary: Dictionary, val squareFa
   def addSpace(numSpaceToAdd: Int): String = numSpaceToAdd match
     case n if n <= 0 => " "
     case n => " " + addSpace(n - 1)
-  def placeWord(yPosition: Int, xCoordinates : Int, direction :Char, word : String): ScrabbleField = new ScrabbleField(matrix.placeWord(yPosition, xCoordinates, direction, word), dictionary, squareFactory, languageEnum, player, players)
+  def placeWord(yPosition: Int, xCoordinates : Int, direction :Char, word : String): ScrabbleField = new ScrabbleField(matrix.placeWord(yPosition, xCoordinates, direction, word), dictionary, squareFactory, languageEnum, player, players, stoneContainer)
   def wordFits(xPosition: Int, yPosition: Int, direction: Char, word: String) : Boolean = matrix.wordFits(xPosition, yPosition, direction, word)
   def translateLetter(n: Int): String = if (n <= 0) "" else translateLetter((n - 1) / 26) + ('A' + (n - 1) % 26).toChar
   def concatenateRows(currentRow: Int): String =
@@ -37,6 +38,6 @@ class ScrabbleField(val matrix: Matrix, val dictionary: Dictionary, val squareFa
     that match
       case that: ScrabbleField => this.matrix.equals(that.matrix) && this.numSymbolPerColumn == that.numSymbolPerColumn
       case _ => false
-  def removeWord (yPosition: Int, xPosition: Int, direction: Char, word: String): ScrabbleField = new ScrabbleField(matrix.removeWord(yPosition, xPosition, direction, word), dictionary, squareFactory, languageEnum, player, players)
+  def removeWord (yPosition: Int, xPosition: Int, direction: Char, word: String): ScrabbleField = new ScrabbleField(matrix.removeWord(yPosition, xPosition, direction, word), dictionary, squareFactory, languageEnum, player, players,stoneContainer)
   def addDictionaryWord(word: String): ScrabbleField = new ScrabbleField(matrix, dictionary.addWord(word))
-  def setLanguageDictionary(languagee: LanguageEnum): ScrabbleField = new ScrabbleField(matrix, dictionary.readLines(languagee), squareFactory, languagee, player, players)
+  def setLanguageDictionary(languagee: LanguageEnum): ScrabbleField = new ScrabbleField(matrix, dictionary.readLines(languagee), squareFactory, languagee, player, players,stoneContainer)

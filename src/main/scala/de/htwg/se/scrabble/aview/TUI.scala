@@ -36,6 +36,8 @@ class TUI(val controller: Controller, val languageContext : LanguageContext) ext
   }
       def processInputLine(currentPlayer : Player) : TUI = {
       println(currentPlayer.getName)
+      println("Stones:")
+      println(controller.field.player.playerTiles.map(stone => " |" + stone.toString + "| ").mkString)
       println(languageContext.enterWord)
       val input = readLine()
       val exitWord: String = languageContext.exit
@@ -75,13 +77,24 @@ class TUI(val controller: Controller, val languageContext : LanguageContext) ext
             println(languageContext.wordDoesntFit)
             processInputLine(currentPlayer)
           } else {
-            val move = Move(yCoordinate, xCoordinate, direction.charAt(0), word)
-            controller.doAndPublish(placeWordAsFunction, move)
-            processInputLine(controller.nextTurn(controller.thisPlayerList,currentPlayer))
+            val lettersAlreadyThere = controller.lettersAlreadyThere(xCoordinate, yCoordinate, direction.charAt(0), word)
+            val onlyRequiredStones = controller.OnlyRequiredStones(lettersAlreadyThere, word)
+            
+            if(controller.hasStones(lettersAlreadyThere,word,currentPlayer)) {
+              controller.removeStones(currentPlayer,controller.field.players,onlyRequiredStones)
+              drawStonesAfterRound(controller.field.player,onlyRequiredStones.length,controller.field.players)
+              val move = Move(yCoordinate, xCoordinate, direction.charAt(0), word)
+              controller.doAndPublish(placeWordAsFunction, move)
+              processInputLine(controller.nextTurn(controller.thisPlayerList, currentPlayer))
+            } else {
+              println("not enough stones")
+              processInputLine(currentPlayer)
+            }
           }
         }
       }
     }
+
 
       def translateCoordinate(coordinate: String): (Int, Int) = {
         val coordinates = coordinate.split(" ")
@@ -91,12 +104,17 @@ class TUI(val controller: Controller, val languageContext : LanguageContext) ext
       def validCoordinateInput(xCoordinate: String, yCoordinate: String): Boolean = {
         ("""[A-Z,a-z]+""".r matches xCoordinate) && ("""[0-9]+""".r matches yCoordinate)
       }
-      def inputNamesAndCreateList(numberPlayers: Int): List[Player] = controller.CreatePlayersList(readPlayerNames(numberPlayers, Vector[String]()))
+      def inputNamesAndCreateList(numberPlayers: Int): List[Player] = {
+
+        val playerListWithoutStones = controller.CreatePlayersList(readPlayerNames(numberPlayers, Vector[String]()))
+        val playerListWithStones = playerStartStones(7, playerListWithoutStones)
+        playerListWithStones
+      }
       def numberOfPlayers(): Int =
         val isNumber : Try[Int] =  Try(readLine("Enter number of players: ").toInt)
         isNumber match {
           case Success(value) =>
-            if(value>0) value
+            if(value>0 & (controller.field.stoneContainer.Stones.length/(value*7.0))>=1.0) value
             else
               println(languageContext.invalidNumber)
               numberOfPlayers()
@@ -104,6 +122,35 @@ class TUI(val controller: Controller, val languageContext : LanguageContext) ext
             println("Invalid input. Please enter a valid number.")
             numberOfPlayers()
         }
+      def playerStartStones(numberStones: Int, playerList: List[Player]): List[Player] = {
+        if (numberStones == 0) playerList
+        else
+          val updatedPlayerList = playerList.foldLeft(playerList) { (updatedList, player) =>
+            val StonetoAdd = controller.drawRandomStone(controller.field.stoneContainer)
+            controller.removeStonefromContainer(StonetoAdd, controller.field.stoneContainer)
+            val AddStonetoPlayer = new Player(player.getName, player.getPoints, player.playerTiles :+ StonetoAdd)
+            updatedList.updated(updatedList.indexOf(player), AddStonetoPlayer)
+          }
+          controller.field = new ScrabbleField(controller.field.matrix, controller.field.dictionary, controller.field.squareFactory, controller.field.languageEnum, updatedPlayerList.head, updatedPlayerList, controller.field.stoneContainer)
+          playerStartStones(numberStones - 1, updatedPlayerList)
+      }
+
+      def drawStonesAfterRound(player:Player,numberOfCards:Int,players:List[Player]):List[Player]={
+        if(controller.field.stoneContainer.Stones.length==0||numberOfCards==0){
+          players
+        }
+        else{
+          val newStone = controller.drawRandomStone(controller.field.stoneContainer)
+          println(newStone)
+          controller.removeStonefromContainer(newStone,controller.field.stoneContainer)
+          val newPlayer = new Player(player.getName,player.getPoints,player.playerTiles :+ newStone)
+          val newPlayerList = controller.field.players.updated(controller.field.players.indexOf(player),newPlayer)
+          controller.field = new ScrabbleField(controller.field.matrix,controller.field.dictionary,controller.field.squareFactory,controller.field.languageEnum,newPlayer,newPlayerList,controller.field.stoneContainer)
+          drawStonesAfterRound(newPlayer,numberOfCards-1,newPlayerList)
+
+        }
+      }
+
       def readPlayerNames(numberPlayers: Int, vector: Vector[String]): Vector[String] = {
         if(numberPlayers < 1) vector else
           val name = readLine("Player " + (vector.length+1) + ": ")
@@ -149,6 +196,7 @@ class TUI(val controller: Controller, val languageContext : LanguageContext) ext
             println(language + " n'est pas une langue disponible")
             println(language + " non è una lingua disponibile")
             setGameLanguage()
+        controller.gamestartPlayStones(controller.field.languageEnum)
         newTUI
       }
 
@@ -158,6 +206,7 @@ class TUI(val controller: Controller, val languageContext : LanguageContext) ext
       case _ => false
     }
   }
+
 
   def placeWordAsFunction: Move => ScrabbleField = move => {
     controller.placeWord(move.xPosition, move.yPosition, move.direction, move.word)

@@ -1,0 +1,9 @@
+E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,N,N,N,N,N,N,N,N,N,S,S,S,S,S,S,S,I,I,I,I,I,I,R,R,R,R,R,R,T,T,T,T,T,T,U,U,U,U,U,U,A,A,A,A,A,D,D,D,D,
+H,H,H,H,G,G,G,L,L,L,O,O,O,
+M,M,M,M,B,B,W,Z,
+C,C,F,F,K,K,P,
+Ä,J,Ü,V,
+Ö,X,
+Q,Y,
+_,_
+

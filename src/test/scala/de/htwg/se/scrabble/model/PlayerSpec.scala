@@ -5,7 +5,7 @@ import org.scalatest.matchers.should.Matchers._
 class PlayerSpec extends AnyWordSpec {
   "A Player" when {
     "created" should {
-      val player = new Player("Someone", 0)
+      val player = new Player("Someone", 0, List[Stone]())
       "have a name" in {
         player.getName should be("Someone")
       }
@@ -16,11 +16,11 @@ class PlayerSpec extends AnyWordSpec {
         player.toString should be("Someone Points: 0")
       }
       "be equal to another player with the same name" in {
-        val player2 = new Player("Someone", 0)
+        val player2 = new Player("Someone", 0, List[Stone]())
         player shouldEqual player2
       }
       "not be equal to another player with a different name" in {
-        val player2 = new Player("Someone else", 0)
+        val player2 = new Player("Someone else", 0, List[Stone]())
         player shouldNot equal(player2)
       }
       "not be equal to another type" in {
@@ -29,7 +29,7 @@ class PlayerSpec extends AnyWordSpec {
       }
 
       "when adding points" should {
-        val player = new Player("Someone", 0)
+        val player = new Player("Someone", 0, List[Stone]())
         val playerList = List(player)
         "add the points to the player" in {
           val newPlayerList = player.AddPoints(10, player, playerList)
@@ -45,9 +45,9 @@ class PlayerSpec extends AnyWordSpec {
         }
       }
       "when sorting a list of players" should {
-        val player1 = new Player("Someone", 10)
-        val player2 = new Player("Someone else", 20)
-        val player3 = new Player("Another one", 5)
+        val player1 = new Player("Someone", 10, List[Stone]())
+        val player2 = new Player("Someone else", 20, List[Stone]())
+        val player3 = new Player("Another one", 5, List[Stone]())
         val playerList = List(player1, player2, player3)
         "sort the list by points" in {
           val sortedList = player1.sortListAfterPoints(playerList)
@@ -57,9 +57,9 @@ class PlayerSpec extends AnyWordSpec {
         }
       }
       "when getting the next player in a list" should {
-        val player1 = new Player("Someone", 10)
-        val player2 = new Player("Someone else", 20)
-        val player3 = new Player("Another one", 5)
+        val player1 = new Player("Someone", 10, List[Stone]())
+        val player2 = new Player("Someone else", 20, List[Stone]())
+        val player3 = new Player("Another one", 5, List[Stone]())
         val playerList = List(player1, player2, player3)
         "return the next player in the list" in {
           val nextPlayer = player1.nextTurn(playerList, player1)

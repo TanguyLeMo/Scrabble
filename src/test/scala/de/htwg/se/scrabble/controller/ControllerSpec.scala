@@ -1,5 +1,6 @@
 package de.htwg.se.scrabble.controller
 
+import de.htwg.se.scrabble.model.Stone
 import de.htwg.se.scrabble.aview.languages.LanguageEnum
 import de.htwg.se.scrabble.aview.languages.LanguageEnum.{ENGLISH, FRENCH, GERMAN}
 import org.scalatest.wordspec.AnyWordSpec
@@ -123,8 +124,8 @@ class ControllerSpec extends AnyWordSpec:
       "return a list of players sorted descending by points" in {
         val field = new ScrabbleField(15,english)
         val controller = new Controller(field)
-        val player1 = new Player("Someone1", 10)
-        val player2 = new Player("Someone2", 20)
+        val player1 = new Player("Someone1", 10, List[Stone]())
+        val player2 = new Player("Someone2", 20, List[Stone]())
         val players = List(player1, player2)
         val sortedPlayers = controller.sortListAfterPoints(players)
         sortedPlayers should be(List(player2, player1))
@@ -143,7 +144,7 @@ class ControllerSpec extends AnyWordSpec:
       "add the points to the player" in {
         val field = new ScrabbleField(15,english)
         val controller = new Controller(field)
-        val player = new Player("Someone", 0)
+        val player = new Player("Someone", 0, List[Stone]())
         val playerList = List(player)
         val newPlayerList = controller.AddPoints(10, player, playerList)
         newPlayerList.head.getPoints should be(10)
@@ -154,9 +155,9 @@ class ControllerSpec extends AnyWordSpec:
       "return the next player in the list" in {
         val field = new ScrabbleField(15,english)
         val controller = new Controller(field)
-        val player1 = new Player("Someone", 10)
-        val player2 = new Player("Someone else", 20)
-        val player3 = new Player("Another one", 5)
+        val player1 = new Player("Someone", 10, List[Stone]())
+        val player2 = new Player("Someone else", 20, List[Stone]())
+        val player3 = new Player("Another one", 5, List[Stone]())
         val playerList = List(player1, player2, player3)
         val nextPlayer = controller.nextTurn(playerList, player1)
         nextPlayer should be(player2)
@@ -164,9 +165,9 @@ class ControllerSpec extends AnyWordSpec:
       "return the first player if the current turn is last player in the list" in {
         val field = new ScrabbleField(15,english)
         val controller = new Controller(field)
-        val player1 = new Player("Someone", 10)
-        val player2 = new Player("Someone else", 20)
-        val player3 = new Player("Another one", 5)
+        val player1 = new Player("Someone", 10, List[Stone]())
+        val player2 = new Player("Someone else", 20, List[Stone]())
+        val player3 = new Player("Another one", 5, List[Stone]())
         val playerList = List(player1, player2, player3)
         val nextPlayer = controller.nextTurn(playerList, player3)
         nextPlayer should be(player1)

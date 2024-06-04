@@ -3,6 +3,7 @@ package aview
 
 import org.scalatest.wordspec.AnyWordSpec
 import de.htwg.se.scrabble.controller.Controller
+import de.htwg.se.scrabble.model.Stone
 import de.htwg.se.scrabble.model.{Player, ScrabbleField}
 import org.scalatest.matchers.should.Matchers
 import de.htwg.se.scrabble.aview.languages.*
@@ -109,7 +110,7 @@ class TUISpec extends AnyWordSpec with Matchers {
           val controller = new Controller(scrabbleField)
           hui = new TUI(controller)
           val tui = hui.inputNamesAndCreateList(hui.numberOfPlayers())
-          hui = hui.processInputLine(new Player("hui", 0))
+          hui = hui.processInputLine(new Player("hui", 0, List[Stone]()))
         }
         hui should not equal("exit")
         }
@@ -125,7 +126,7 @@ class TUISpec extends AnyWordSpec with Matchers {
         val controller = new Controller(scrabbleField)
         hui = new TUI(controller)
         val tui = hui.inputNamesAndCreateList(hui.numberOfPlayers())
-        hui = hui.processInputLine(new Player("hui", 0))
+        hui = hui.processInputLine(new Player("hui", 0, List[Stone]()))
       }
       hui.controller.field shouldEqual scrabbleField
     }
@@ -140,7 +141,7 @@ class TUISpec extends AnyWordSpec with Matchers {
       val controller = new Controller(scrabbleField)
       hui = new TUI(controller)
       val tui = hui.inputNamesAndCreateList(hui.numberOfPlayers())
-      hui = hui.processInputLine(new Player("hui", 0))
+      hui = hui.processInputLine(new Player("hui", 0, List[Stone]()))
     }
     hui.controller.field shouldEqual scrabbleField
   }
@@ -154,7 +155,7 @@ class TUISpec extends AnyWordSpec with Matchers {
       val controller = new Controller(scrabbleField)
       hui = new TUI(controller)
       val tui = hui.inputNamesAndCreateList(hui.numberOfPlayers())
-      hui = hui.processInputLine(new Player("hui", 0))
+      hui = hui.processInputLine(new Player("hui", 0, List[Stone]()))
     }
     hui.controller.field shouldEqual scrabbleField
   }
@@ -169,7 +170,7 @@ class TUISpec extends AnyWordSpec with Matchers {
         val controller = new Controller(scrabbleField)
         hui = new TUI(controller)
         val tui = hui.inputNamesAndCreateList(hui.numberOfPlayers())
-        hui = hui.processInputLine(new Player("hui", 0))
+        hui = hui.processInputLine(new Player("hui", 0, List[Stone]()))
       }
       hui.controller.field shouldEqual scrabbleField
     }
@@ -183,7 +184,7 @@ class TUISpec extends AnyWordSpec with Matchers {
         val controller = new Controller(scrabbleField)
         hui = new TUI(controller)
         val tui = hui.inputNamesAndCreateList(hui.numberOfPlayers())
-        hui = hui.processInputLine(new Player("hui", 0))
+        hui = hui.processInputLine(new Player("hui", 0, List[Stone]()))
       }
       hui.controller.field shouldEqual scrabbleField
     }
@@ -358,9 +359,9 @@ class TUISpec extends AnyWordSpec with Matchers {
         "print the leaderboard und returns it" in {
           val controller = new Controller(scrabbleField)
           val tui = new TUI(controller)
-          val player1 = new Player("Player1", 10)
-          val player2 = new Player("Player2", 20)
-          val player3 = new Player("Player3", 5)
+          val player1 = new Player("Player1", 10, List[Stone]())
+          val player2 = new Player("Player2", 20, List[Stone]())
+          val player3 = new Player("Player3", 5, List[Stone]())
           val playerList = List(player1, player2, player3)
           val playerListSorted = tui.displayLeaderboard(playerList)
           playerListSorted.toString should equal("List(Player2 Points: 20, Player1 Points: 10, Player3 Points: 5)")

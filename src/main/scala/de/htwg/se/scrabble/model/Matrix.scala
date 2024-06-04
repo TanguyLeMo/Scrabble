@@ -104,6 +104,8 @@ class Matrix(val field: Vector[Vector[ScrabbleSquare]]):
       placeHorizontally(xPosition + 1, yPosition, word, index + 1, Matrix(updatedMatrix.field.updated(yPosition, newVector)))
     }
 
+  
+  
   def removeWord(xPosition: Int, yPosition: Int, direction: Char, word: String): Matrix = if(direction == 'H') removeHorizontally(xPosition, yPosition, word, 0, this) else removeVertically(xPosition, yPosition, word, 0, this)
 
     def removeVertically(xPosition: Int, yPosition: Int, word: String, index: Int, updatedMatrix: Matrix): Matrix =
@@ -119,9 +121,24 @@ class Matrix(val field: Vector[Vector[ScrabbleSquare]]):
       removeHorizontally(xPosition + 1, yPosition, word, index + 1, Matrix(updatedMatrix.field.updated(yPosition, newVector)))
     }
 
-
-
-
+  def lettersAlreadyThere(xPosition: Int, yPosition: Int, direction: Char, word: String): List[Stone] = {
+    direction.toUpper match {
+      case 'H' =>
+        word.zipWithIndex.flatMap {
+          case (char, index) =>
+            val element = field(yPosition)(xPosition + index)
+            if (element.letter.symbol == char) Some(element.letter) else None
+        }.toList
+      case 'V' =>
+        word.zipWithIndex.flatMap {
+          case (char, index) =>
+            val element = field(yPosition + index)(xPosition)
+            if (element.letter.symbol == char) Some(element.letter) else None
+        }.toList
+    }
+  }
+      
+  
   
 
   override def equals(obj: Any): Boolean = obj match

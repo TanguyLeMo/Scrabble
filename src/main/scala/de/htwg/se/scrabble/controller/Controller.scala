@@ -15,7 +15,6 @@ class Controller(var field: ScrabbleField) extends Observable:
   def doAndPublish(doThis: placeWordsAsMove => ScrabbleField, move: placeWordsAsMove): Unit =
     val newState = doThis(move)
     field = undoManager.doStep(field, newState)
-    AddPoints(collectPoints(field.matrix, move.xPosition, move.yPosition, move.direction, move.word), field.player, field.players)
     notifyObservers(new RoundsEvent)
 
   def doAndPublish(doThis: => ScrabbleField): Unit =
@@ -23,7 +22,6 @@ class Controller(var field: ScrabbleField) extends Observable:
     notifyObservers(new RoundsEvent)
 
   def undo: ScrabbleField = {
-    println(undoManager.getUndoStack.size)
     field = undoManager.undoStep(field)
     field
   }
@@ -35,6 +33,7 @@ class Controller(var field: ScrabbleField) extends Observable:
     val move = placeWordsAsMove(xPosition, yPosition, direction, word)
     val newState = field.placeWord(move.yPosition, move.xPosition, move.direction, move.word)
     field = undoManager.doStep(field, newState)
+    field = field.addPoints(collectPoints(field.matrix, move.xPosition, move.yPosition, move.direction, move.word), field.player, field.players)
     notifyObservers(new RoundsEvent)
     field
 

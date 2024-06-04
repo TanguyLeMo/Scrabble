@@ -34,10 +34,11 @@ class TUI(val controller: Controller, val languageContext : LanguageContext) ext
   }
 
   override def update(event: Event): String = {
-    println("heeeeee")
     event match
       case event: RoundsEvent =>
         println(controller.toString)
+        println(controller.field.player)
+        println(languageContext.currentPlayer + controller.field.player.nextTurn(controller.thisPlayerList,controller.field.player))
       case event: DictionaryEvent =>
         println(controller.field.languageSettings)
       case event: RequestEnterLanguage =>
@@ -67,21 +68,23 @@ class TUI(val controller: Controller, val languageContext : LanguageContext) ext
       case event: EnterWordForDictionary => println(languageContext.enterWordforDictionary)
       case event: LanguageSetting => println(languageContext.languageSetting)
       case event: WordNotInDictionary => println(languageContext.wordNotInDictionary)
-
       controller.toString
   }
-      def processInputLine(currentPlayer : Player) : TUI = {
-      controller.currentPlayercontroller
+      def processInputLine() : TUI = {
+      val currentPlayer = controller.field.player
+     // controller.currentPlayercontroller
       controller.enterWordcontroller
       val input = readLine()
       val exitWord: String = languageContext.exit
       input match {
-        case "z" => controller.doAndPublish(controller.undo); processInputLine(currentPlayer)
-        case "y" => controller.doAndPublish(controller.redo); processInputLine(currentPlayer)
+        case "z" => controller.doAndPublish(controller.undo); processInputLine()
+        case "y" => controller.doAndPublish(controller.redo); processInputLine()
         case _ =>
       }
-      if(input.equalsIgnoreCase(exitWord)) 
-        controller.displayLeaderBoard; this else
+      if(input.equalsIgnoreCase(exitWord))
+      {  
+        controller.displayLeaderBoard; this
+      } else
       if (input.equalsIgnoreCase(languageContext.exit)) {
         controller.exitcontroller
         this
@@ -89,15 +92,15 @@ class TUI(val controller: Controller, val languageContext : LanguageContext) ext
         val inputVector = input.split(" ")
         if (inputVector.length != 4) {
           controller.invalidInputcontroller
-          processInputLine(currentPlayer)
+          processInputLine()
         }
         else if (!validCoordinateInput(inputVector(1), inputVector(2))) {
           controller.invalidcoordinatescontroller 
-          processInputLine(currentPlayer)
+          processInputLine()
         } else {
           val direction = inputVector(3) match
-            case "H" => "V"
-            case "V" => "H"
+            case "H" => "H"
+            case "V" => "V"
             case _ => inputVector(3) + languageContext.noCorrectDirection
           val word = inputVector(0).toUpperCase()
           val coordinates = translateCoordinate(inputVector(1) + " " + inputVector(2))
@@ -105,16 +108,17 @@ class TUI(val controller: Controller, val languageContext : LanguageContext) ext
           val xCoordinate = coordinates._2
           if (!controller.contains(word)) {
             controller.notInDictionarycontroller
-            processInputLine(currentPlayer)
+            processInputLine()
           } else if (!(direction == "H" | direction == "V")) {
             controller.NoCorrectDirectioncontroller
-            processInputLine(currentPlayer)
+            processInputLine()
           } else if (!controller.wordFits(xCoordinate, yCoordinate, direction.charAt(0), word)) {
             controller.wordDoesntFitcontroller
-            processInputLine(currentPlayer)
+            processInputLine()
           } else {
             controller.placeWord(xCoordinate, yCoordinate, direction.charAt(0), word)
-            processInputLine(controller.nextTurn(controller.thisPlayerList,currentPlayer))
+            controller.nextTurn(controller.thisPlayerList,currentPlayer)
+            processInputLine()
           }
         }
       }

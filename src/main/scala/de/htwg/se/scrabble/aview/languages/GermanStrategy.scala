@@ -20,4 +20,5 @@ class GermanStrategy extends LanguageStrategy{
   override def invalidNumber: String = "Ungültige Eingabe, bitte geben Sie eine gültige Nummer ein"
   override def enterPlayernames: String = "Geben Sie die Namen des ersten / nächsten Spieler ein"
   override def nameCantBeEmpty: String = "Der Name darf nicht leer sein"
+  override def currentPlayer: String = "Aktueller Spieler: "
 }

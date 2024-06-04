@@ -10,6 +10,7 @@ import model.ScrabbleField
     val tui = TUI(controller).setGameLanguage()
     val playerList = tui.inputNamesAndCreateList(tui.numberOfPlayers())
     val tuiDictionary = tui.dictionaryAddWords
-    val MainGame = tuiDictionary.processInputLine(tuiDictionary.controller.nextTurn(tuiDictionary.controller.thisPlayerList,tuiDictionary.controller.field.player))
+    tuiDictionary.controller.nextTurn(tuiDictionary.controller.thisPlayerList,tuiDictionary.controller.field.player)
+    val MainGame = tuiDictionary.processInputLine()
     println("Goodbye!")
 }

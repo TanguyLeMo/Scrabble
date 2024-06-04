@@ -71,52 +71,52 @@ class Matrix(val field: Vector[Vector[ScrabbleSquare]]):
   def placeWord(xPosition: Int, yPosition: Int, direction: Char, word: String): Matrix =
     if (!wordFits(xPosition, yPosition, direction, word)) this else
     direction.match
-      case 'H' => val NewMatrix = placeHorizontally(xPosition, yPosition, word, 0, this); NewMatrix
-      case 'V' => val newMatrix = placeVertically(xPosition, yPosition, word, 0, this); newMatrix
+      case 'V' => val NewMatrix = verticalPlacement(xPosition, yPosition, word, 0, this); NewMatrix
+      case 'H' => val newMatrix = horizontalPlacement(xPosition, yPosition, word, 0, this); newMatrix
 
 
   def getSquare(col: Int, row: Int): ScrabbleSquare = field(row)(col)
 
 
-  def wordFits(xPosition: Int, yPosition: Int, direction: Char, word: String): Boolean = 
+  def wordFits(xPosition: Int, yPosition: Int, direction: Char, word: String): Boolean =
     if (!fitsInBounds(xPosition, yPosition, direction, word)) return false
     direction.toUpper match {
-      case 'H' =>
+      case 'V' =>
         field(yPosition).slice(xPosition, xPosition + word.length).zipWithIndex.forall {
           case (element, index) => element.letter.symbol == '_' || element.letter.symbol == word.charAt(index)
         }
-      case 'V' =>
+      case 'H' =>
         field.slice(yPosition, yPosition + word.length).zipWithIndex.forall {
           case (element, index) => element(xPosition).letter.symbol == word.charAt(index) || '_' == element(xPosition).letter.symbol
         }
     }
 
-  def placeVertically(xPosition: Int, yPosition: Int, word: String, index: Int, updatedMatrix: Matrix): Matrix =
+  def horizontalPlacement(yCoordinate: Int, xCoordinate: Int, word: String, index: Int, updatedMatrix: Matrix): Matrix =
     if (word.length <= index) updatedMatrix
       else
-      val newVector = updatedMatrix.field(yPosition).updated(xPosition, field(yPosition)(xPosition).update(Stone(word.charAt(index))))
-      placeVertically(xPosition, yPosition + 1, word, index + 1, Matrix (updatedMatrix.field.updated(yPosition, newVector)))
+      val newVector = updatedMatrix.field(xCoordinate).updated(yCoordinate, field(xCoordinate)(yCoordinate).update(Stone(word.charAt(index))))
+      horizontalPlacement(yCoordinate, xCoordinate + 1, word, index + 1, Matrix (updatedMatrix.field.updated(xCoordinate, newVector)))
 
-  def placeHorizontally(xPosition: Int, yPosition: Int, word: String, index: Int, updatedMatrix: Matrix): Matrix =
+  def verticalPlacement(yCoordinate: Int, xCoordinate: Int, word: String, index: Int, updatedMatrix: Matrix): Matrix =
     if (word.length <= index) updatedMatrix
     else {
-      val newVector = updatedMatrix.field(yPosition).updated(xPosition, field(yPosition)(xPosition).update(Stone(word.charAt(index).toUpper)))
-      placeHorizontally(xPosition + 1, yPosition, word, index + 1, Matrix(updatedMatrix.field.updated(yPosition, newVector)))
+      val newVector = updatedMatrix.field(xCoordinate).updated(yCoordinate, field(xCoordinate)(yCoordinate).update(Stone(word.charAt(index).toUpper)))
+      verticalPlacement(yCoordinate + 1, xCoordinate, word, index + 1, Matrix(updatedMatrix.field.updated(xCoordinate, newVector)))
     }
 
   def removeWord(xPosition: Int, yPosition: Int, direction: Char, word: String): Matrix = if(direction == 'H') removeHorizontally(xPosition, yPosition, word, 0, this) else removeVertically(xPosition, yPosition, word, 0, this)
 
-    def removeVertically(xPosition: Int, yPosition: Int, word: String, index: Int, updatedMatrix: Matrix): Matrix =
+    def removeHorizontally(ycoordinate: Int, xCoordinate: Int, word: String, index: Int, updatedMatrix: Matrix): Matrix =
       if (word.length <= index) updatedMatrix
       else
-        val newVector = updatedMatrix.field(yPosition).updated(xPosition, field(yPosition)(xPosition).update(Stone(word.charAt(index))))
-        removeVertically(xPosition, yPosition + 1, word, index + 1, Matrix(updatedMatrix.field.updated(yPosition, newVector)))
+        val newVector = updatedMatrix.field(xCoordinate).updated(ycoordinate, field(xCoordinate)(ycoordinate).update(Stone(word.charAt(index))))
+        removeHorizontally(ycoordinate, xCoordinate + 1, word, index + 1, Matrix(updatedMatrix.field.updated(xCoordinate, newVector)))
 
-  def removeHorizontally(xPosition: Int, yPosition: Int, word: String, index: Int, updatedMatrix: Matrix): Matrix =
+  def removeVertically(yCoordinate: Int, xCoordinate: Int, word: String, index: Int, updatedMatrix: Matrix): Matrix =
     if (word.length <= index) updatedMatrix
     else {
-      val newVector = updatedMatrix.field(yPosition).updated(xPosition, field(yPosition)(xPosition).update(Stone(word.charAt(index).toUpper)))
-      removeHorizontally(xPosition + 1, yPosition, word, index + 1, Matrix(updatedMatrix.field.updated(yPosition, newVector)))
+      val newVector = updatedMatrix.field(xCoordinate).updated(yCoordinate, field(xCoordinate)(yCoordinate).update(Stone(word.charAt(index).toUpper)))
+      removeVertically(yCoordinate + 1, xCoordinate, word, index + 1, Matrix(updatedMatrix.field.updated(xCoordinate, newVector)))
     }
 
 
@@ -134,8 +134,8 @@ class Matrix(val field: Vector[Vector[ScrabbleSquare]]):
     val validY = yPosition >= 0 && yPosition < rows
     if (validX && validY)
       direction.toUpper match {
-        case 'H' => xPosition + word.length <= rows
-        case 'V' => yPosition + word.length <= columns
+        case 'V' => xPosition + word.length <= rows
+        case 'H' => yPosition + word.length <= columns
         case _ => false
       }
     else false

@@ -20,4 +20,5 @@ trait LanguageStrategy {
   def invalidNumber: String
   def enterPlayernames: String
   def nameCantBeEmpty: String
+  def currentPlayer: String
 }

@@ -46,3 +46,10 @@ class ScrabbleField(val matrix: Matrix, val dictionary: Dictionary, val squareFa
   def removeWord (yPosition: Int, xPosition: Int, direction: Char, word: String): ScrabbleField = new ScrabbleField(matrix.removeWord(yPosition, xPosition, direction, word), dictionary, squareFactory, languageEnum, player, players)
   def addDictionaryWord(word: String): ScrabbleField = new ScrabbleField(matrix, dictionary.addWord(word))
   def setLanguageDictionary(languagee: LanguageEnum): ScrabbleField = new ScrabbleField(matrix, dictionary.readLines(languagee), squareFactory, languagee, player, players)
+  def previousTurn(currentTurn: Player): ScrabbleField = new ScrabbleField(matrix, dictionary, squareFactory, languageEnum, players.last, players)
+  
+  def addPoints(pointsToAdd: Int, player: Player, ListPlayers: List[Player]): ScrabbleField =
+    val newPlayer = new Player(player.getName, player.getPoints + pointsToAdd)
+    if (!ListPlayers.contains(player)) return this
+    val newListPlayers = ListPlayers.updated(ListPlayers.indexOf(player), newPlayer)
+    new ScrabbleField(matrix, dictionary, squareFactory, languageEnum, newPlayer, newListPlayers)

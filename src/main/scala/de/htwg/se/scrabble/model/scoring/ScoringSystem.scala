@@ -32,4 +32,5 @@ trait ScoringSystem {
     collectPointsR(matrix, newXPosition, newYPosition, direction, word, currentIndex + 1, newSum, newMultiplication)
   }
   def determinPoints(stone: Stone): Int
+  
 }

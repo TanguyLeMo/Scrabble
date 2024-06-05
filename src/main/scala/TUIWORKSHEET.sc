@@ -1,4 +1,5 @@
 import scala.language.postfixOps
+import de.htwg.se.scrabble.model.{Player, Stone}
 
 
 val quadraticfield = 15;
@@ -89,4 +90,15 @@ sb.append('\n')
 sb.append(gothroughrow(0))
 sb.toString()
 
+val player = new Player("someone", 0, List[Stone](Stone('H'), Stone('E'), Stone('L'), Stone('L'), Stone('O')))
+val stones = List[Stone](Stone('H'), Stone('E'), Stone('L'))
+val ListPlayers = List[Player](player)
 
+val playerStonesChars = player.playerTiles.map(_.symbol)
+val stonesChars = stones.map(_.symbol)
+
+val newPlayerTilesChars = playerStonesChars.diff(stonesChars)
+val newPlayerTiles = newPlayerTilesChars.map(char => Stone(char))
+
+val newPlayer = new Player(player.getName, player.getPoints, newPlayerTiles)
+val newListPlayers = ListPlayers.updated(ListPlayers.indexOf(player),newPlayer)

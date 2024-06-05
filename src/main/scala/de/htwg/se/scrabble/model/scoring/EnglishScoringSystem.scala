@@ -11,4 +11,6 @@ class EnglishScoringSystem extends ScoringSystem{
     case 'J' | 'X' => 8
     case 'Q' | 'Z' => 10
     case _ => 0
+    
+   
 }

@@ -11,5 +11,4 @@ class GermanScoringSystem extends ScoringSystem{
   case 'Ö' | 'X' | 'ß'=> 8
   case 'Q' | 'Y' => 10
 }
-
 }

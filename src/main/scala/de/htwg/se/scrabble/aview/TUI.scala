@@ -79,7 +79,7 @@ class TUI(val controller: Controller, val languageContext : LanguageContext) ext
           } else {
             val lettersAlreadyThere = controller.lettersAlreadyThere(xCoordinate, yCoordinate, direction.charAt(0), word)
             val onlyRequiredStones = controller.OnlyRequiredStones(lettersAlreadyThere, word)
-            
+
             if(controller.hasStones(lettersAlreadyThere,word,currentPlayer)) {
               controller.removeStones(currentPlayer,controller.field.players,onlyRequiredStones)
               drawStonesAfterRound(controller.field.player,onlyRequiredStones.length,controller.field.players)
@@ -141,7 +141,6 @@ class TUI(val controller: Controller, val languageContext : LanguageContext) ext
         }
         else{
           val newStone = controller.drawRandomStone(controller.field.stoneContainer)
-          println(newStone)
           controller.removeStonefromContainer(newStone,controller.field.stoneContainer)
           val newPlayer = new Player(player.getName,player.getPoints,player.playerTiles :+ newStone)
           val newPlayerList = controller.field.players.updated(controller.field.players.indexOf(player),newPlayer)

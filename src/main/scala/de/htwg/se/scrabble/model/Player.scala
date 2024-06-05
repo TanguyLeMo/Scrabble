@@ -31,8 +31,14 @@ class Player (val name: String,val points: Int,val playerTiles: List[Stone]):
     newListPlayers
   
   def removeStones(player: Player, ListPlayers: List[Player],stones: List[Stone]): List[Player] =
-    val newPlayer = new Player(player.getName, player.getPoints, player.playerTiles.filterNot(stones.contains))
-    val newListPlayers = ListPlayers.updated(ListPlayers.indexOf(player),newPlayer)
+    val playerStonesChars = player.playerTiles.map(_.symbol)
+    val stonesChars = stones.map(_.symbol)
+
+    val newPlayerTilesChars = playerStonesChars.diff(stonesChars)
+    val newPlayerTiles = newPlayerTilesChars.map(char => Stone(char))
+
+    val newPlayer = new Player(player.getName, player.getPoints, newPlayerTiles)
+    val newListPlayers = ListPlayers.updated(ListPlayers.indexOf(player), newPlayer)
     newListPlayers
 
   def hasStones(notRequiredStones: List[Stone], word: String, player: Player): Boolean = {
@@ -41,8 +47,9 @@ class Player (val name: String,val points: Int,val playerTiles: List[Stone]):
   }
   
   def OnlyRequiredStones(notRequiredStones: List[Stone], word: String): List[Stone] = {
-    val requiredStonesForWord = word.toCharArray.map(char => Stone(char)).toList
-    val requiredStones = requiredStonesForWord.diff(notRequiredStones)
+    val notRequiredChars = notRequiredStones.map(_.symbol)
+    val requiredCharsForWord = word.toCharArray.toList
+    val requiredStones = requiredCharsForWord.diff(notRequiredChars).map(char => Stone(char))
     requiredStones
   }
 
@@ -60,4 +67,4 @@ class Player (val name: String,val points: Int,val playerTiles: List[Stone]):
     sortedPlayers
 
   override def toString: String =
-    name + " Points: " + points
+    name + " Points: " + points + " Stones: " + playerTiles.mkString(" ")

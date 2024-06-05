@@ -34,3 +34,5 @@ case class InvalidNumber() extends Event
 case class CurrentPlayer() extends Event
 case class EnterPlayerName() extends Event
 case class NameCantBeEmpty() extends Event
+case class NotEnoughStones() extends Event
+case class DisplayLeaderBoard() extends Event

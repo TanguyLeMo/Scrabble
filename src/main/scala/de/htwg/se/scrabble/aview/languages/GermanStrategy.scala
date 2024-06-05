@@ -21,4 +21,6 @@ class GermanStrategy extends LanguageStrategy{
   override def enterPlayernames: String = "Geben Sie die Namen des ersten / nächsten Spieler ein"
   override def nameCantBeEmpty: String = "Der Name darf nicht leer sein"
   override def currentPlayer: String = "Aktueller Spieler: "
+  override def noteEnoughStones: String = "Nicht genügend Steine"
+  override def leaderBoard: String = "Bestenliste"
 }

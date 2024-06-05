@@ -25,10 +25,10 @@ class TUI(val controller: Controller, val languageContext : LanguageContext) ext
       return this
     }
     if(controller.contains(word)) {
-      println( languageContext.wordAlreadyAddedToDictionary)
+      controller.wordAlreadyAddedToDictionarycontroller
     } else{
       controller.add(word)
-      println(languageContext.wordAddedToDictionary)
+      controller.wordAddedToDictionarycontroller
     }
     dictionaryAddWords
   }
@@ -70,11 +70,14 @@ class TUI(val controller: Controller, val languageContext : LanguageContext) ext
       case event: EnterWordForDictionary => println(languageContext.enterWordforDictionary)
       case event: LanguageSetting => println(languageContext.languageSetting)
       case event: WordNotInDictionary => println(languageContext.wordNotInDictionary)
+      case event: DisplayLeaderBoard => println(languageContext.leaderBoard)
+        val players = controller.field.players
+        val sortedPlayers = controller.sortListAfterPoints(players)
+        sortedPlayers.foreach(player => println(sortedPlayers.indexOf(player) + 1 + ". " + player))
     controller.toString
   }
   def processInputLine() : TUI = {
     val currentPlayer = controller.field.player
-    // controller.currentPlayercontroller
     controller.enterWordcontroller
     val input = readLine()
     val exitWord: String = languageContext.exit
@@ -128,7 +131,7 @@ class TUI(val controller: Controller, val languageContext : LanguageContext) ext
               controller.nextTurn(controller.thisPlayerList,currentPlayer)
               processInputLine()
             } else {
-              println("not enough stones")
+              controller.noteEnoughStonescontroller
               processInputLine()
           }
         }
@@ -159,10 +162,11 @@ class TUI(val controller: Controller, val languageContext : LanguageContext) ext
       case Success(value) =>
         if(value>0 & (controller.field.stoneContainer.Stones.length/(value*7.0))>=1.0) value
         else
-          println(languageContext.invalidNumber)
+          controller.invalidNumbercontroller
           numberOfPlayers()
       case Failure(exception) =>
-        println(languageContext.invalidNumber)
+        controller.invalidNumbercontroller
+
         numberOfPlayers()
     }
 
@@ -186,13 +190,12 @@ class TUI(val controller: Controller, val languageContext : LanguageContext) ext
   def displayLeaderboard(): List[Player] = {
     val players = controller.field.players
     val sortedPlayers = controller.sortListAfterPoints(players)
-    println("Leaderboard:")
-    sortedPlayers.foreach(player => println(sortedPlayers.indexOf(player) + 1 + ". " + player))
+    controller.leaderBoardcontroller
     sortedPlayers
   }
 
   def drawStonesAfterRound(player: Player, numberOfCards: Int, players: List[Player]): List[Player] = {
-    if (controller.field.stoneContainer.Stones.length == 0 || numberOfCards == 0) {
+    if (controller.field.stoneContainer.Stones.isEmpty || numberOfCards == 0) {
       players
     }
     else {

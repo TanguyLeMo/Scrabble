@@ -21,4 +21,6 @@ trait LanguageStrategy {
   def enterPlayernames: String
   def nameCantBeEmpty: String
   def currentPlayer: String
+  def noteEnoughStones: String
+  def leaderBoard: String
 }

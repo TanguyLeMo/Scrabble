@@ -21,4 +21,6 @@ class EnglishStrategy extends LanguageStrategy{
   override def enterPlayernames: String = "Enter the names of the first / next player"
   override def nameCantBeEmpty: String = "Name cant be empty"
   override def currentPlayer: String = "Current Player: "
+  override def noteEnoughStones: String = "Not enough stones"
+  override def leaderBoard: String = "Leaderboard"
 }

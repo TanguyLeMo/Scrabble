@@ -186,5 +186,11 @@ class Controller(var field: ScrabbleField) extends Observable:
   def nameCantBeEmptycontroller: ScrabbleField =
     notifyObservers(NameCantBeEmpty())
     field
-
+    
+  def noteEnoughStonescontroller: ScrabbleField =
+    notifyObservers(NotEnoughStones())
+    field
+  def leaderBoardcontroller: ScrabbleField =
+    notifyObservers(DisplayLeaderBoard())
+    field
   def thisPlayerList : List[Player] = field.players

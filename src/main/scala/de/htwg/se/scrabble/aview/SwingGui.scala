@@ -41,10 +41,13 @@ class SwingGui(val controller: Controller, val languageContext : LanguageContext
           val newTUI = comboBox.selection.item match
             case "english" =>
               controller.setLanguageDictionary(ENGLISH)
+              new TUI(controller)
             case "french" =>
               controller.setLanguageDictionary(FRENCH)
+              new TUI(controller)
             case "german" =>
               controller.setLanguageDictionary(GERMAN)
+              new TUI(controller)
             case "italian" =>
               controller.setLanguageDictionary(ITALIAN)
           dispose()
@@ -148,7 +151,6 @@ class SwingGui(val controller: Controller, val languageContext : LanguageContext
     }
   }
 
-
   import scala.swing._
   import scala.swing.event._
 
@@ -158,29 +160,14 @@ class SwingGui(val controller: Controller, val languageContext : LanguageContext
       val text = new TextField(16)
       val rows = controller.field.matrix.rows
       val columns = controller.field.matrix.columns
-      val xAxisLabels = ('A' to 'O').map(_.toString)
+      val xAxisLabels= ('A' to 'O').map(_.toString)
       val yAxisLabels = (0 until rows).map(_.toString)
 
       // FlowPanel for X-axis labels
-      val xAxisPanel = new FlowPanel {
-        for (label <- xAxisLabels) {
-          contents += new Label(label) {
-            horizontalAlignment = Alignment.Center
-            border = Swing.LineBorder(java.awt.Color.BLACK)
-          }
-        }
-      }
+      val xAxisPanel = new ComboBox[String](xAxisLabels)
 
       // FlowPanel for Y-axis labels
-      val yAxisPanel = new FlowPanel {
-        for (label <- yAxisLabels) {
-          contents += new Label(label) {
-            horizontalAlignment = Alignment.Center
-            border = Swing.LineBorder(java.awt.Color.BLACK)
-          }
-        }
-      }
-
+      val yAxisPanel = new ComboBox[String](yAxisLabels)
       // ComboBox for choosing between horizontal and vertical placement
       val orientationComboBox = new ComboBox(Seq("Horizontal", "Vertical"))
 
@@ -217,7 +204,13 @@ class SwingGui(val controller: Controller, val languageContext : LanguageContext
           }
         }
       }
+      val players = controller.field.players
+      val sortedPlayers = controller.sortListAfterPoints(players)
+      val resultString = sortedPlayers.zipWithIndex.map { case (player, index) => s"${index + 1}. $player\n" }.mkString("\n")
 
+      val currentPlayer = new Label("Current Player: " + controller.field.player.getName)
+      val scoreboard = new Label("Scoreboard: " + controller.field.player)
+      val leaderboard = new Label("Leaderboard: " + resultString)
       // Main content
       contents = new BoxPanel(Orientation.Vertical) {
         contents += new FlowPanel {
@@ -228,7 +221,26 @@ class SwingGui(val controller: Controller, val languageContext : LanguageContext
           contents += placeButton
         }
         contents += gridWithLabelsPanel
+        contents += currentPlayer
+        contents += scoreboard
         border = Swing.EmptyBorder(10, 10, 10, 10)
+      }
+      listenTo(placeButton)
+      reactions += {
+        case ButtonClicked(`placeButton`) =>
+          val coordinates = controller.translateCoordinate(xAxisPanel.selection.item.toString + " " + yAxisPanel.selection.item.toString)
+          val y = coordinates._1
+          val x = coordinates._2
+          val direction = orientationComboBox.selection.item.head
+          val word = text.text
+          if(controller.contains(word)){
+            controller.notifyObservers(new WordAlreadyAddedToDictionary)
+          }
+
+          if(!controller.wordFits(x, y, direction, word)){
+            controller.notifyObservers(new WordDoesntFit)
+          }
+          controller.placeWord(x, y, direction, word)
       }
     }
   }
@@ -253,7 +265,7 @@ class SwingGui(val controller: Controller, val languageContext : LanguageContext
       case event: InvalidCoordinates => println(languageContext.invalidcoordinates)
       case event: NotInDictionary => println(languageContext.notInDictionary)
       case event: NoCorrectDirection => println(languageContext.noCorrectDirection)
-      case event: WordDoesntFit => println(languageContext.wordDoesntFit)
+      case event: WordDoesntFit => showErrorDialog(languageContext.wordDoesntFit)
       case event: EnterNumberOfPlayers =>
       case event: EnterPlayerName =>
       case event: NameAlreadyTaken => println(languageContext.nameAlreadyTaken)
@@ -262,7 +274,7 @@ class SwingGui(val controller: Controller, val languageContext : LanguageContext
       case event: InvalidInput => println(languageContext.invalidInput)
       case event: InvalidNumber => println(languageContext.invalidNumber)
       case event: RequestNewWord => println(languageContext.requestNewWord)
-      case event: WordAlreadyAddedToDictionary => println(languageContext.wordAlreadyAddedToDictionary)
+      case event: WordAlreadyAddedToDictionary => showErrorDialog(languageContext.wordNotInDictionary)
       case event: WordAddedToDictionary => println(languageContext.wordAddedToDictionary)
       case event: EnterWordForDictionary => println(languageContext.enterWordforDictionary)
       case event: LanguageSetting => println(languageContext.languageSetting)
@@ -286,6 +298,13 @@ class SwingGui(val controller: Controller, val languageContext : LanguageContext
         getInputAndDisplayGameWindow.top.visible = true
       case _ => ""
     controller.toString
+  }
+  def showErrorDialog(message: String): Unit = {
+    Dialog.showMessage(
+      title = "Error",
+      message = message,
+      messageType = Dialog.Message.Error
+    )
   }
 }
 

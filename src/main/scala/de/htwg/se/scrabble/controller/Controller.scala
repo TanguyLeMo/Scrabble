@@ -197,3 +197,8 @@ class Controller(var field: ScrabbleField) extends Observable:
     notifyObservers(DisplayLeaderBoard())
     field
   def thisPlayerList : List[Player] = field.players
+
+  def translateCoordinate(coordinate: String): (Int, Int) = {
+    val coordinates = coordinate.split(" ")
+    (coordinates(0).toUpperCase().toCharArray.sum - 'A', coordinates(1).toInt)
+  }

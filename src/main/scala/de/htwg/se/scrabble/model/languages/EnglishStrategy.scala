@@ -1,4 +1,4 @@
-package de.htwg.se.scrabble.aview.languages
+package de.htwg.se.scrabble.model.languages
 
 class EnglishStrategy extends LanguageStrategy{
   override def requestNewWord: String = "Enter your word: "

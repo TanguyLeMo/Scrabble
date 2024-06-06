@@ -1,6 +1,6 @@
 package de.htwg.se.scrabble.model
-import de.htwg.se.scrabble.aview.languages.LanguageEnum
 
+import de.htwg.se.scrabble.model.languages.LanguageEnum
 import scala.collection.immutable.HashSet
 import scala.language.postfixOps
 class Dictionary(val set: HashSet[String]) {

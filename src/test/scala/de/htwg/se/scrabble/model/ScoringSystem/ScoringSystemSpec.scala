@@ -5,7 +5,8 @@ import de.htwg.se.scrabble.model.{Dictionary, Matrix, ScrabbleField, Stone, scor
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import de.htwg.se.scrabble.aview.languages.*
-import de.htwg.se.scrabble.aview.languages.LanguageEnum.{ENGLISH, FRENCH, GERMAN}
+import de.htwg.se.scrabble.model.languages.LanguageEnum.{ENGLISH, FRENCH, GERMAN}
+import de.htwg.se.scrabble.model.languages.LanguageEnum
 import de.htwg.se.scrabble.model.scoring.*
 
 class ScoringSystemSpec extends AnyWordSpec with Matchers {

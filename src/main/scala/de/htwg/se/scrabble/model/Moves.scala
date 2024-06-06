@@ -1,6 +1,6 @@
 package de.htwg.se.scrabble.model
 
-import de.htwg.se.scrabble.aview.languages.LanguageEnum
+import de.htwg.se.scrabble.model.languages.LanguageEnum
 
 case class setGameLanguageAsMove(language: LanguageEnum)
 case class CreatePlayersListAsMove(playernames: Vector[String])

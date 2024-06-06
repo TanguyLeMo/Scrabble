@@ -35,3 +35,10 @@ case class EnterPlayerName() extends ScrabbleEvent
 case class NameCantBeEmpty() extends ScrabbleEvent
 case class NotEnoughStones() extends ScrabbleEvent
 case class DisplayLeaderBoard() extends ScrabbleEvent
+
+case class phaseChooseLanguage() extends ScrabbleEvent
+case class phasePlayerAndNames() extends ScrabbleEvent
+case class phaseaddWordsToDictionary() extends ScrabbleEvent
+case class phaseMainGame() extends ScrabbleEvent
+case class phaseEndGame() extends ScrabbleEvent
+case class phaseExit() extends ScrabbleEvent

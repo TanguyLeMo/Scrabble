@@ -1,4 +1,4 @@
-package de.htwg.se.scrabble.aview.languages
+package de.htwg.se.scrabble.model.languages
 
 class ItalianStrategy extends LanguageStrategy{
   override def languageSetting: String = "Lingua impostata su "

@@ -3,14 +3,14 @@ package aview
 
 import controller.Controller
 import controller.Controller
-import de.htwg.se.scrabble.aview.languages.*
-import de.htwg.se.scrabble.aview.languages.LanguageEnum.{ENGLISH, FRENCH, GERMAN, ITALIAN}
+import de.htwg.se.scrabble.model.languages.LanguageContext
+import de.htwg.se.scrabble.model.languages.LanguageEnum.{ENGLISH, FRENCH, GERMAN, ITALIAN}
 import de.htwg.se.scrabble.model.{CreatePlayersListAsMove, Player, ScrabbleField, placeWordsAsMove, setGameLanguageAsMove}
-import util._
+import util.*
 
 import scala.swing.*
 import scala.swing.event.*
-import util.{ScrabbleEvent, NameCantBeEmpty, Observer}
+import util.{NameCantBeEmpty, Observer, ScrabbleEvent}
 import util.ScrabbleEvent
 
 class SwingGui(val controller: Controller, val languageContext : LanguageContext) extends Frame with Observer{
@@ -36,16 +36,16 @@ class SwingGui(val controller: Controller, val languageContext : LanguageContext
           val newTUI = comboBox.selection.item match
             case "english" =>
               controller.setLanguageDictionary(ENGLISH)
-              new TUI(controller, new LanguageContext(comboBox.selection.item))
+              new TUI(controller)
             case "french" =>
               controller.setLanguageDictionary(FRENCH)
-              new TUI(controller, new LanguageContext(comboBox.selection.item))
+              new TUI(controller)
             case "german" =>
               controller.setLanguageDictionary(GERMAN)
-              new TUI(controller, new LanguageContext(comboBox.selection.item))
+              new TUI(controller)
             case "italian" =>
               controller.setLanguageDictionary(ITALIAN)
-              new TUI(controller, new LanguageContext(comboBox.selection.item))
+              new TUI(controller)
           languageWindow.top.dispose()
       }
     }
@@ -158,9 +158,9 @@ class SwingGui(val controller: Controller, val languageContext : LanguageContext
 
           // Add the corresponding row of the scrabble grid
           for (col <- 0 until 15) {
-            contents += new Label(controller.field.matrix.field(row)(col).letter.toString) {
+            contents += new Label(controller.field.matrix.field(col)(row).letter.toString) {
               horizontalAlignment = Alignment.Center
-              border = Swing.LineBorder(java.awt.Color.GREEN)
+              border = Swing.LineBorder(java.awt.Color.getColor(controller.field.matrix.field(col)(row).color))
             }
           }
         }

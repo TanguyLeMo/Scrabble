@@ -1,13 +1,14 @@
 package de.htwg.se.scrabble
 package controller
-import de.htwg.se.scrabble.aview.languages.LanguageEnum
-import util._
+
+import util.*
 import model.ScrabbleField
 import model.Player
 import model.Matrix
 import model.Stone
 import model.StoneContainer
 import de.htwg.se.scrabble.model
+import de.htwg.se.scrabble.model.languages.{LanguageContext, LanguageEnum}
 import de.htwg.se.scrabble.model.placeWordsAsMove
 
 
@@ -72,6 +73,8 @@ class Controller(var field: ScrabbleField) extends Observable:
 
   def hasStones(notRequiredStones: List[Stone], word: String, player: Player): Boolean =
     player.hasStones(notRequiredStones, word, player)
+    
+  def languageContext: LanguageContext = field.languageContext
 
   def AddPoints(pointsToAdd: Int, player: Player, ListPlayers: List[Player]): List[Player] =
     val playerList = player.AddPoints(pointsToAdd, player, ListPlayers)

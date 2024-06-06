@@ -17,8 +17,13 @@ class SwingGui(val controller: Controller, val languageContext : LanguageContext
   controller.add(this)
   def this(controller: Controller) = this(controller, new LanguageContext("english"))
 
-  object languageWindow extends SimpleSwingApplication  {
-    println("heee")
+  val lw = languageWindow.top
+  val nbpw = numberPlayerWindow.top
+  val nmpw = namePlayerWindow.top
+  val dw = dictionaryWindow.top
+
+
+  object languageWindow extends SimpleSwingApplication {
     def top = new MainFrame {
       title = "Language Settings"
       val options = Seq("english", "german", "french", "italian")
@@ -36,24 +41,20 @@ class SwingGui(val controller: Controller, val languageContext : LanguageContext
           val newTUI = comboBox.selection.item match
             case "english" =>
               controller.setLanguageDictionary(ENGLISH)
-              new TUI(controller)
             case "french" =>
               controller.setLanguageDictionary(FRENCH)
-              new TUI(controller)
             case "german" =>
               controller.setLanguageDictionary(GERMAN)
-              new TUI(controller)
             case "italian" =>
               controller.setLanguageDictionary(ITALIAN)
-              new TUI(controller)
-          languageWindow.top.dispose()
+          dispose()
+          controller.notifyObservers(phasePlayerAndNames())
       }
     }
   }
 
 
   object numberPlayerWindow extends SimpleSwingApplication {
-    println("hiiii")
 
     def top = new MainFrame {
       title = "number Players Settings"
@@ -76,15 +77,17 @@ class SwingGui(val controller: Controller, val languageContext : LanguageContext
 
 
   object namePlayerWindow extends SimpleSwingApplication {
-    println("huuuuuu")
 
     def top = new MainFrame {
-      title = "number Players Settings"
-      val text = new TextField(16)
+      val numberOfTextFields = 4
+      title = "Playernames Settings"
+      val textFields = for (i <- 1 to numberOfTextFields) yield new TextField(16)
       val next = new Button("Next")
       contents = new FlowPanel {
-        contents += new Label("Playername: ")
-        contents += text
+        for (x <- textFields) {
+          contents += new Label("Enter Player " + textFields.indexOf(x) + " Name: ")
+          contents += x
+        }
         contents += next
         border = Swing.EmptyBorder(40, 10, 10, 10)
       }
@@ -92,10 +95,59 @@ class SwingGui(val controller: Controller, val languageContext : LanguageContext
       listenTo(next)
       reactions += {
         case ButtonClicked(`next`) =>
-          println("Number of Players: " + text.text)
+          val playerNames = textFields.map(_.text).toVector
+          if (playerNames.distinct.length != playerNames.length || playerNames.contains("")) {
+            Dialog.showMessage(
+              message = "Dies ist eine Popup-Nachricht",
+              title = "Popup-Titel",
+              messageType = Dialog.Message.Info
+            )
+
+          } else {
+            controller.CreatePlayersList(playerNames)
+            controller.notifyObservers(phaseMainGame())
+            dispose()
+          }
       }
     }
   }
+
+  object dictionaryWindow extends SimpleSwingApplication {
+
+    def top = new MainFrame {
+      title = "dictionary Settings"
+      val text = new TextField(15)
+      val add = new Button("Add")
+      val next = new Button("Next")
+      contents = new FlowPanel {
+        contents += new Label("Enter new word: ")
+        contents += text
+        contents += add
+        contents += next
+        border = Swing.EmptyBorder(30, 10, 10, 10)
+      }
+
+      listenTo(next, add)
+      reactions += {
+        case ButtonClicked(`add`) =>
+          println(text.text)
+          println(controller.contains(text.text))
+          println(controller.field.languageEnum)
+          if (controller.contains(text.text)) {
+            Dialog.showMessage(
+              message = "Dies ist eine Popup-Nachricht",
+              title = "Popup-Titel",
+              messageType = Dialog.Message.Info
+            )
+          } else {
+            controller.add(text.text)
+          }
+        case ButtonClicked(`next`) =>
+          dispose()
+      }
+    }
+  }
+
 
   import scala.swing._
   import scala.swing.event._
@@ -187,11 +239,9 @@ class SwingGui(val controller: Controller, val languageContext : LanguageContext
       case event: RoundsScrabbleEvent =>
         getInputAndDisplayGameWindow.top.visible = true
       case event: DictionaryScrabbleEvent =>
-        println(controller.field.languageSettings)
+
       case event: RequestEnterLanguage =>
-        val window = languageWindow.top
-        if(window.visible == false)
-          window.visible = true
+
       case event: NoSuchLanguageScrabbleEvent =>
         println(" Entered Language not a available language")
         println(" Es handelt sich um keine verfügbare Sprache")
@@ -205,13 +255,7 @@ class SwingGui(val controller: Controller, val languageContext : LanguageContext
       case event: NoCorrectDirection => println(languageContext.noCorrectDirection)
       case event: WordDoesntFit => println(languageContext.wordDoesntFit)
       case event: EnterNumberOfPlayers =>
-        languageWindow.top.dispose()
-        val window = numberPlayerWindow.top
-        window.visible = true
-
-      case event: EnterPlayerName => 
-        val window: Frame = namePlayerWindow.top
-        window.visible = true
+      case event: EnterPlayerName =>
       case event: NameAlreadyTaken => println(languageContext.nameAlreadyTaken)
       case event: NameCantBeEmpty => println(languageContext.nameCantBeEmpty)
       case event: EnterWord => println(languageContext.enterWord)
@@ -227,6 +271,19 @@ class SwingGui(val controller: Controller, val languageContext : LanguageContext
         val players = controller.field.players
         val sortedPlayers = controller.sortListAfterPoints(players)
         sortedPlayers.foreach(player => println(sortedPlayers.indexOf(player) + 1 + ". " + player))
+      case event: phaseChooseLanguage =>
+        lw.visible = true
+      case event: phasePlayerAndNames =>
+        lw.visible = false
+        nbpw.contents.head.revalidate()
+        nbpw.repaint()
+        nbpw.visible = true
+      case event: phaseaddWordsToDictionary =>
+        nbpw.visible = false
+        dw.visible = true
+      case event: phaseMainGame =>
+        dw.visible = false
+        getInputAndDisplayGameWindow.top.visible = true
       case _ => ""
     controller.toString
   }

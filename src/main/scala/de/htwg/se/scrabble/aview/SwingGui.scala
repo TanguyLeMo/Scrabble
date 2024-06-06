@@ -20,10 +20,10 @@ class SwingGui(val controller: Controller, val languageContext : LanguageContext
   val lw = languageWindow.top
   val nbpw = numberPlayerWindow.top
   val nmpw = namePlayerWindow.top
+  val dw = dictionaryWindow.top
   
   
   object languageWindow extends SimpleSwingApplication  {
-    println("heee")
     def top = new MainFrame {
       title = "Language Settings"
       val options = Seq("english", "german", "french", "italian")
@@ -41,16 +41,12 @@ class SwingGui(val controller: Controller, val languageContext : LanguageContext
           val newTUI = comboBox.selection.item match
             case "english" =>
               controller.setLanguageDictionary(ENGLISH)
-              new TUI(controller, new LanguageContext(comboBox.selection.item))
             case "french" =>
               controller.setLanguageDictionary(FRENCH)
-              new TUI(controller, new LanguageContext(comboBox.selection.item))
             case "german" =>
               controller.setLanguageDictionary(GERMAN)
-              new TUI(controller, new LanguageContext(comboBox.selection.item))
             case "italian" =>
               controller.setLanguageDictionary(ITALIAN)
-              new TUI(controller, new LanguageContext(comboBox.selection.item))
           dispose()
       }
     }
@@ -58,7 +54,6 @@ class SwingGui(val controller: Controller, val languageContext : LanguageContext
 
 
   object numberPlayerWindow extends SimpleSwingApplication {
-    println("hiiii")
 
     def top = new MainFrame {
       title = "number Players Settings"
@@ -81,15 +76,17 @@ class SwingGui(val controller: Controller, val languageContext : LanguageContext
 
 
   object namePlayerWindow extends SimpleSwingApplication {
-    println("huuuuuu")
 
     def top = new MainFrame {
-      title = "number Players Settings"
-      val text = new TextField(16)
+      val numberOfTextFields = 4
+      title = "Playernames Settings"
+      val textFields = for (i <- 1 to numberOfTextFields) yield new TextField(16)
       val next = new Button("Next")
       contents = new FlowPanel {
-        contents += new Label("Playername: ")
-        contents += text
+        for(x<- textFields) {
+          contents += new Label("Enter Player " + textFields.indexOf(x) + " Name: ")
+          contents += x
+        }
         contents += next
         border = Swing.EmptyBorder(40, 10, 10, 10)
       }
@@ -97,12 +94,54 @@ class SwingGui(val controller: Controller, val languageContext : LanguageContext
       listenTo(next)
       reactions += {
         case ButtonClicked(`next`) =>
-          println("Number of Players: " + text.text)
+          val playerNames = textFields.map(_.text).toVector
+          if (playerNames.distinct.length != playerNames.length || playerNames.contains("")) {
+            Dialog.showMessage(
+              message = "Dies ist eine Popup-Nachricht",
+              title = "Popup-Titel",
+              messageType = Dialog.Message.Info
+            )
+
+          } else {
+            controller.CreatePlayersList(playerNames)
+            dispose()
+          }
       }
     }
   }
-  
-  
+
+  object dictionaryWindow extends SimpleSwingApplication {
+
+    def top = new MainFrame {
+      title = "dictionary Settings"
+      val text = new TextField(15)
+      val add = new Button("Add")
+      val next = new Button("Next")
+      contents = new FlowPanel {
+        contents += new Label("Enter new word: ")
+        contents += text
+        contents += add
+        contents += next
+        border = Swing.EmptyBorder(30, 10, 10, 10)
+      }
+
+      listenTo(next, add)
+      reactions += {
+        case ButtonClicked(`add`) =>
+          if(controller.contains(text.text)) {
+            Dialog.showMessage(
+              message = "Dies ist eine Popup-Nachricht",
+              title = "Popup-Titel",
+              messageType = Dialog.Message.Info
+            )
+          } else {
+            controller.add(text.text)
+          }
+        case ButtonClicked(`next`) =>
+          dispose()
+      }
+    }
+  }
 
 
   override def update(event: Event): String = {
@@ -142,7 +181,9 @@ class SwingGui(val controller: Controller, val languageContext : LanguageContext
       case event: EnterWord => println(languageContext.enterWord)
       case event: InvalidInput => println(languageContext.invalidInput)
       case event: InvalidNumber => println(languageContext.invalidNumber)
-      case event: RequestNewWord => println(languageContext.requestNewWord)
+      case event: RequestNewWord =>
+        nmpw.visible = false
+        dw.visible = true
       case event: WordAlreadyAddedToDictionary => println(languageContext.wordAlreadyAddedToDictionary)
       case event: WordAddedToDictionary => println(languageContext.wordAddedToDictionary)
       case event: EnterWordForDictionary => println(languageContext.enterWordforDictionary)

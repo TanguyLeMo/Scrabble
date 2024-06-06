@@ -17,11 +17,11 @@ class Controller(var field: ScrabbleField) extends Observable:
   def doAndPublish(doThis: placeWordsAsMove => ScrabbleField, move: placeWordsAsMove): Unit =
     val newState = doThis(move)
     field = undoManager.doStep(field, newState)
-    notifyObservers(new RoundsEvent)
+    notifyObservers(new RoundsScrabbleEvent)
 
   def doAndPublish(doThis: => ScrabbleField): Unit =
     field = doThis
-    notifyObservers(new RoundsEvent)
+    notifyObservers(new RoundsScrabbleEvent)
 
   def undo: ScrabbleField = {
     field = undoManager.undoStep(field)
@@ -36,7 +36,7 @@ class Controller(var field: ScrabbleField) extends Observable:
     val newState = field.placeWord(move.yPosition, move.xPosition, move.direction, move.word)
     field = undoManager.doStep(field, newState)
     field = field.addPoints(collectPoints(field.matrix, move.xPosition, move.yPosition, move.direction, move.word), field.player, field.players)
-    notifyObservers(new RoundsEvent)
+    notifyObservers(new RoundsScrabbleEvent)
     field
 
   def wordFits(xPosition: Int, yPosition: Int, direction: Char, word: String): Boolean =
@@ -64,7 +64,7 @@ class Controller(var field: ScrabbleField) extends Observable:
 
   def setLanguageDictionary(language: LanguageEnum): ScrabbleField =
     field = field.setLanguageDictionary(language)
-    notifyObservers(new DictionaryEvent)
+    notifyObservers(new DictionaryScrabbleEvent)
     field
 
   def collectPoints(matrix: Matrix, xPosition: Int, yPosition: Int, direction: Char, word: String): Int =
@@ -121,10 +121,10 @@ class Controller(var field: ScrabbleField) extends Observable:
     notifyObservers(RequestEnterLanguage())
     field
   def noSuchLanguage: ScrabbleField =
-    notifyObservers(NoSuchLanguageEvent())
+    notifyObservers(NoSuchLanguageScrabbleEvent())
     field
   def displayLeaderBoard: List[Player] =
-    notifyObservers(GameEndEvent())
+    notifyObservers(GameEndScrabbleEvent())
     field.players
   def requestnewWord: ScrabbleField =
     notifyObservers(RequestNewWord())

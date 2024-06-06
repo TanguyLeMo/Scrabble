@@ -28,6 +28,6 @@ class LanguageContext(languageStrat: String){
   def enterPlayerNames: String = languageStrategy.enterPlayernames
   def nameCantBeEmpty: String = languageStrategy.nameCantBeEmpty
   def currentPlayer: String = languageStrategy.currentPlayer
-  def noteEnoughStones: String = languageStrategy.noteEnoughStones
+  def notEnoughStones: String = languageStrategy.noteEnoughStones
   def leaderBoard: String = languageStrategy.leaderBoard
 }

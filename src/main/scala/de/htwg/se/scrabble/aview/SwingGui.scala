@@ -10,8 +10,8 @@ import util._
 
 import scala.swing.*
 import scala.swing.event.*
-import util.{Event, NameCantBeEmpty, Observer}
-import util.Event
+import util.{ScrabbleEvent, NameCantBeEmpty, Observer}
+import util.ScrabbleEvent
 
 class SwingGui(val controller: Controller, val languageContext : LanguageContext) extends Frame with Observer{
   controller.add(this)
@@ -96,30 +96,108 @@ class SwingGui(val controller: Controller, val languageContext : LanguageContext
       }
     }
   }
-  
-  
+
+  import scala.swing._
+  import scala.swing.event._
+
+  object getInputAndDisplayGameWindow extends SimpleSwingApplication {
+    def top = new MainFrame {
+      title = "Scrabble"
+      val text = new TextField(16)
+      val rows = controller.field.matrix.rows
+      val columns = controller.field.matrix.columns
+      val xAxisLabels = ('A' to 'O').map(_.toString)
+      val yAxisLabels = (0 until rows).map(_.toString)
+
+      // FlowPanel for X-axis labels
+      val xAxisPanel = new FlowPanel {
+        for (label <- xAxisLabels) {
+          contents += new Label(label) {
+            horizontalAlignment = Alignment.Center
+            border = Swing.LineBorder(java.awt.Color.BLACK)
+          }
+        }
+      }
+
+      // FlowPanel for Y-axis labels
+      val yAxisPanel = new FlowPanel {
+        for (label <- yAxisLabels) {
+          contents += new Label(label) {
+            horizontalAlignment = Alignment.Center
+            border = Swing.LineBorder(java.awt.Color.BLACK)
+          }
+        }
+      }
+
+      // ComboBox for choosing between horizontal and vertical placement
+      val orientationComboBox = new ComboBox(Seq("Horizontal", "Vertical"))
+
+      // Button for placing the word
+      val placeButton = new Button("Place")
+
+      // GridPanel with labels
+      val gridWithLabelsPanel = new GridPanel(rows + 1, columns + 1) {
+        // Add an empty label for the top-left corner
+        contents += new Label("")
+
+        // Add the X axis labels
+        for (col <- 0 until 15) {
+          contents += new Label(xAxisLabels(col)) {
+            horizontalAlignment = Alignment.Center
+            border = Swing.LineBorder(java.awt.Color.BLACK)
+          }
+        }
+
+        // Add the grid rows with Y axis labels and grid content
+        for (row <- 0 until 15) {
+          // Add the Y axis label
+          contents += new Label(yAxisLabels(row)) {
+            horizontalAlignment = Alignment.Center
+            border = Swing.LineBorder(java.awt.Color.BLACK)
+          }
+
+          // Add the corresponding row of the scrabble grid
+          for (col <- 0 until 15) {
+            contents += new Label(controller.field.matrix.field(row)(col).letter.toString) {
+              horizontalAlignment = Alignment.Center
+              border = Swing.LineBorder(java.awt.Color.GREEN)
+            }
+          }
+        }
+      }
+
+      // Main content
+      contents = new BoxPanel(Orientation.Vertical) {
+        contents += new FlowPanel {
+          contents += text
+          contents += xAxisPanel
+          contents += yAxisPanel
+          contents += orientationComboBox
+          contents += placeButton
+        }
+        contents += gridWithLabelsPanel
+        border = Swing.EmptyBorder(10, 10, 10, 10)
+      }
+    }
+  }
 
 
-  override def update(event: Event): String = {
+  override def update(event: ScrabbleEvent): String = {
     event match
-      case event: RoundsEvent =>
-        println(controller.toString)
-        println(controller.field.player)
-        println(languageContext.currentPlayer + controller.field.player.nextTurn(controller.thisPlayerList, controller.field.player))
-        println("Stones:")
-        println(controller.field.player.playerTiles.map(stone => " |" + stone.toString + "| ").mkString)
-      case event: DictionaryEvent =>
+      case event: RoundsScrabbleEvent =>
+        getInputAndDisplayGameWindow.top.visible = true
+      case event: DictionaryScrabbleEvent =>
         println(controller.field.languageSettings)
       case event: RequestEnterLanguage =>
         val window = languageWindow.top
         if(window.visible == false)
           window.visible = true
-      case event: NoSuchLanguageEvent =>
+      case event: NoSuchLanguageScrabbleEvent =>
         println(" Entered Language not a available language")
         println(" Es handelt sich um keine verfügbare Sprache")
         println(" il s'agit pas une langue disponible")
         println(" non è una lingua disponibile")
-      case event: GameEndEvent => println("Game Over")
+      case event: GameEndScrabbleEvent => println("Game Over")
       case event: CurrentPlayer => println("Current Player: " + controller.field.player.getName)
       case event: Exit => println("Goodbye!")
       case event: InvalidCoordinates => println(languageContext.invalidcoordinates)
@@ -132,7 +210,7 @@ class SwingGui(val controller: Controller, val languageContext : LanguageContext
         window.visible = true
 
       case event: EnterPlayerName => 
-        val window = namePlayerWindow.top
+        val window: Frame = namePlayerWindow.top
         window.visible = true
       case event: NameAlreadyTaken => println(languageContext.nameAlreadyTaken)
       case event: NameCantBeEmpty => println(languageContext.nameCantBeEmpty)
@@ -149,8 +227,8 @@ class SwingGui(val controller: Controller, val languageContext : LanguageContext
         val players = controller.field.players
         val sortedPlayers = controller.sortListAfterPoints(players)
         sortedPlayers.foreach(player => println(sortedPlayers.indexOf(player) + 1 + ". " + player))
+      case _ => ""
     controller.toString
-
   }
 }
 

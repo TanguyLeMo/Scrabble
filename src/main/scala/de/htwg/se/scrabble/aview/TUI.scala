@@ -33,24 +33,24 @@ class TUI(val controller: Controller, val languageContext : LanguageContext) ext
     dictionaryAddWords
   }
 
-  override def update(event: Event): String = {
+  override def update(event: ScrabbleEvent): String = {
     event match
-      case event: RoundsEvent =>
+      case event: RoundsScrabbleEvent =>
         println(controller.toString)
         println(controller.field.player)
         println(languageContext.currentPlayer + controller.field.player.nextTurn(controller.thisPlayerList,controller.field.player))
         println("Stones:")
         println(controller.field.player.playerTiles.map(stone => " |" + stone.toString + "| ").mkString)
-      case event: DictionaryEvent =>
+      case event: DictionaryScrabbleEvent =>
         println(controller.field.languageSettings)
       case event: RequestEnterLanguage =>
         println("please enter language")
-      case event: NoSuchLanguageEvent =>
+      case event: NoSuchLanguageScrabbleEvent =>
         println(" Entered Language not a available language")
         println(" Es handelt sich um keine verfügbare Sprache")
         println(" il s'agit pas une langue disponible")
         println(" non è una lingua disponibile")
-      case event: GameEndEvent => displayLeaderboard()
+      case event: GameEndScrabbleEvent => displayLeaderboard()
       case event: CurrentPlayer => println("Current Player: " + controller.field.player.getName)
       case event: Exit => println("Goodbye!")
       case event: InvalidCoordinates => println(languageContext.invalidcoordinates)
@@ -74,6 +74,7 @@ class TUI(val controller: Controller, val languageContext : LanguageContext) ext
         val players = controller.field.players
         val sortedPlayers = controller.sortListAfterPoints(players)
         sortedPlayers.foreach(player => println(sortedPlayers.indexOf(player) + 1 + ". " + player))
+      case event: NotEnoughStones => println(languageContext.notEnoughStones)
     controller.toString
   }
   def processInputLine() : TUI = {
@@ -126,16 +127,16 @@ class TUI(val controller: Controller, val languageContext : LanguageContext) ext
             val lettersAlreadyThere = controller.lettersAlreadyThere(xCoordinate, yCoordinate, direction.charAt(0), word)
             val onlyRequiredStones = controller.OnlyRequiredStones(lettersAlreadyThere, word)
 
-            if (controller.hasStones(lettersAlreadyThere, word, currentPlayer)) {
+          //  if (controller.hasStones(lettersAlreadyThere, word, currentPlayer)) {
               controller.removeStones(currentPlayer, controller.field.players, onlyRequiredStones)
               drawStonesAfterRound(controller.field.player, onlyRequiredStones.length, controller.field.players)
               controller.placeWord(xCoordinate, yCoordinate, direction.charAt(0), word)
               controller.nextTurn(controller.thisPlayerList,currentPlayer)
               processInputLine()
-            } else {
+            /*} else {
               controller.noteEnoughStonescontroller
               processInputLine()
-          }
+          }*/
         }
       }
     }

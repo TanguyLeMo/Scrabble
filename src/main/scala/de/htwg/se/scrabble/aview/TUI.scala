@@ -128,7 +128,7 @@ class TUI(val controller: Controller ) extends Observer {
             processInputLine()
           } else if (!(direction == "H" | direction == "V")) {
             controller.NoCorrectDirectioncontroller
-            processInputLine()
+            processInputLine() 
           } else if (!controller.wordFits(xCoordinate, yCoordinate, direction.charAt(0), word)) {
             controller.wordDoesntFitcontroller
             processInputLine()

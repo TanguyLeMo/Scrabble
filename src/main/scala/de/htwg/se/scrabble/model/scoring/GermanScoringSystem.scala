@@ -10,6 +10,7 @@ class GermanScoringSystem extends ScoringSystem{
   case 'Ä' | 'J' | 'Ü' | 'V' => 6
   case 'Ö' | 'X' | 'ß'=> 8
   case 'Q' | 'Y' => 10
+  case _ => 0
 }
-
+//
 }

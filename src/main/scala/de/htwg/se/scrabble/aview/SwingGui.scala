@@ -13,7 +13,7 @@ import scala.swing.event.*
 import util.{NameCantBeEmpty, Observer, ScrabbleEvent}
 import util.ScrabbleEvent
 
-class SwingGui(val controller: Controller, val languageContext : LanguageContext) extends Frame with Observer{
+class SwingGui(val controller: Controller, val languageContext: LanguageContext) extends Frame with Observer {
   controller.add(this)
   def this(controller: Controller) = this(controller, new LanguageContext("english"))
 
@@ -21,7 +21,9 @@ class SwingGui(val controller: Controller, val languageContext : LanguageContext
   val nbpw = numberPlayerWindow.top
   val nmpw = namePlayerWindow.top
   val dw = dictionaryWindow.top
+  val gamerounds = getInputAndDisplayGameWindow.top
 
+  gamerounds.visible = true
 
   object languageWindow extends SimpleSwingApplication {
     def top = new MainFrame {
@@ -50,8 +52,8 @@ class SwingGui(val controller: Controller, val languageContext : LanguageContext
               new TUI(controller)
             case "italian" =>
               controller.setLanguageDictionary(ITALIAN)
-          dispose()
-          controller.notifyObservers(phasePlayerAndNames())
+              new TUI(controller)
+          languageWindow.top.dispose()
       }
     }
   }

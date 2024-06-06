@@ -186,7 +186,6 @@ class SwingGui(val controller: Controller, val languageContext : LanguageContext
           controller.placeWord(x, y, direction, word)
       }
     }
-
   }
 
 

@@ -124,8 +124,9 @@ class TUI(val controller: Controller, val languageContext : LanguageContext) ext
             processInputLine()
           } else {
             val lettersAlreadyThere = controller.lettersAlreadyThere(xCoordinate, yCoordinate, direction.charAt(0), word)
+            println("lat: " + lettersAlreadyThere)
             val onlyRequiredStones = controller.OnlyRequiredStones(lettersAlreadyThere, word)
-
+            println("ors: " + onlyRequiredStones)
             if (controller.hasStones(lettersAlreadyThere, word, currentPlayer)) {
               controller.removeStones(currentPlayer, controller.field.players, onlyRequiredStones)
               drawStonesAfterRound(controller.field.player, onlyRequiredStones.length, controller.field.players)

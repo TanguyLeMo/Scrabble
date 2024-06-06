@@ -29,22 +29,30 @@ class Player (val name: String,val points: Int,val playerTiles: List[Stone]):
     val newPlayer = new Player(player.getName, player.getPoints, player.playerTiles ++ stones)
     val newListPlayers = ListPlayers.updated(ListPlayers.indexOf(player),newPlayer)
     newListPlayers
-  
-  def removeStones(player: Player, ListPlayers: List[Player],stones: List[Stone]): List[Player] =
-    val newPlayer = new Player(player.getName, player.getPoints, player.playerTiles.filterNot(stones.contains))
-    val newListPlayers = ListPlayers.updated(ListPlayers.indexOf(player),newPlayer)
+
+  def removeStones(player: Player, ListPlayers: List[Player], stones: List[Stone]): List[Player] =
+    val playerStonesChars = player.playerTiles.map(_.symbol)
+    val stonesChars = stones.map(_.symbol)
+
+    val newPlayerTilesChars = playerStonesChars.diff(stonesChars)
+    val newPlayerTiles = newPlayerTilesChars.map(char => Stone(char))
+
+    val newPlayer = new Player(player.getName, player.getPoints, newPlayerTiles)
+    val newListPlayers = ListPlayers.updated(ListPlayers.indexOf(player), newPlayer)
     newListPlayers
 
   def hasStones(notRequiredStones: List[Stone], word: String, player: Player): Boolean = {
     val requiredStones = OnlyRequiredStones(notRequiredStones, word)
     requiredStones.forall(player.playerTiles.contains)
   }
-  
+
   def OnlyRequiredStones(notRequiredStones: List[Stone], word: String): List[Stone] = {
-    val requiredStonesForWord = word.toCharArray.map(char => Stone(char)).toList
-    val requiredStones = requiredStonesForWord.diff(notRequiredStones)
+    val notRequiredChars = notRequiredStones.map(_.symbol)
+    val requiredCharsForWord = word.toCharArray.toList
+    val requiredStones = requiredCharsForWord.diff(notRequiredChars).map(char => Stone(char))
     requiredStones
   }
+
 
   def nextTurn(playerList: List[Player], lastTurn: Player): Player =
     val index = playerList.indexOf(lastTurn) + 1

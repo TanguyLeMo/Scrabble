@@ -17,6 +17,11 @@ class SwingGui(val controller: Controller, val languageContext : LanguageContext
   controller.add(this)
   def this(controller: Controller) = this(controller, new LanguageContext("english"))
 
+  val lw = languageWindow.top
+  val nbpw = numberPlayerWindow.top
+  val nmpw = namePlayerWindow.top
+  
+  
   object languageWindow extends SimpleSwingApplication  {
     println("heee")
     def top = new MainFrame {
@@ -46,7 +51,7 @@ class SwingGui(val controller: Controller, val languageContext : LanguageContext
             case "italian" =>
               controller.setLanguageDictionary(ITALIAN)
               new TUI(controller, new LanguageContext(comboBox.selection.item))
-          languageWindow.top.dispose()
+          dispose()
       }
     }
   }
@@ -111,9 +116,7 @@ class SwingGui(val controller: Controller, val languageContext : LanguageContext
       case event: DictionaryEvent =>
         println(controller.field.languageSettings)
       case event: RequestEnterLanguage =>
-        val window = languageWindow.top
-        if(window.visible == false)
-          window.visible = true
+        lw.visible = true
       case event: NoSuchLanguageEvent =>
         println(" Entered Language not a available language")
         println(" Es handelt sich um keine verfügbare Sprache")
@@ -127,13 +130,13 @@ class SwingGui(val controller: Controller, val languageContext : LanguageContext
       case event: NoCorrectDirection => println(languageContext.noCorrectDirection)
       case event: WordDoesntFit => println(languageContext.wordDoesntFit)
       case event: EnterNumberOfPlayers =>
-        languageWindow.top.dispose()
-        val window = numberPlayerWindow.top
-        window.visible = true
+        lw.visible = false
+        nbpw.visible = true
 
       case event: EnterPlayerName => 
-        val window = namePlayerWindow.top
-        window.visible = true
+        nbpw.visible = false
+        nmpw.visible = true
+        println("elo")
       case event: NameAlreadyTaken => println(languageContext.nameAlreadyTaken)
       case event: NameCantBeEmpty => println(languageContext.nameCantBeEmpty)
       case event: EnterWord => println(languageContext.enterWord)

@@ -78,6 +78,8 @@ class TUI(val controller: Controller, val languageContext : LanguageContext) ext
   }
   def processInputLine() : TUI = {
     val currentPlayer = controller.field.player
+    println(controller.field.player)
+    println(controller.field.player.playerTiles.toString)
     controller.enterWordcontroller
     val input = readLine()
     val exitWord: String = languageContext.exit

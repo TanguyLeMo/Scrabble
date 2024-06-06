@@ -150,6 +150,7 @@ class TUI(val controller: Controller ) extends Observer {
       }
     }
   }
+
   def translateCoordinate(coordinate: String): (Int, Int) = {
     val coordinates = coordinate.split(" ")
     (coordinates(0).toUpperCase().toCharArray.sum - 'A', coordinates(1).toInt)
@@ -204,8 +205,6 @@ class TUI(val controller: Controller ) extends Observer {
     val numberPlayers = numberOfPlayers()
     readPlayerNames(numberPlayers, Vector.empty[String])
   }
-
-
 
   def displayLeaderboard(): List[Player] = {
     val players = controller.field.players

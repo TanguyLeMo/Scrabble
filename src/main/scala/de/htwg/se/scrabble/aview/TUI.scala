@@ -38,8 +38,7 @@ class TUI(val controller: Controller ) extends Observer {
         println(controller.toString)
         println(controller.field.player)
         println(controller.languageContext.currentPlayer + controller.field.player.nextTurn(controller.thisPlayerList,controller.field.player))
-        println("Stones:")
-        println(controller.field.player.playerTiles.map(stone => " |" + stone.toString + "| ").mkString)
+
       case event: DictionaryScrabbleEvent =>
         println(controller.field.languageSettings)
       case event: RequestEnterLanguage =>

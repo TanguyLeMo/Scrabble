@@ -22,9 +22,9 @@ class ScrabbleField(val matrix: Matrix, val dictionary: Dictionary, val squareFa
   }
   val languageContext: LanguageContext = new LanguageContext(languageEnum.toString)
 
-  def this(rowsAndColumns: Int) = this(new Matrix(Vector.fill(rowsAndColumns, rowsAndColumns)(new StandardSquareFactory().createDoubleSquare(Stone()))).init(), new Dictionary().readLines(ENGLISH), new StandardSquareFactory, ENGLISH, new Player("someone",0,List[Stone]()), Nil,new StoneContainer(List[Stone]()))
-  def this(matrix : Matrix, newDictionary: Dictionary) = this(matrix, newDictionary, new StandardSquareFactory, ENGLISH, new Player("someone",0,List[Stone]()), Nil, new StoneContainer(List[Stone]()))
-  def this(rowsAndColumns : Int, languageEnum: LanguageEnum) = this(new Matrix(Vector.fill(rowsAndColumns, rowsAndColumns)(new StandardSquareFactory().createDoubleSquare(Stone()))).init(), new Dictionary().readLines(languageEnum), new StandardSquareFactory, languageEnum, new Player("someone",0,List[Stone]()), Nil,new StoneContainer(List[Stone]()))
+  def this(rowsAndColumns: Int) = this(new Matrix(Vector.fill(rowsAndColumns, rowsAndColumns)(new StandardSquareFactory().createDoubleSquare(Stone()))).init(), new Dictionary().readLines(ENGLISH), new StandardSquareFactory, ENGLISH, new Player("Player1",0,List[Stone]()), Nil,new StoneContainer(List[Stone]()))
+  def this(matrix : Matrix, newDictionary: Dictionary) = this(matrix, newDictionary, new StandardSquareFactory, ENGLISH, new Player("Player1",0,List[Stone]()), Nil, new StoneContainer(List[Stone]()))
+  def this(rowsAndColumns : Int, languageEnum: LanguageEnum) = this(new Matrix(Vector.fill(rowsAndColumns, rowsAndColumns)(new StandardSquareFactory().createDoubleSquare(Stone()))).init(), new Dictionary().readLines(languageEnum), new StandardSquareFactory, languageEnum, new Player("Player1",0,List[Stone]()), Nil,new StoneContainer(List[Stone]()))
   def labelingXAxis(currcolum: Int): String =
     if(currcolum > matrix.columns)""
     else translateLetter(currcolum)+addSpace(numSymbolPerColumn-translateLetter(currcolum).length)+labelingXAxis(currcolum + 1)

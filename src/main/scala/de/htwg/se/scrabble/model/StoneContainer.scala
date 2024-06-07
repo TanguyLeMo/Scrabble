@@ -8,7 +8,7 @@ class StoneContainer(val Stones : List[Stone]) {
     def gamestartPlayStones(languageEnum: LanguageEnum): List[Stone] = {
         val source = scala.io.Source.fromResource(languageEnum match {
             case LanguageEnum.ENGLISH => "englishPlaystones.txt"
-            case LanguageEnum.GERMAN => "germanPlaystones.txt"
+            case LanguageEnum.GERMAN => "englishPlaystones.txt"
             case LanguageEnum.FRENCH => "frenchPlaystones.txt"
             case LanguageEnum.ITALIAN => "italianPlaystones.txt"
             case null => "englishPlaystones.txt"

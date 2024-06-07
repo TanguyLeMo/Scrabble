@@ -9,6 +9,7 @@ import scala.io.StdIn.readLine
 import de.htwg.se.scrabble.model.languages.LanguageEnum.{ENGLISH, FRENCH, GERMAN, ITALIAN}
 
 import scala.annotation.tailrec
+import scala.collection.immutable
 import scala.util.{Failure, Success, Try}
 
 
@@ -74,13 +75,12 @@ class TUI(val controller: Controller ) extends Observer {
                 sortedPlayers.foreach(player => println(sortedPlayers.indexOf(player) + 1 + ". " + player));
       case event: NotEnoughStones => println(controller.languageContext.notEnoughStones)
 
-      case event: phaseChooseLanguage => setGameLanguage(); controller.notifyObservers(phasePlayerAndNames())
+      case event: phaseChooseLanguage => controller.setLanguageDictionary(ENGLISH);controller.gamestartPlayStones(controller.field.languageEnum); controller.notifyObservers(phasePlayerAndNames())
       case event: phasePlayerAndNames => controller.CreatePlayersList(getPlayersAndNames); controller.notifyObservers(phaseaddWordsToDictionary())
-      case event: phaseaddWordsToDictionary => dictionaryAddWords; controller.notifyObservers(phaseMainGame())
+      case event: phaseaddWordsToDictionary => controller.notifyObservers(phaseMainGame())
       case event: phaseMainGame => processInputLine()
-      case event: phaseEndGame => displayLeaderboard()
+      case event: phaseEndGame => controller.notifyObservers(phaseExit())
       case event: phaseExit => println("Goodbye!"); System.exit(0)
-
 
     controller.toString
 
@@ -202,8 +202,10 @@ class TUI(val controller: Controller ) extends Observer {
         }
       }
     }
-    val numberPlayers = numberOfPlayers()
-    readPlayerNames(numberPlayers, Vector.empty[String])
+
+    //val numberPlayers = numberOfPlayers()
+    //readPlayerNames(numberPlayers, Vector.empty[String])
+     Vector("Player1", "Player2")
   }
 
   def displayLeaderboard(): List[Player] = {

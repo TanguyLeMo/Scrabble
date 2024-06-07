@@ -235,14 +235,13 @@ class SwingGui(val controller: Controller, val languageContext: LanguageContext)
           val x = coordinates._2
           val direction = orientationComboBox.selection.item.head
           val word = text.text
-          if(controller.contains(word)){
+          if(!controller.contains(word)){
             controller.notifyObservers(new WordAlreadyAddedToDictionary)
-          }
-
-          if(!controller.wordFits(x, y, direction, word)){
+          }else if(!controller.wordFits(x, y, direction, word)){
             controller.notifyObservers(new WordDoesntFit)
+          } else{
+            controller.placeWord(x, y, direction, word)
           }
-          controller.placeWord(x, y, direction, word)
       }
     }
   }
@@ -297,7 +296,6 @@ class SwingGui(val controller: Controller, val languageContext: LanguageContext)
         dw.visible = true
       case event: phaseMainGame =>
         dw.visible = false
-        getInputAndDisplayGameWindow.top.visible = true
       case _ => ""
     controller.toString
   }

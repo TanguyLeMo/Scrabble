@@ -1,7 +1,7 @@
 package de.htwg.se.scrabble
 import aview.*
 import controller.Controller
-import de.htwg.se.scrabble.model.languages.LanguageEnum.ENGLISH
+import de.htwg.se.scrabble.model.languageComponent.languages.LanguageEnum.ENGLISH
 import de.htwg.se.scrabble.util.phaseChooseLanguage
 import model.ScrabbleField
 
@@ -11,6 +11,4 @@ import model.ScrabbleField
     val gui = new SwingGui(controller)
     val tui = TUI(controller)
     controller.notifyObservers(new phaseChooseLanguage)
-    
-
 }

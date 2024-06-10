@@ -1,6 +1,6 @@
 package de.htwg.se.scrabble.aview.languages
 
-import de.htwg.se.scrabble.model.languages.FrenchStrategy
+import de.htwg.se.scrabble.model.languageComponent.FrenchStrategy
 import org.scalatest.*
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec

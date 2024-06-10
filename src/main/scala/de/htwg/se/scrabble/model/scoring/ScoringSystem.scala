@@ -1,6 +1,5 @@
 package de.htwg.se.scrabble.model.scoring
 
-import de.htwg.se.scrabble.model.square.WordSquareFactory
 import de.htwg.se.scrabble.model.{Matrix, Stone}
 import de.htwg.se.scrabble.model.square._
 

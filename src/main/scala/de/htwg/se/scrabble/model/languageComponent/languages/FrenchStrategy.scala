@@ -1,4 +1,4 @@
-package de.htwg.se.scrabble.model.languages
+package de.htwg.se.scrabble.model.languageComponent.languages
 
 class FrenchStrategy extends LanguageStrategy{
   override val languageSetting: String = "Langue: "

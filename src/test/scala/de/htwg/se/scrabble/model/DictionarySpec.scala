@@ -1,6 +1,6 @@
 package de.htwg.se.scrabble.model
 
-import de.htwg.se.scrabble.model.languages.LanguageEnum
+import de.htwg.se.scrabble.model.languageComponent.LanguageEnum
 import org.scalatest.*
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec

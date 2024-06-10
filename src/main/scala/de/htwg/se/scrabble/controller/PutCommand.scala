@@ -1,8 +1,7 @@
 package de.htwg.se.scrabble
 package controller
-import model.{ placeWordsAsMove, ScrabbleField, Stone}
+import model.{ placeWordsAsMove, ScrabbleField}
 import util.Command
-import util.UndoManager
 
 class PutCommand(move: placeWordsAsMove) extends Command[ScrabbleField]:
   override def noStep(field: ScrabbleField): ScrabbleField = field

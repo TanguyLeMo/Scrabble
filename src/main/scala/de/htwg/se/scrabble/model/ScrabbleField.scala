@@ -1,10 +1,9 @@
 package de.htwg.se.scrabble.model
-import de.htwg.se.scrabble.model.languages.*
+import de.htwg.se.scrabble.model.languageComponent.*
 import de.htwg.se.scrabble.model.scoring.*
-import de.htwg.se.scrabble.model.StoneContainer
-import de.htwg.se.scrabble.model.languages.LanguageEnum
-import de.htwg.se.scrabble.model.languages.LanguageEnum.{ENGLISH, FRENCH, GERMAN, ITALIAN}
-import de.htwg.se.scrabble.model.square.{ScrabbleSquare, StandardSquareFactory}
+import de.htwg.se.scrabble.model.languageComponent.languages.{LanguageContext, LanguageEnum}
+import de.htwg.se.scrabble.model.languageComponent.languages.LanguageEnum.{ENGLISH, FRENCH, GERMAN, ITALIAN}
+import de.htwg.se.scrabble.model.square.StandardSquareFactory
 
 class ScrabbleField(val matrix: Matrix, val dictionary: Dictionary, val squareFactory: StandardSquareFactory, val languageEnum: LanguageEnum, val player : Player, val players : List[Player],val stoneContainer: StoneContainer):
   val numOfAlphabet: Int = 26
@@ -20,7 +19,7 @@ class ScrabbleField(val matrix: Matrix, val dictionary: Dictionary, val squareFa
     case GERMAN => "Sprache wurde eingestellt auf " + Console.YELLOW + " Deutsch" + Console.RESET
     case ITALIAN => "La linguga sara" + Console.YELLOW + " Italian" + Console.RESET
   }
-  val languageContext: LanguageContext = new LanguageContext(languageEnum.toString)
+  val languageContext: LanguageContextInterface = new LanguageContext(languageEnum.toString)
 
   def this(rowsAndColumns: Int) = this(new Matrix(Vector.fill(rowsAndColumns, rowsAndColumns)(new StandardSquareFactory().createDoubleSquare(Stone()))).init(), new Dictionary().readLines(ENGLISH), new StandardSquareFactory, ENGLISH, new Player("Player1",0,List[Stone]()), Nil,new StoneContainer(List[Stone]()))
   def this(matrix : Matrix, newDictionary: Dictionary) = this(matrix, newDictionary, new StandardSquareFactory, ENGLISH, new Player("Player1",0,List[Stone]()), Nil, new StoneContainer(List[Stone]()))

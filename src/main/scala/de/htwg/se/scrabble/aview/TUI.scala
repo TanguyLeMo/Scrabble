@@ -2,11 +2,12 @@ package de.htwg.se.scrabble
 package aview
 import util.*
 import de.htwg.se.scrabble.controller.Controller
-import de.htwg.se.scrabble.model.languages.LanguageContext
-import de.htwg.se.scrabble.model.{CreatePlayersListAsMove, Player, ScrabbleField, placeWordsAsMove, setGameLanguageAsMove}
+import de.htwg.se.scrabble.model.{Player, ScrabbleField, placeWordsAsMove}
+//import de.htwg.se.scrabble.model.languageComponent.LanguageContext
+//import de.htwg.se.scrabble.model.{CreatePlayersListAsMove, Player, ScrabbleField, placeWordsAsMove, setGameLanguageAsMove}
 
 import scala.io.StdIn.readLine
-import de.htwg.se.scrabble.model.languages.LanguageEnum.{ENGLISH, FRENCH, GERMAN, ITALIAN}
+import de.htwg.se.scrabble.model.languageComponent.languages.LanguageEnum.{ENGLISH, FRENCH, GERMAN, ITALIAN}
 
 import scala.annotation.tailrec
 import scala.collection.immutable
@@ -65,7 +66,7 @@ class TUI(val controller: Controller ) extends Observer {
       case event: RequestNewWord => println(controller.languageContext.requestNewWord)
       case event: WordAlreadyAddedToDictionary => println(controller.languageContext.wordAlreadyAddedToDictionary)
       case event: WordAddedToDictionary => println(controller.languageContext.wordAddedToDictionary)
-      case event: EnterWordForDictionary => println(controller.languageContext.enterWordforDictionary)
+      case event: EnterWordForDictionary => println(controller.languageContext.enterWordForDictionary)
       case event: LanguageSetting => println(controller.languageContext.languageSetting)
       case event: WordNotInDictionary => println(controller.languageContext.wordNotInDictionary)
       case event: DisplayLeaderBoard => println(controller.languageContext.leaderBoard)

@@ -7,7 +7,7 @@ import de.htwg.se.scrabble.model.Stone
 import de.htwg.se.scrabble.model.{Player, ScrabbleField}
 import org.scalatest.matchers.should.Matchers
 import de.htwg.se.scrabble.aview.languages.*
-import de.htwg.se.scrabble.model.languages.{LanguageContext, LanguageEnum}
+import de.htwg.se.scrabble.model.languageComponent.{LanguageContext, LanguageEnum}
 
 import java.io.ByteArrayInputStream
 class TUISpec extends AnyWordSpec with Matchers {

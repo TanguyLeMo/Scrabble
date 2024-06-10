@@ -1,4 +1,4 @@
-package de.htwg.se.scrabble.model.languages
+package de.htwg.se.scrabble.model.languageComponent.languages
 
 trait LanguageStrategy {
   def languageSetting: String

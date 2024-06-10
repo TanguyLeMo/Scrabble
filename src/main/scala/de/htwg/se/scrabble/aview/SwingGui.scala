@@ -3,8 +3,9 @@ package aview
 
 import controller.Controller
 import controller.Controller
-import de.htwg.se.scrabble.model.languages.LanguageContext
-import de.htwg.se.scrabble.model.languages.LanguageEnum.{ENGLISH, FRENCH, GERMAN, ITALIAN}
+import de.htwg.se.scrabble.model.languageComponent.LanguageContextInterface
+import de.htwg.se.scrabble.model.languageComponent.languages.LanguageContext
+import de.htwg.se.scrabble.model.languageComponent.languages.LanguageEnum.{ENGLISH, FRENCH, GERMAN, ITALIAN}
 import de.htwg.se.scrabble.model.{CreatePlayersListAsMove, Player, ScrabbleField, placeWordsAsMove, setGameLanguageAsMove}
 import util.*
 
@@ -13,7 +14,7 @@ import scala.swing.event.*
 import util.{NameCantBeEmpty, Observer, ScrabbleEvent}
 import util.ScrabbleEvent
 
-class SwingGui(val controller: Controller, val languageContext: LanguageContext) extends Frame with Observer {
+class SwingGui(val controller: Controller, val languageContext: LanguageContextInterface) extends Frame with Observer {
   controller.add(this)
   def this(controller: Controller) = this(controller, new LanguageContext("english"))
 
@@ -52,7 +53,7 @@ class SwingGui(val controller: Controller, val languageContext: LanguageContext)
       case event: RequestNewWord => println(languageContext.requestNewWord)
       case event: WordAlreadyAddedToDictionary => showErrorDialog(languageContext.wordNotInDictionary)
       case event: WordAddedToDictionary => println(languageContext.wordAddedToDictionary)
-      case event: EnterWordForDictionary => println(languageContext.enterWordforDictionary)
+      case event: EnterWordForDictionary => println(languageContext.enterWordForDictionary)
       case event: LanguageSetting => println(languageContext.languageSetting)
       case event: WordNotInDictionary => println(languageContext.wordNotInDictionary)
       case event: DisplayLeaderBoard => println(languageContext.leaderBoard)

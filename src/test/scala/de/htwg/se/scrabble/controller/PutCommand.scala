@@ -2,7 +2,7 @@
 
 package de.htwg.se.scrabble.controller
 import de.htwg.se.scrabble.controller.PutCommand
-import de.htwg.se.scrabble.model.languages.LanguageContext
+import de.htwg.se.scrabble.model.languageComponent.LanguageContext
 import de.htwg.se.scrabble.model.{placeWordsAsMove, ScrabbleField}
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers

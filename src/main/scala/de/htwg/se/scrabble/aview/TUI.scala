@@ -1,7 +1,8 @@
 package de.htwg.se.scrabble
 package aview
+
+import de.htwg.se.scrabble.controller.ControllerComponent.ControllerInterface
 import util.*
-import de.htwg.se.scrabble.controller.Controller
 import de.htwg.se.scrabble.model.{Player, ScrabbleField, placeWordsAsMove}
 //import de.htwg.se.scrabble.model.languageComponent.LanguageContext
 //import de.htwg.se.scrabble.model.{CreatePlayersListAsMove, Player, ScrabbleField, placeWordsAsMove, setGameLanguageAsMove}
@@ -14,7 +15,7 @@ import scala.collection.immutable
 import scala.util.{Failure, Success, Try}
 
 
-class TUI(val controller: Controller ) extends Observer {
+class TUI(val controller: ControllerInterface ) extends Observer {
   controller.add(this)
   
 

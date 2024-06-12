@@ -1,7 +1,8 @@
-package de.htwg.se.scrabble
-package controller
-import model.{ placeWordsAsMove, ScrabbleField}
-import util.Command
+package de.htwg.se.scrabble.controller.ControllerComponent.ControllerBaseImpl
+
+import de.htwg.se.scrabble.model.{ScrabbleField, placeWordsAsMove}
+import de.htwg.se.scrabble.util.Command
+
 
 class PutCommand(move: placeWordsAsMove) extends Command[ScrabbleField]:
   override def noStep(field: ScrabbleField): ScrabbleField = field

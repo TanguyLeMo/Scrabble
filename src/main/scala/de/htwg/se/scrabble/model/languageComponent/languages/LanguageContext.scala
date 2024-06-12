@@ -1,6 +1,6 @@
 package de.htwg.se.scrabble.model.languageComponent.languages
 
-import de.htwg.se.scrabble.model.languageComponent.LanguageContextInterface
+import de.htwg.se.scrabble.model.languageComponent.{LanguageContextInterface, LanguageStrategy}
 
 class LanguageContext(languageStrat: String) extends LanguageContextInterface{
   val language: LanguageEnum = LanguageEnum.toLanguage(languageStrat)

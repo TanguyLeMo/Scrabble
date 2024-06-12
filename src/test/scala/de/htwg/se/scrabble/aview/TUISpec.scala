@@ -2,11 +2,11 @@ package de.htwg.se.scrabble
 package aview
 
 import org.scalatest.wordspec.AnyWordSpec
-import de.htwg.se.scrabble.controller.Controller
 import de.htwg.se.scrabble.model.Stone
 import de.htwg.se.scrabble.model.{Player, ScrabbleField}
 import org.scalatest.matchers.should.Matchers
 import de.htwg.se.scrabble.aview.languages.*
+import de.htwg.se.scrabble.controller.ControllerComponent.ControllerBaseImpl.Controller
 import de.htwg.se.scrabble.model.languageComponent.{LanguageContext, LanguageEnum}
 
 import java.io.ByteArrayInputStream

@@ -1,5 +1,7 @@
 package de.htwg.se.scrabble.model.languageComponent.languages
 
+import de.htwg.se.scrabble.model.languageComponent.LanguageStrategy
+
 class GermanStrategy extends LanguageStrategy{
   override def languageSetting: String = "Spracheinstellung: "
   override def requestNewWord: String = "Bitte geben Sie ein neues Wort ein"

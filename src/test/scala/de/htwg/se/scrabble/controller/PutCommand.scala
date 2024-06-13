@@ -1,9 +1,9 @@
 
 
 package de.htwg.se.scrabble.controller
-import de.htwg.se.scrabble.controller.PutCommand
+import de.htwg.se.scrabble.controller.ControllerComponent.ControllerBaseImpl.{Controller, PutCommand}
 import de.htwg.se.scrabble.model.languageComponent.LanguageContext
-import de.htwg.se.scrabble.model.{placeWordsAsMove, ScrabbleField}
+import de.htwg.se.scrabble.model.{ScrabbleField, placeWordsAsMove}
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers
 

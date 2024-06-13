@@ -3,8 +3,9 @@ package de.htwg.se.scrabble.model.gameComponent
 import de.htwg.se.scrabble.util.LanguageEnum
 
 trait StoneContainerInterface {
-  def gamestartPlayStones(languageEnum: LanguageEnum): List[Stone]
-  def drawRandomeStone(Container: StoneContainer): Stone
-  def removeStonefromContainer(StoneToRemove : Stone,Container: StoneContainer): StoneContainer
-  def ContainerEmtpy(Container: StoneContainer): Boolean
+  val stones: List[StoneInterface]
+  def gamestartPlayStones(languageEnum: LanguageEnum): List[StoneInterface]
+  def drawRandomeStone(Container: StoneContainerInterface): StoneInterface
+  def removeStonefromContainer(StoneToRemove : StoneInterface ,Container: StoneContainerInterface): StoneContainerInterface
+  def ContainerEmtpy(Container: StoneContainerInterface): Boolean
 }

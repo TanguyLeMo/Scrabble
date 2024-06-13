@@ -1,20 +1,23 @@
 package de.htwg.se.scrabble
 package aview
+
+import de.htwg.se.scrabble.controller.ControllerComponent.ControllerInterface
 import util.*
-import de.htwg.se.scrabble.controller.Controller
-import de.htwg.se.scrabble.model.gameComponent.{Player, ScrabbleField, placeWordsAsMove}
+import de.htwg.se.scrabble.controller.ControllerComponent.ControllerInterface
+import de.htwg.se.scrabble.model.gameComponent.{PlayerInterface, ScrabbleFieldInterface}
+import de.htwg.se.scrabble.model.gameComponent.gameComponentBaseImpl.{Player, ScrabbleField}
 //import de.htwg.se.scrabble.model.languageComponent.LanguageContext
 //import de.htwg.se.scrabble.model.{CreatePlayersListAsMove, Player, ScrabbleField, placeWordsAsMove, setGameLanguageAsMove}
 
 import scala.io.StdIn.readLine
-import de.htwg.se.scrabble.model.languageComponent.languages.LanguageEnum.{ENGLISH, FRENCH, GERMAN, ITALIAN}
+import de.htwg.se.scrabble.util.LanguageEnum.{ENGLISH, FRENCH, GERMAN, ITALIAN}
 
 import scala.annotation.tailrec
 import scala.collection.immutable
 import scala.util.{Failure, Success, Try}
 
 
-class TUI(val controller: Controller ) extends Observer {
+class TUI(val controller: ControllerInterface ) extends Observer {
   controller.add(this)
   
 
@@ -160,7 +163,7 @@ class TUI(val controller: Controller ) extends Observer {
     ("""[A-Z,a-z]+""".r matches xCoordinate) && ("""[0-9]+""".r matches yCoordinate)
   }
 
-  def inputNamesAndCreateList(): List[Player] = {
+  def inputNamesAndCreateList(): List[PlayerInterface] = {
     val playerListWithoutStones = controller.CreatePlayersList(getPlayersAndNames)
     val playerListWithStones = playerStartStones(7, playerListWithoutStones)
     playerListWithStones
@@ -175,7 +178,7 @@ class TUI(val controller: Controller ) extends Observer {
       val isNumber: Try[Int] = Try(readLine().toInt)
       isNumber match {
         case Success(value) =>
-          if (value > 0 && (controller.field.stoneContainer.Stones.length / (value * 7.0)) >= 1.0) value
+          if (value > 0 && (controller.field.stoneContainer.stones.length / (value * 7.0)) >= 1.0) value
           else {
             controller.invalidNumbercontroller
             numberOfPlayers()
@@ -208,22 +211,22 @@ class TUI(val controller: Controller ) extends Observer {
      Vector("Player1", "Player2")
   }
 
-  def displayLeaderboard(): List[Player] = {
+  def displayLeaderboard(): List[PlayerInterface] = {
     val players = controller.field.players
     val sortedPlayers = controller.sortListAfterPoints(players)
     controller.leaderBoardcontroller
     sortedPlayers
   }
 
-  def drawStonesAfterRound(player: Player, numberOfCards: Int, players: List[Player]): List[Player] = {
-    if (controller.field.stoneContainer.Stones.isEmpty || numberOfCards == 0) {
+  def drawStonesAfterRound(player: PlayerInterface, numberOfCards: Int, players: List[PlayerInterface]): List[PlayerInterface] = {
+    if (controller.field.stoneContainer.stones.isEmpty || numberOfCards == 0) {
       players
-    }
+    } //newPlayer(name, points, tleslist[Stone], 
     else {
       val newStone = controller.drawRandomStone(controller.field.stoneContainer)
       println(newStone)
       controller.removeStonefromContainer(newStone, controller.field.stoneContainer)
-      val newPlayer = new Player(player.getName, player.getPoints, player.playerTiles :+ newStone)
+      val newPlayer:PlayerInterface = new Player(player.getName, player.getPoints, player.playerTiles :+ newStone) // create new Player via controller
       val newPlayerList = controller.field.players.updated(controller.field.players.indexOf(player), newPlayer)
       controller.field = new ScrabbleField(controller.field.matrix, controller.field.dictionary, controller.field.squareFactory, controller.field.languageEnum, newPlayer, newPlayerList, controller.field.stoneContainer)
       drawStonesAfterRound(newPlayer, numberOfCards - 1, newPlayerList)
@@ -231,13 +234,13 @@ class TUI(val controller: Controller ) extends Observer {
     }
   }
 
-  def playerStartStones(numberStones: Int, playerList: List[Player]): List[Player] = {
+  def playerStartStones(numberStones: Int, playerList: List[PlayerInterface]): List[PlayerInterface] = {
     if (numberStones == 0) playerList
     else
       val updatedPlayerList = playerList.foldLeft(playerList) { (updatedList, player) =>
         val StonetoAdd = controller.drawRandomStone(controller.field.stoneContainer)
         controller.removeStonefromContainer(StonetoAdd, controller.field.stoneContainer)
-        val AddStonetoPlayer = new Player(player.getName, player.getPoints, player.playerTiles :+ StonetoAdd)
+        val AddStonetoPlayer: PlayerInterface = new Player(player.getName, player.getPoints, player.playerTiles :+ StonetoAdd)
         updatedList.updated(updatedList.indexOf(player), AddStonetoPlayer)
       }
       controller.field = new ScrabbleField(controller.field.matrix, controller.field.dictionary, controller.field.squareFactory, controller.field.languageEnum, updatedPlayerList.head, updatedPlayerList, controller.field.stoneContainer)
@@ -268,7 +271,7 @@ class TUI(val controller: Controller ) extends Observer {
       case _ => false
     }
   }
-  def placeWordAsFunction: placeWordsAsMove => ScrabbleField = move => {
+  def placeWordAsFunction: placeWordsAsMove => ScrabbleFieldInterface = move => {
     controller.placeWord(move.xPosition, move.yPosition, move.direction, move.word)
   }
 }

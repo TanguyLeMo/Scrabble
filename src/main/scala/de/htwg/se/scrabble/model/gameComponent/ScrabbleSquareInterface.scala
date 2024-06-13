@@ -1,5 +1,4 @@
 package de.htwg.se.scrabble.model.gameComponent
-import de.htwg.se.scrabble.model.gameComponent.square.ScrabbleSquare
 
 trait ScrabbleSquareInterface{
   def scoreModifier: Int
@@ -8,9 +7,9 @@ trait ScrabbleSquareInterface{
 
   override def toString: String
 
-  def letter: Stone
+  def letter: StoneInterface
 
-  def update(stone: Stone): ScrabbleSquare
+  def update(stone: StoneInterface): ScrabbleSquare
 
   def isEmpty: Boolean
 

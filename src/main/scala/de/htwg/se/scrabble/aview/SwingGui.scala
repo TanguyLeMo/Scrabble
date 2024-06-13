@@ -1,12 +1,13 @@
 package de.htwg.se.scrabble
 package aview
 
-import controller.Controller
-import controller.Controller
+import de.htwg.se.scrabble.controller.ControllerComponent.ControllerBaseImpl.Controller
+import de.htwg.se.scrabble.controller.ControllerComponent.ControllerInterface
 import de.htwg.se.scrabble.model.languageComponent.LanguageContextInterface
 import de.htwg.se.scrabble.model.languageComponent.languages.LanguageContext
-import de.htwg.se.scrabble.model.languageComponent.languages.LanguageEnum.{ENGLISH, FRENCH, GERMAN, ITALIAN}
-import de.htwg.se.scrabble.model.gameComponent.{CreatePlayersListAsMove, Player, ScrabbleField, placeWordsAsMove, setGameLanguageAsMove}
+import de.htwg.se.scrabble.util.LanguageEnum.{ENGLISH, FRENCH, GERMAN, ITALIAN}
+import de.htwg.se.scrabble.util.placeWordsAsMove
+import de.htwg.se.scrabble.model.gameComponent.ScrabbleFieldInterface
 import util.*
 
 import scala.swing.*
@@ -14,15 +15,9 @@ import scala.swing.event.*
 import util.{NameCantBeEmpty, Observer, ScrabbleEvent}
 import util.ScrabbleEvent
 
-class SwingGui(val controller: Controller, val languageContext: LanguageContextInterface) extends Frame with Observer {
+class SwingGui(val controller: ControllerInterface) extends Frame with Observer {
   controller.add(this)
-  def this(controller: Controller) = this(controller, new LanguageContext("english"))
-
-  import scala.swing._
-  import scala.swing.event._
-  val gameWindow = new GameWindow(controller)
-  
-
+  val gameWindow = GameWindow(controller)
   override def update(event: ScrabbleEvent): String = {
     event match
       case event: RoundsScrabbleEvent =>
@@ -39,24 +34,24 @@ class SwingGui(val controller: Controller, val languageContext: LanguageContextI
       case event: GameEndScrabbleEvent => println("Game Over")
       case event: CurrentPlayer => println("Current Player: " + controller.field.player.getName)
       case event: Exit => println("Goodbye!")
-      case event: InvalidCoordinates => println(languageContext.invalidcoordinates)
-      case event: NotInDictionary => println(languageContext.notInDictionary)
-      case event: NoCorrectDirection => println(languageContext.noCorrectDirection)
-      case event: WordDoesntFit => showErrorDialog(languageContext.wordDoesntFit)
+      case event: InvalidCoordinates => println(controller.languageContext.invalidcoordinates)
+      case event: NotInDictionary => println(controller.languageContext.notInDictionary)
+      case event: NoCorrectDirection => println(controller.languageContext.noCorrectDirection)
+      case event: WordDoesntFit => showErrorDialog(controller.languageContext.wordDoesntFit)
       case event: EnterNumberOfPlayers =>
       case event: EnterPlayerName =>
-      case event: NameAlreadyTaken => println(languageContext.nameAlreadyTaken)
-      case event: NameCantBeEmpty => println(languageContext.nameCantBeEmpty)
-      case event: EnterWord => println(languageContext.enterWord)
-      case event: InvalidInput => println(languageContext.invalidInput)
-      case event: InvalidNumber => println(languageContext.invalidNumber)
-      case event: RequestNewWord => println(languageContext.requestNewWord)
-      case event: WordAlreadyAddedToDictionary => showErrorDialog(languageContext.wordNotInDictionary)
-      case event: WordAddedToDictionary => println(languageContext.wordAddedToDictionary)
-      case event: EnterWordForDictionary => println(languageContext.enterWordForDictionary)
-      case event: LanguageSetting => println(languageContext.languageSetting)
-      case event: WordNotInDictionary => println(languageContext.wordNotInDictionary)
-      case event: DisplayLeaderBoard => println(languageContext.leaderBoard)
+      case event: NameAlreadyTaken => println(controller.languageContext.nameAlreadyTaken)
+      case event: NameCantBeEmpty => println(controller.languageContext.nameCantBeEmpty)
+      case event: EnterWord =>
+      case event: InvalidInput => println(controller.languageContext.invalidInput)
+      case event: InvalidNumber => println(controller.languageContext.invalidNumber)
+      case event: RequestNewWord => println(controller.languageContext.requestNewWord)
+      case event: WordAlreadyAddedToDictionary => showErrorDialog(controller.languageContext.wordNotInDictionary)
+      case event: WordAddedToDictionary => println(controller.languageContext.wordAddedToDictionary)
+      case event: EnterWordForDictionary => println(controller.languageContext.enterWordForDictionary)
+      case event: LanguageSetting => println(controller.languageContext.languageSetting)
+      case event: WordNotInDictionary => println(controller.languageContext.wordNotInDictionary)
+      case event: DisplayLeaderBoard => println(controller.languageContext.leaderBoard)
         val players = controller.field.players
         val sortedPlayers = controller.sortListAfterPoints(players)
         sortedPlayers.foreach(player => println(sortedPlayers.indexOf(player) + 1 + ". " + player))
@@ -76,7 +71,7 @@ class SwingGui(val controller: Controller, val languageContext: LanguageContextI
     )
   }
   
-  case class GameWindow(val controller: Controller) extends SimpleSwingApplication {
+  case class GameWindow(val controller: ControllerInterface) extends SimpleSwingApplication {
     val text = new TextField(16)
     val xAxisPanel = new ComboBox[String](('A' to 'O').map(_.toString))
     val yAxisPanel = new ComboBox[String]((0 until controller.field.matrix.rows).map(_.toString))

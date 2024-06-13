@@ -1,5 +1,7 @@
 package de.htwg.se.scrabble.model.languageComponent.languages
 
+import de.htwg.se.scrabble.model.languageComponent.LanguageStrategy
+
 class EnglishStrategy extends LanguageStrategy{
   override def requestNewWord: String = "Enter your word: "
   override def wordAlreadyAddedToDictionary: String = "Word already added to dictionary"

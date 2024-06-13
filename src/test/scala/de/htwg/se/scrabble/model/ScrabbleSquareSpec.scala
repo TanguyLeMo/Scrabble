@@ -1,7 +1,8 @@
 package de.htwg.se.scrabble.model
 
 import de.htwg.se.scrabble.model.Stone
-import de.htwg.se.scrabble.model.gameComponent.square.{LetterSquareFactory, StandardSquareFactory, WordSquareFactory}
+import de.htwg.se.scrabble.model.gameComponent.squareBaseImpl.squareBaseImpl.{StandardSquareFactory, WordSquareFactory}
+import de.htwg.se.scrabble.model.gameComponent.squareBaseImpl.LetterSquareFactory
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 

@@ -1,18 +1,23 @@
 package de.htwg.se.scrabble.model.gameComponent
 
+
 trait PlayerInterface {
+  val name: String
+  val points: Int
+  val playerTiles: List[StoneInterface]
+  
   def getPoints: Int
   def getName: String
   def equals(obj: Any): Boolean
-  def AddPoints(pointsToAdd: Int, player: Player, ListPlayers: List[Player]): List[Player]
-  def CreatePlayersList (playerNames : Vector[String]) : List[Player]
-  def addStones (player: Player, ListPlayers: List[Player],stones: List[Stone]): List[Player]
-  def removeStones(player: Player, ListPlayers: List[Player],stones: List[Stone]): List[Player]
-  def hasStones(notRequiredStones: List[Stone], word: String, player: Player): Boolean
-  def OnlyRequiredStones(notRequiredStones: List[Stone], word: String): List[Stone]
-  def nextTurn(playerList: List[Player], lastTurn: Player): Player
-  def sortListAfterPoints(players: List[Player]) : List[Player]
+  def AddPoints(pointsToAdd: Int, player: PlayerInterface, ListPlayers: List[PlayerInterface]): List[PlayerInterface]
+  def CreatePlayersList (playerNames : Vector[String]) : List[PlayerInterface]
+  def addStones (player: PlayerInterface, ListPlayers: List[PlayerInterface],stones: List[StoneInterface]): List[PlayerInterface]
+  def removeStones(player: PlayerInterface, ListPlayers: List[PlayerInterface],stones: List[StoneInterface]): List[PlayerInterface]
+  def hasStones(notRequiredStones: List[StoneInterface], word: String, player: PlayerInterface): Boolean
+  def OnlyRequiredStones(notRequiredStones: List[StoneInterface], word: String): List[StoneInterface]
+  def nextTurn(playerList: List[PlayerInterface], lastTurn: PlayerInterface): PlayerInterface
+  def sortListAfterPoints(players: List[PlayerInterface]) : List[PlayerInterface]
   def toString: String
-  def previousTurn(playerList: List[Player], currentTurn: Player): Player
+  def previousTurn(playerList: List[PlayerInterface], currentTurn: PlayerInterface): PlayerInterface
 
 }

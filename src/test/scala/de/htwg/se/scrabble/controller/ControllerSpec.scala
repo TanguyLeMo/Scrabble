@@ -1,11 +1,12 @@
 package de.htwg.se.scrabble.controller
 
+import de.htwg.se.scrabble.controller.ControllerComponent.ControllerBaseImpl.Controller
 import de.htwg.se.scrabble.model.Stone
 import de.htwg.se.scrabble.model.languageComponent.LanguageEnum.{ENGLISH, FRENCH, GERMAN}
 import de.htwg.se.scrabble.model.languageComponent.LanguageEnum
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers.*
-import de.htwg.se.scrabble.model.{placeWordsAsMove, Player, ScrabbleField}
+import de.htwg.se.scrabble.model.{Player, ScrabbleField, placeWordsAsMove}
 import de.htwg.se.scrabble.util.Observer
 
 class ControllerSpec extends AnyWordSpec:

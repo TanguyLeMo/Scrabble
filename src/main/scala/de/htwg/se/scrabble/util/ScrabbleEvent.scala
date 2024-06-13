@@ -1,7 +1,6 @@
 package de.htwg.se.scrabble.util
 
 import de.htwg.se.scrabble.controller
-import de.htwg.se.scrabble.model.gameComponent.Player
 
 import scala.io.StdIn.readLine
 
@@ -35,7 +34,6 @@ case class EnterPlayerName() extends ScrabbleEvent
 case class NameCantBeEmpty() extends ScrabbleEvent
 case class NotEnoughStones() extends ScrabbleEvent
 case class DisplayLeaderBoard() extends ScrabbleEvent
-
 case class phaseChooseLanguage() extends ScrabbleEvent
 case class phasePlayerAndNames() extends ScrabbleEvent
 case class phaseaddWordsToDictionary() extends ScrabbleEvent

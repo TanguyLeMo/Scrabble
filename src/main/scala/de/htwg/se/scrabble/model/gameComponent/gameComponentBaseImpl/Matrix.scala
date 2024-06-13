@@ -10,7 +10,7 @@ class Matrix(val field: Vector[Vector[ScrabbleSquare]]) extends MatrixInterface:
   val letterFactory: SquareFactory = new LetterSquareFactory
   val wordFactory: SquareFactory = new WordSquareFactory
   val standardSquareFactory: SquareFactory = new StandardSquareFactory
-  val center = rowsAndColumn / 2
+  val center: Int  = rowsAndColumn / 2
   def updateBoard(board: Vector[Vector[ScrabbleSquare]], positions: List[(Int, Int)], factory: () => ScrabbleSquare): Vector[Vector[ScrabbleSquare]] =
     positions.foldLeft(board) { case (b, (row, col)) =>
       b.updated(row, b(row).updated(col, factory()))

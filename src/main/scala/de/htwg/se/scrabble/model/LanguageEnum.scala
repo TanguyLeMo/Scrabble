@@ -1,4 +1,4 @@
-package de.htwg.se.scrabble.model.languageComponent.languages
+package de.htwg.se.scrabble.model
 
 enum LanguageEnum {
   case ENGLISH, GERMAN, FRENCH, ITALIAN

@@ -1,5 +1,5 @@
 package de.htwg.se.scrabble.model
-import de.htwg.se.scrabble.model.languageComponent.languages.LanguageEnum
+import de.htwg.se.scrabble.model.LanguageEnum
 
 import scala.util.{Failure, Success, Try}
 

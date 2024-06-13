@@ -4,12 +4,10 @@ import de.htwg.se.scrabble.model.square.*
 
 class Matrix(val field: Vector[Vector[ScrabbleSquare]]):
   val columns, rows, rowsAndColumn: Int = field.length
-  private val letterFactory = new LetterSquareFactory
-  private val wordFactory = new WordSquareFactory
-  private val standardSquareFactory = new StandardSquareFactory
+  private val letterFactory: SquareFactory = new LetterSquareFactory
+  private val wordFactory: SquareFactory = new WordSquareFactory
+  private val standardSquareFactory: SquareFactory = new StandardSquareFactory
   private val center = rowsAndColumn / 2
-
-
   private def updateBoard(board: Vector[Vector[ScrabbleSquare]], positions: List[(Int, Int)], factory: () => ScrabbleSquare): Vector[Vector[ScrabbleSquare]] =
     positions.foldLeft(board) { case (b, (row, col)) =>
       b.updated(row, b(row).updated(col, factory()))
@@ -137,10 +135,6 @@ class Matrix(val field: Vector[Vector[ScrabbleSquare]]):
         }.toList
     }
   }
-      
-  
-  
-
   override def equals(obj: Any): Boolean = obj match
     case other: Matrix => this.columns == other.columns && this.rows == other.rows && this.field.zip(other.field).forall
       { case (row1, row2) => row1.zip(row2).forall { case (square1, square2) => square1.letter == square2.letter}}

@@ -1,9 +1,10 @@
-package de.htwg.se.scrabble.model.scoring
+package de.htwg.se.scrabble.model.scoring.ScoringBaseImpl
 
+import de.htwg.se.scrabble.model.scoring.ScoringSystemInterface
+import de.htwg.se.scrabble.model.square.*
 import de.htwg.se.scrabble.model.{Matrix, Stone}
-import de.htwg.se.scrabble.model.square._
 
-trait ScoringSystem {
+trait ScoringSystem extends ScoringSystemInterface{
 
   def collectPoints(matrix: Matrix, xPosition: Int, yPosition: Int, direction: Char, word: String): Int = {
     // Collect points for the newly placed word
@@ -30,7 +31,7 @@ trait ScoringSystem {
       case _ =>
         (sum + determinPoints(currentSquare.letter) , multiplication)
     }
-    collectPointsR(matrix, newXPosition, newYPosition, direction, word, currentIndex + 1, newSum, newMultiplication)
+      collectPointsR(matrix, newXPosition, newYPosition, direction, word, currentIndex + 1, newSum, newMultiplication)
   }
   def determinPoints(stone: Stone): Int
 }

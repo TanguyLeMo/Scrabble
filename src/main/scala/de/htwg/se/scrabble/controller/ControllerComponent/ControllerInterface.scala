@@ -1,7 +1,7 @@
 package de.htwg.se.scrabble.controller.ControllerComponent
 
 import de.htwg.se.scrabble.model.languageComponent.LanguageContextInterface
-import de.htwg.se.scrabble.model.languageComponent.languages.LanguageEnum
+import de.htwg.se.scrabble.model.LanguageEnum
 import de.htwg.se.scrabble.model.{Matrix, Player, ScrabbleField, Stone, StoneContainer, placeWordsAsMove}
 import de.htwg.se.scrabble.util.Observable
 
@@ -20,7 +20,7 @@ trait ControllerInterface extends Observable{
   def sortListAfterPoints(players:List[Player]): List[Player]
   def lettersAlreadyThere(xPosition: Int, yPosition: Int, direction: Char, word: String): List[Stone]
   def setLanguageDictionary(language: LanguageEnum): ScrabbleField
-  def collectPoints(matrix: Matrix, xPosition: Int, yPosition: Int, direction: Char, word: String): Int
+  def collectPoints(matrix: Matrix,xPosition: Int, yPosition: Int, direction: Char, word: String): Int
   def hasStones(notRequiredStones: List[Stone], word: String, player: Player): Boolean
   def languageContext: LanguageContextInterface
   def AddPoints(pointsToAdd: Int, player: Player, ListPlayers: List[Player]): List[Player]

@@ -2,8 +2,7 @@ package de.htwg.se.scrabble.controller.ControllerComponent.ControllerBaseImpl
 
 import de.htwg.se.scrabble.controller.ControllerComponent.ControllerInterface
 import de.htwg.se.scrabble.model.languageComponent.LanguageContextInterface
-import de.htwg.se.scrabble.model.languageComponent.languages.LanguageEnum
-import de.htwg.se.scrabble.model.*
+import de.htwg.se.scrabble.model.{LanguageEnum, Matrix, Player, ScrabbleField, Stone, StoneContainer, placeWordsAsMove}
 import de.htwg.se.scrabble.util
 import de.htwg.se.scrabble.util.*
 
@@ -67,7 +66,7 @@ class Controller(var field: ScrabbleField) extends ControllerInterface:
     field
 
   override def collectPoints(matrix: Matrix, xPosition: Int, yPosition: Int, direction: Char, word: String): Int =
-    field.scoringSystem.collectPoints(matrix, xPosition, yPosition, direction, word)
+    field.scoringSystem.collectPoints(field.matrix, xPosition, yPosition, direction, word)
 
   override def hasStones(notRequiredStones: List[Stone], word: String, player: Player): Boolean =
     player.hasStones(notRequiredStones, word, player)

@@ -1,14 +1,14 @@
 package de.htwg.se.scrabble.model
 import de.htwg.se.scrabble.model.languageComponent.*
 import de.htwg.se.scrabble.model.scoring.*
-import de.htwg.se.scrabble.model.languageComponent.languages.{LanguageContext, LanguageEnum}
-import de.htwg.se.scrabble.model.languageComponent.languages.LanguageEnum.{ENGLISH, FRENCH, GERMAN, ITALIAN}
+import de.htwg.se.scrabble.model.languageComponent.languages.LanguageContext
+import de.htwg.se.scrabble.model.LanguageEnum.{ENGLISH, FRENCH, GERMAN, ITALIAN}
 import de.htwg.se.scrabble.model.square.StandardSquareFactory
 
 class ScrabbleField(val matrix: Matrix, val dictionary: Dictionary, val squareFactory: StandardSquareFactory, val languageEnum: LanguageEnum, val player : Player, val players : List[Player],val stoneContainer: StoneContainer):
   val numOfAlphabet: Int = 26
   val numSymbolPerColumn: Int = Math.ceil(matrix.rows.toDouble / numOfAlphabet.toDouble).toInt + 1
-  val scoringSystem: ScoringSystem = languageEnum match
+  val scoringSystem: ScoringSystemInterface = languageEnum match
     case ENGLISH => new EnglishScoringSystem()
     case FRENCH => new FrenchScoringSystem()
     case GERMAN => new GermanScoringSystem()

@@ -1,5 +1,6 @@
 package de.htwg.se.scrabble.model.scoring
 import de.htwg.se.scrabble.model.Stone
+import de.htwg.se.scrabble.model.scoring.ScoringBaseImpl.ScoringSystem
 
 class GermanScoringSystem extends ScoringSystem{
   override def determinPoints(stone: Stone): Int = stone.symbol.toUpper match {

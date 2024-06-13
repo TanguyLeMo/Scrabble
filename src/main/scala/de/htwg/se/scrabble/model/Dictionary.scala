@@ -1,5 +1,5 @@
 package de.htwg.se.scrabble.model
-import de.htwg.se.scrabble.model.languageComponent.languages.LanguageEnum
+import de.htwg.se.scrabble.model.LanguageEnum
 
 import scala.collection.immutable.HashSet
 import scala.language.postfixOps
@@ -14,7 +14,6 @@ class Dictionary(val set: HashSet[String]) {
       case LanguageEnum.ITALIAN => "italianWordList.txt"
       case null => "englishWordList.txt"
     })
-
     val lines = try source.getLines.toList finally source.close()
     val upperCase = lines.map(_.toUpperCase)
     val set = HashSet() ++ upperCase

@@ -8,7 +8,7 @@ import de.htwg.se.scrabble.model.{Player, ScrabbleField, placeWordsAsMove}
 //import de.htwg.se.scrabble.model.{CreatePlayersListAsMove, Player, ScrabbleField, placeWordsAsMove, setGameLanguageAsMove}
 
 import scala.io.StdIn.readLine
-import de.htwg.se.scrabble.model.languageComponent.languages.LanguageEnum.{ENGLISH, FRENCH, GERMAN, ITALIAN}
+import de.htwg.se.scrabble.model.LanguageEnum.{ENGLISH, FRENCH, GERMAN, ITALIAN}
 
 import scala.annotation.tailrec
 import scala.collection.immutable

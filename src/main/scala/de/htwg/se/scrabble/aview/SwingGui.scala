@@ -5,8 +5,8 @@ import de.htwg.se.scrabble.controller.ControllerComponent.ControllerBaseImpl.Con
 import de.htwg.se.scrabble.controller.ControllerComponent.ControllerInterface
 import de.htwg.se.scrabble.model.languageComponent.LanguageContextInterface
 import de.htwg.se.scrabble.model.languageComponent.languages.LanguageContext
-import de.htwg.se.scrabble.model.languageComponent.languages.LanguageEnum.{ENGLISH, FRENCH, GERMAN, ITALIAN}
-import de.htwg.se.scrabble.model.{CreatePlayersListAsMove, Player, ScrabbleField, placeWordsAsMove, setGameLanguageAsMove}
+import de.htwg.se.scrabble.model.LanguageEnum.{ENGLISH, FRENCH, GERMAN, ITALIAN}
+import de.htwg.se.scrabble.model.{CreatePlayersListAsMove, Player, ScrabbleField, placeWordsAsMove}
 import util.*
 
 import scala.swing.*
@@ -41,7 +41,7 @@ class SwingGui(val controller: ControllerInterface) extends Frame with Observer 
       case event: EnterPlayerName =>
       case event: NameAlreadyTaken => println(controller.languageContext.nameAlreadyTaken)
       case event: NameCantBeEmpty => println(controller.languageContext.nameCantBeEmpty)
-      case event: EnterWord => println(controller.languageContext.enterWord)
+      case event: EnterWord =>
       case event: InvalidInput => println(controller.languageContext.invalidInput)
       case event: InvalidNumber => println(controller.languageContext.invalidNumber)
       case event: RequestNewWord => println(controller.languageContext.requestNewWord)

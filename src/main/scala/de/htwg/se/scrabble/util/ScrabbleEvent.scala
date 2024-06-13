@@ -1,7 +1,7 @@
 package de.htwg.se.scrabble.util
 
 import de.htwg.se.scrabble.controller
-import de.htwg.se.scrabble.model.Player
+import de.htwg.se.scrabble.model.gameComponent.Player
 
 import scala.io.StdIn.readLine
 

@@ -1,13 +1,13 @@
 package de.htwg.se.scrabble.model.ScoringSystem
 
-import de.htwg.se.scrabble.model.square.StandardSquareFactory
 import de.htwg.se.scrabble.model.{Dictionary, Matrix, ScrabbleField, Stone, scoring}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import de.htwg.se.scrabble.aview.languages.*
+import de.htwg.se.scrabble.model.gameComponent.scoring.{EnglishScoringFactory, EnglishScoringSystem, FrenchScoringFactory, FrenchScoringSystem, GermanScoringFactory, GermanScoringSystem, ItalianScoringFactory, ItalianScoringSystem}
+import de.htwg.se.scrabble.model.gameComponent.square.StandardSquareFactory
 import de.htwg.se.scrabble.model.languageComponent.LanguageEnum.{ENGLISH, FRENCH, GERMAN}
 import de.htwg.se.scrabble.model.languageComponent.LanguageEnum
-import de.htwg.se.scrabble.model.scoring.*
 
 class ScoringSystemSpec extends AnyWordSpec with Matchers {
   val scrabbleField = new ScrabbleField(15, ENGLISH)

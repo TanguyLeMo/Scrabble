@@ -1,5 +1,6 @@
 package de.htwg.se.scrabble.model
-import de.htwg.se.scrabble.model.square._
+import de.htwg.se.scrabble.model.gameComponent.square.StandardSquareFactory
+import de.htwg.se.scrabble.model.square.*
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers.*
 

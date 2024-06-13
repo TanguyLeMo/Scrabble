@@ -1,6 +1,6 @@
 package de.htwg.se.scrabble
 package controller
-import model.{ placeWordsAsMove, ScrabbleField}
+import model.gameComponent.{ placeWordsAsMove, ScrabbleField}
 import util.Command
 
 class PutCommand(move: placeWordsAsMove) extends Command[ScrabbleField]:

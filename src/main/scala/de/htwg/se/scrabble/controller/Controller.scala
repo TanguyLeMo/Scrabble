@@ -2,15 +2,20 @@ package de.htwg.se.scrabble
 package controller
 
 import util.*
-import model.ScrabbleField
-import model.Player
-import model.Matrix
-import model.Stone
-import model.StoneContainer
+import model.gameComponent.ScrabbleFieldInterface
+import model.gameComponent.ScrabbleField
+import model.gameComponent.PlayerInterface
+import model.gameComponent.Player
+import model.gameComponent.MatrixInterface
+import model.gameComponent.Matrix
+import model.gameComponent.StoneInterface
+import model.gameComponent.Stone
+import model.gameComponent.StoneContainerInterface
+import model.gameComponent.StoneContainer
 import de.htwg.se.scrabble.model
 import de.htwg.se.scrabble.model.languageComponent.languages.LanguageEnum
 import de.htwg.se.scrabble.model.languageComponent.LanguageContextInterface
-import de.htwg.se.scrabble.model.placeWordsAsMove
+import de.htwg.se.scrabble.model.gameComponent.placeWordsAsMove
 
 
 class Controller(var field: ScrabbleField) extends Observable:

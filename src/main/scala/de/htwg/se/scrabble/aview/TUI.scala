@@ -2,7 +2,7 @@ package de.htwg.se.scrabble
 package aview
 import util.*
 import de.htwg.se.scrabble.controller.Controller
-import de.htwg.se.scrabble.model.{Player, ScrabbleField, placeWordsAsMove}
+import de.htwg.se.scrabble.model.gameComponent.{Player, ScrabbleField, placeWordsAsMove}
 //import de.htwg.se.scrabble.model.languageComponent.LanguageContext
 //import de.htwg.se.scrabble.model.{CreatePlayersListAsMove, Player, ScrabbleField, placeWordsAsMove, setGameLanguageAsMove}
 

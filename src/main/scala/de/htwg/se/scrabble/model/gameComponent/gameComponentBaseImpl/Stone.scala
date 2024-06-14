@@ -1,8 +1,9 @@
 package de.htwg.se.scrabble.model.gameComponent
 package gameComponentBaseImpl
 
+import com.google.inject.Inject
 import de.htwg.se.scrabble.model.gameComponent.StoneInterface
-class Stone (letter: Char)extends StoneInterface:
+class Stone @Inject (letter: Char)extends StoneInterface:
   def symbol: Char = letter
   def this() =this('_')
   override def toString: String = letter.toString

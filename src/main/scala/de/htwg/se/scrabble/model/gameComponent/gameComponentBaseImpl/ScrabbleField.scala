@@ -1,6 +1,7 @@
 package de.htwg.se.scrabble.model.gameComponent
 package gameComponentBaseImpl
 
+import com.google.inject.Inject
 import de.htwg.se.scrabble.model.gameComponent.gameComponentBaseImpl.Dictionary
 import de.htwg.se.scrabble.model.languageComponent.*
 import de.htwg.se.scrabble.model.languageComponent.languages.LanguageContext
@@ -9,7 +10,7 @@ import de.htwg.se.scrabble.model.gameComponent.scoringBaseImpl.*
 import de.htwg.se.scrabble.model.gameComponent.squareBaseImpl.StandardSquareFactory
 import de.htwg.se.scrabble.util.LanguageEnum
 
-class ScrabbleField(val matrix: MatrixInterface, val dictionary: DictionaryInterface, val squareFactory: StandardSquareFactory, val languageEnum: LanguageEnum, val player : PlayerInterface, val players : List[PlayerInterface],val stoneContainer: StoneContainerInterface) extends ScrabbleFieldInterface:
+class ScrabbleField @Inject (val matrix: MatrixInterface, val dictionary: DictionaryInterface, val squareFactory: StandardSquareFactory, val languageEnum: LanguageEnum, val player : PlayerInterface, val players : List[PlayerInterface],val stoneContainer: StoneContainerInterface) extends ScrabbleFieldInterface:
   val numOfAlphabet: Int = 26
   val numSymbolPerColumn: Int = Math.ceil(matrix.rows.toDouble / numOfAlphabet.toDouble).toInt + 1
   val scoringSystem: ScoringSystemInterface = languageEnum match

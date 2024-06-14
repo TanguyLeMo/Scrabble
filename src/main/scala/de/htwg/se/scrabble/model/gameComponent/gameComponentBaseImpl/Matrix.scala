@@ -1,11 +1,12 @@
 package de.htwg.se.scrabble.model.gameComponent
 package gameComponentBaseImpl
 
+import com.google.inject.Inject
 import de.htwg.se.scrabble.model.gameComponent.{MatrixInterface, ScrabbleSquare, SquareFactory}
 import de.htwg.se.scrabble.model.gameComponent.squareBaseImpl.{StandardSquareFactory, WordSquareFactory}
 import de.htwg.se.scrabble.model.gameComponent.squareBaseImpl.LetterSquareFactory
 
-class Matrix(val field: Vector[Vector[ScrabbleSquare]]) extends MatrixInterface:
+class Matrix @Inject (val field: Vector[Vector[ScrabbleSquare]]) extends MatrixInterface:
   val columns, rows, rowsAndColumn: Int = field.length
   val letterFactory: SquareFactory = new LetterSquareFactory
   val wordFactory: SquareFactory = new WordSquareFactory

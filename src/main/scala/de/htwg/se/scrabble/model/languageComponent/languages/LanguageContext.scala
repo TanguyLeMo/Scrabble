@@ -1,10 +1,11 @@
 package de.htwg.se.scrabble.model.languageComponent.languages
 
+import com.google.inject.Inject
 import de.htwg.se.scrabble.model.languageComponent.{LanguageContextInterface, LanguageStrategy}
 import de.htwg.se.scrabble.util.LanguageEnum
 
 
-class LanguageContext(languageStrat: String) extends LanguageContextInterface{
+class LanguageContext @Inject (languageStrat: String) extends LanguageContextInterface{
   val language: LanguageEnum = LanguageEnum.toLanguage(languageStrat)
   val languageStrategy: LanguageStrategy = language match {
     case LanguageEnum.ENGLISH => EnglishStrategy()

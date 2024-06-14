@@ -2,11 +2,13 @@ package de.htwg.se.scrabble.model.gameComponent
 package gameComponentBaseImpl
 
 
+import com.google.inject.Inject
 import de.htwg.se.scrabble.util.LanguageEnum
 import de.htwg.se.scrabble.model.gameComponent.StoneContainerInterface
+
 import scala.util.{Failure, Success, Try}
 
-class StoneContainer(val stones : List[StoneInterface]) extends StoneContainerInterface {
+class StoneContainer @Inject (val stones : List[StoneInterface]) extends StoneContainerInterface {
 
     def gamestartPlayStones(languageEnum: LanguageEnum): List[Stone] = {
         val source = scala.io.Source.fromResource(languageEnum match {

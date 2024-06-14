@@ -1,16 +1,17 @@
 package de.htwg.se.scrabble.model.gameComponent.gameComponentBaseImpl
 
+import com.google.inject.Inject
 import de.htwg.se.scrabble.model.gameComponent.DictionaryInterface
 import de.htwg.se.scrabble.util.LanguageEnum
 
 import scala.collection.immutable.HashSet
 import scala.language.postfixOps
-class Dictionary(val set: HashSet[String]) extends DictionaryInterface{
+class Dictionary @Inject (val set: HashSet[String]) extends DictionaryInterface{
   val file: String = "englishWordList.txt"
   def this() = this(HashSet.empty[String])
   
   
-  def readLines(languageEnum: LanguageEnum): DictionaryInterface = {
+  def readLines (languageEnum: LanguageEnum): DictionaryInterface = {
     val source = scala.io.Source.fromResource(languageEnum match {
       case LanguageEnum.ENGLISH => "englishWordList.txt"
       case LanguageEnum.GERMAN => "germanWordList.txt"

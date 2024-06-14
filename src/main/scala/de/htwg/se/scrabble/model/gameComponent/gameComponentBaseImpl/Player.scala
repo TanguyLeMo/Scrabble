@@ -1,15 +1,14 @@
 package de.htwg.se.scrabble.model.gameComponent
 package gameComponentBaseImpl
 
+import com.google.inject.Inject
 import de.htwg.se.scrabble.model.gameComponent.gameComponentBaseImpl.Stone
 import de.htwg.se.scrabble.model.gameComponent.PlayerInterface
-
-
 
 import java.util
 import java.util.LinkedList
 
-class Player (val name: String,val points: Int,val playerTiles: List[StoneInterface]) extends PlayerInterface:
+class Player @Inject (val name: String,val points: Int,val playerTiles: List[StoneInterface]) extends PlayerInterface:
   def getPoints: Int = points
   def getName: String = name
   override def equals(obj: Any): Boolean = obj match

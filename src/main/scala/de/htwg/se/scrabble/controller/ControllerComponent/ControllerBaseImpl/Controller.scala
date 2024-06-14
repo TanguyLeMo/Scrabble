@@ -1,5 +1,6 @@
 package de.htwg.se.scrabble.controller.ControllerComponent.ControllerBaseImpl
 
+import com.google.inject.Inject
 import de.htwg.se.scrabble.controller.ControllerComponent.ControllerInterface
 import de.htwg.se.scrabble.model.gameComponent.ScrabbleFieldInterface
 import de.htwg.se.scrabble.model.languageComponent.LanguageContextInterface
@@ -11,7 +12,7 @@ import de.htwg.se.scrabble.util.*
 import scala.util.*
 
 
-class Controller(var field: ScrabbleFieldInterface) extends ControllerInterface:
+class Controller @Inject (var field: ScrabbleFieldInterface) extends ControllerInterface:
   val undoManager = new util.UndoManager[ScrabbleFieldInterface]
   
   override def doAndPublish(doThis: placeWordsAsMove => ScrabbleFieldInterface, move: placeWordsAsMove): Unit =

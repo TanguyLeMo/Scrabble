@@ -3,11 +3,12 @@ package scoringBaseImpl
 
 
 
+import com.google.inject.Inject
 import de.htwg.se.scrabble.model.gameComponent.gameComponentBaseImpl.Matrix
 import de.htwg.se.scrabble.model.gameComponent.{ScoringSystemInterface, StoneInterface}
 import de.htwg.se.scrabble.model.gameComponent.squareBaseImpl.{LetterSquare, WordSquare}
 
-abstract class ScoringSystem extends ScoringSystemInterface{
+abstract class ScoringSystem @Inject extends ScoringSystemInterface{
   def collectPoints(matrix: MatrixInterface, xPosition: Int, yPosition: Int, direction: Char, word: String): Int = {
     // Collect points for the newly placed word
     val (newWordSum, newWordMultiplication) = collectPointsR(matrix, xPosition, yPosition, if(direction == 'H') 'V' else 'H', word, 0, 0, 1)

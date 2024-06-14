@@ -26,18 +26,18 @@ class ScrabbleField(val matrix: MatrixInterface, val dictionary: DictionaryInter
   }
   val languageContext: LanguageContextInterface = new LanguageContext(languageEnum.toString)
 
-  def this(rowsAndColumns: Int) = this(new Matrix(Vector.fill(rowsAndColumns, rowsAndColumns)(new StandardSquareFactory().createDoubleSquare(Stone()))).init(), new Dictionary().readLines(ENGLISH), new StandardSquareFactory, ENGLISH, new Player("Player1",0,List[Stone]()), Nil, new StoneContainer(List[Stone]()))
+  def this(rowsAndColumns: Int) = this( new Matrix(Vector.fill(rowsAndColumns, rowsAndColumns)(new StandardSquareFactory().createDoubleSquare(Stone()))).init(), new Dictionary().readLines(ENGLISH), new StandardSquareFactory, ENGLISH, new Player("Player1",0,List[Stone]()), Nil, new StoneContainer(List[Stone]()))
   
-  def this(matrix : MatrixInterface, newDictionary: DictionaryInterface) = this(matrix, newDictionary, new StandardSquareFactory, ENGLISH, new Player("Player1",0,List[Stone]()), Nil, new StoneContainer(List[Stone]()))
+  def this(matrix : MatrixInterface, newDictionary: DictionaryInterface) = this( matrix, newDictionary, new StandardSquareFactory, ENGLISH, new Player("Player1",0,List[Stone]()), Nil, new StoneContainer(List[Stone]()))
   
-  def this(rowsAndColumns : Int, languageEnum: LanguageEnum) = this(new Matrix(Vector.fill(rowsAndColumns, rowsAndColumns)(new StandardSquareFactory().createDoubleSquare(Stone()))).init(), new Dictionary().readLines(languageEnum), new StandardSquareFactory, languageEnum, new Player("Player1",0,List[Stone]()), Nil,new StoneContainer(List[Stone]()))
+  def this(rowsAndColumns : Int, languageEnum: LanguageEnum) = this( new Matrix(Vector.fill(rowsAndColumns, rowsAndColumns)(new StandardSquareFactory().createDoubleSquare(Stone()))).init(), new Dictionary().readLines(languageEnum), new StandardSquareFactory, languageEnum, new Player("Player1",0,List[Stone]()), Nil,new StoneContainer(List[Stone]()))
   def labelingXAxis(currcolum: Int): String =
     if(currcolum > matrix.columns)""
     else translateLetter(currcolum)+addSpace(numSymbolPerColumn-translateLetter(currcolum).length)+labelingXAxis(currcolum + 1)
   def addSpace(numSpaceToAdd: Int): String = numSpaceToAdd match
     case n if n <= 0 => " "
     case n => " " + addSpace(n - 1)
-  def placeWord(yPosition: Int, xCoordinates : Int, direction :Char, word : String): ScrabbleFieldInterface = new ScrabbleField(matrix.placeWord(yPosition, xCoordinates, direction, word), dictionary, squareFactory, languageEnum, player, players, stoneContainer)
+  def placeWord(yPosition: Int, xCoordinates : Int, direction :Char, word : String): ScrabbleFieldInterface = new ScrabbleField( matrix.placeWord(yPosition, xCoordinates, direction, word), dictionary, squareFactory, languageEnum, player, players, stoneContainer)
   def wordFits(xPosition: Int, yPosition: Int, direction: Char, word: String) : Boolean = matrix.wordFits(xPosition, yPosition, direction, word)
   def translateLetter(n: Int): String = if (n <= 0) "" else translateLetter((n - 1) / 26) + ('A' + (n - 1) % 26).toChar
   def concatenateRows(currentRow: Int): String =

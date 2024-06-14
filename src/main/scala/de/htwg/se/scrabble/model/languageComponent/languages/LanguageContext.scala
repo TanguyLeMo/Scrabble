@@ -2,9 +2,10 @@ package de.htwg.se.scrabble.model.languageComponent.languages
 
 import de.htwg.se.scrabble.model.languageComponent.{LanguageContextInterface, LanguageStrategy}
 import de.htwg.se.scrabble.util.LanguageEnum
+import de.htwg.se.scrabble.default.given
 
 
-class LanguageContext(languageStrat: String) extends LanguageContextInterface{
+class LanguageContext(using languageStrat: String) extends LanguageContextInterface{
   val language: LanguageEnum = LanguageEnum.toLanguage(languageStrat)
   val languageStrategy: LanguageStrategy = language match {
     case LanguageEnum.ENGLISH => EnglishStrategy()

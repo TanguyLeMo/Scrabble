@@ -15,7 +15,7 @@ trait ScrabbleFieldInterface {
   val scoringSystem: ScoringSystemInterface
   val languageSettings: String
   val languageContext: LanguageContextInterface
-  
+
   def labelingXAxis(currcolum: Int): String
   def addSpace(numSpaceToAdd: Int): String
   def placeWord(yPosition: Int, xCoordinates : Int, direction :Char, word : String): ScrabbleFieldInterface
@@ -30,5 +30,5 @@ trait ScrabbleFieldInterface {
   def setLanguageDictionary(languagee: LanguageEnum): ScrabbleFieldInterface
   def previousTurn(currentTurn: PlayerInterface): ScrabbleFieldInterface
   def addPoints(pointsToAdd: Int, player: PlayerInterface, ListPlayers: List[PlayerInterface]): ScrabbleFieldInterface
-  
+
 }

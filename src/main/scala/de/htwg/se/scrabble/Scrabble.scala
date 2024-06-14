@@ -10,7 +10,7 @@ import de.htwg.se.scrabble.util.phaseChooseLanguage
 @main def run(): Unit = {
     val field: ScrabbleFieldInterface = new ScrabbleField(15, ENGLISH)
     val controller: ControllerInterface = new Controller(field)
-    val gui = new SwingGui(controller)
-    val tui = TUI(controller)
+    val gui = new SwingGui(using controller: ControllerInterface)
+    val tui = TUI(using controller: ControllerInterface)
     controller.notifyObservers(new phaseChooseLanguage)
 }

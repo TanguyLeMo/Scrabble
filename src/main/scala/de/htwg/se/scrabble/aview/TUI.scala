@@ -1,6 +1,7 @@
 package de.htwg.se.scrabble
 package aview
 
+import de.htwg.se.scrabble.default.{given}
 import de.htwg.se.scrabble.controller.ControllerComponent.ControllerInterface
 import util.*
 import de.htwg.se.scrabble.controller.ControllerComponent.ControllerInterface
@@ -17,7 +18,7 @@ import scala.collection.immutable
 import scala.util.{Failure, Success, Try}
 
 
-class TUI(val controller: ControllerInterface ) extends Observer {
+class TUI(using controller: ControllerInterface ) extends Observer {
   controller.add(this)
   
 
@@ -265,12 +266,7 @@ class TUI(val controller: ControllerInterface ) extends Observer {
     this
   }
 
-  override def equals(obj: Any): Boolean = {
-    obj match {
-      case obj: TUI => obj.controller.field == this.controller.field
-      case _ => false
-    }
-  }
+ 
   def placeWordAsFunction: placeWordsAsMove => ScrabbleFieldInterface = move => {
     controller.placeWord(move.xPosition, move.yPosition, move.direction, move.word)
   }

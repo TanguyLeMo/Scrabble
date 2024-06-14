@@ -2,6 +2,7 @@ package de.htwg.se.scrabble.model.gameComponent.gameComponentBaseImpl
 
 import de.htwg.se.scrabble.model.gameComponent.DictionaryInterface
 import de.htwg.se.scrabble.util.LanguageEnum
+import de.htwg.se.scrabble.default.{given}
 
 import scala.collection.immutable.HashSet
 import scala.language.postfixOps

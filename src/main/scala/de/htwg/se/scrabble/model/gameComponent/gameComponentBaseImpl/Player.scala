@@ -3,6 +3,7 @@ package gameComponentBaseImpl
 
 import de.htwg.se.scrabble.model.gameComponent.gameComponentBaseImpl.Stone
 import de.htwg.se.scrabble.model.gameComponent.PlayerInterface
+import de.htwg.se.scrabble.default.{given}
 
 
 

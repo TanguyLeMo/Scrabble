@@ -9,6 +9,7 @@ import de.htwg.se.scrabble.model.gameComponent.scoringBaseImpl.*
 import de.htwg.se.scrabble.model.gameComponent.squareBaseImpl.StandardSquareFactory
 import de.htwg.se.scrabble.util.LanguageEnum
 
+
 class ScrabbleField(val matrix: MatrixInterface, val dictionary: DictionaryInterface, val squareFactory: StandardSquareFactory, val languageEnum: LanguageEnum, val player : PlayerInterface, val players : List[PlayerInterface],val stoneContainer: StoneContainerInterface) extends ScrabbleFieldInterface:
   val numOfAlphabet: Int = 26
   val numSymbolPerColumn: Int = Math.ceil(matrix.rows.toDouble / numOfAlphabet.toDouble).toInt + 1

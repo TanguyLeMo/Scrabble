@@ -5,7 +5,7 @@ import de.htwg.se.scrabble.model.gameState.GameStateInterface
 
 class XmlGameState extends GameStateInterface{
   override def save(scrabbleField: ScrabbleFieldInterface): Boolean = {
-    true
+    false
   }
 
   override def load: ScrabbleFieldInterface = {

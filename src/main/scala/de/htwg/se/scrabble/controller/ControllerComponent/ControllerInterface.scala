@@ -58,7 +58,8 @@ trait ControllerInterface extends Observable{
   def leaderBoardcontroller: ScrabbleFieldInterface
   def thisPlayerList : List[PlayerInterface]
   def translateCoordinate(coordinate: String): (Int, Int)
-  
+  def save: Boolean
+  def load: ScrabbleFieldInterface
   
 
 }

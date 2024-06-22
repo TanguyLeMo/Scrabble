@@ -6,6 +6,7 @@ import de.htwg.se.scrabble.model.gameComponent.ScrabbleFieldInterface
 import de.htwg.se.scrabble.model.languageComponent.LanguageContextInterface
 import de.htwg.se.scrabble.model.gameComponent.*
 import de.htwg.se.scrabble.model.gameComponent.gameComponentBaseImpl.{ScrabbleField, StoneContainer}
+import de.htwg.se.scrabble.model.gameState.GameStateBaseImpl.XmlGameState
 import de.htwg.se.scrabble.util
 import de.htwg.se.scrabble.util.*
 
@@ -14,12 +15,14 @@ import scala.util.*
 
 class Controller @Inject (var field: ScrabbleFieldInterface) extends ControllerInterface:
   val undoManager = new util.UndoManager[ScrabbleFieldInterface]
-  
+  val fileIO = new XmlGameState
   override def doAndPublish(doThis: placeWordsAsMove => ScrabbleFieldInterface, move: placeWordsAsMove): Unit =
     val newState = doThis(move)
     field = undoManager.doStep(field, newState)
     notifyObservers(new RoundsScrabbleEvent)
 
+  override def save: Boolean = fileIO.save(field)
+  
   override def doAndPublish(doThis: => ScrabbleFieldInterface): Unit =
     field = doThis
     notifyObservers(new RoundsScrabbleEvent)
@@ -29,7 +32,11 @@ class Controller @Inject (var field: ScrabbleFieldInterface) extends ControllerI
     field
   }
   override def redo: ScrabbleFieldInterface = undoManager.redoStep(field)
-  
+  override def load: ScrabbleFieldInterface = {
+    field = fileIO.load
+    notifyObservers(new RoundsScrabbleEvent)
+    field
+  }
   override def toString: String = field.toString
 
   override def placeWord(xPosition: Int, yPosition: Int, direction: Char, word: String): ScrabbleFieldInterface =

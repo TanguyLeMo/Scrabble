@@ -95,10 +95,12 @@ class TUI(val controller: ControllerInterface ) extends Observer {
     //println(controller.field.player.playerTiles.toString)
     controller.enterWordcontroller
     val input = readLine()
-    val exitWord: String = controller.languageContext.exit
+    val exitWord: String = controller.languageContext.exit; System.exit(0)
     input match {
       case "z" => controller.doAndPublish(controller.undo); processInputLine()
       case "y" => controller.doAndPublish(controller.redo); processInputLine()
+      case "save" => if(controller.save) println("speicherstand erfolgreich gespeichert") else println("speicherstand konnte nicht gespeichert werden"); processInputLine()
+      case "load" => controller.load; processInputLine()
       case _ =>
     }
     if(input.equalsIgnoreCase(exitWord))

@@ -13,4 +13,5 @@ trait MatrixInterface {
   def removeWord(xPosition: Int, yPosition: Int, direction: Char, word: String): MatrixInterface
   def lettersAlreadyThere(xPosition: Int, yPosition: Int, direction: Char, word: String): List[StoneInterface]
   def equals(obj: Any): Boolean
+  
 }

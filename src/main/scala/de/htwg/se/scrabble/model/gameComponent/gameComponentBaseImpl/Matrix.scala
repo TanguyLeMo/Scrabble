@@ -12,6 +12,8 @@ class Matrix @Inject (val field: Vector[Vector[ScrabbleSquare]]) extends MatrixI
   val wordFactory: SquareFactory = new WordSquareFactory
   val standardSquareFactory: SquareFactory = new StandardSquareFactory
   val center: Int  = rowsAndColumn / 2
+  
+  def this(rowsAndColumns: Int) = this(Vector.fill(rowsAndColumns, rowsAndColumns)(new StandardSquareFactory().createDoubleSquare(new Stone)))
   def updateBoard(board: Vector[Vector[ScrabbleSquare]], positions: List[(Int, Int)], factory: () => ScrabbleSquare): Vector[Vector[ScrabbleSquare]] =
     positions.foldLeft(board) { case (b, (row, col)) =>
       b.updated(row, b(row).updated(col, factory()))

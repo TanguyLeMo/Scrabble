@@ -1,13 +1,14 @@
 package de.htwg.se.scrabble.controller.ControllerComponent.ControllerBaseImpl
 
-import com.google.inject.Inject
+import com.google.inject.{Guice, Inject}
 import de.htwg.se.scrabble.controller.ControllerComponent.ControllerInterface
 import de.htwg.se.scrabble.model.gameComponent.ScrabbleFieldInterface
 import de.htwg.se.scrabble.model.languageComponent.LanguageContextInterface
 import de.htwg.se.scrabble.model.gameComponent.*
 import de.htwg.se.scrabble.model.gameComponent.gameComponentBaseImpl.{ScrabbleField, StoneContainer}
 import de.htwg.se.scrabble.model.gameState.GameStateBaseImpl.{JsonGameState, XmlGameState}
-import de.htwg.se.scrabble.util
+import de.htwg.se.scrabble.model.gameState.GameStateInterface
+import de.htwg.se.scrabble.{Modules, util}
 import de.htwg.se.scrabble.util.*
 
 import scala.util.*
@@ -15,7 +16,9 @@ import scala.util.*
 
 class Controller @Inject (var field: ScrabbleFieldInterface) extends ControllerInterface:
   val undoManager = new util.UndoManager[ScrabbleFieldInterface]
-  val fileIO = new XmlGameState
+  
+  val fileIO: GameStateInterface = Guice.createInjector(new Modules).getInstance(classOf[GameStateInterface])
+  
   override def doAndPublish(doThis: placeWordsAsMove => ScrabbleFieldInterface, move: placeWordsAsMove): Unit =
     val newState = doThis(move)
     field = undoManager.doStep(field, newState)
@@ -33,7 +36,7 @@ class Controller @Inject (var field: ScrabbleFieldInterface) extends ControllerI
   }
   override def redo: ScrabbleFieldInterface = undoManager.redoStep(field)
   override def load: ScrabbleFieldInterface = {
-    field = fileIO.load
+    field = fileIO.load 
     notifyObservers(new RoundsScrabbleEvent)
     field
   }

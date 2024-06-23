@@ -3,6 +3,7 @@ package de.htwg.se.scrabble.controller.ControllerComponent
 import de.htwg.se.scrabble.model.languageComponent.LanguageContextInterface
 import de.htwg.se.scrabble.util.LanguageEnum
 import de.htwg.se.scrabble.model.gameComponent.*
+import de.htwg.se.scrabble.model.gameState.GameStateInterface
 import de.htwg.se.scrabble.util.placeWordsAsMove
 import de.htwg.se.scrabble.util.Observable
 

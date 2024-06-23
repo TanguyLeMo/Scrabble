@@ -8,6 +8,8 @@ import de.htwg.se.scrabble.model.gameComponent.{DictionaryInterface, MatrixInter
 import de.htwg.se.scrabble.model.gameComponent.gameComponentBaseImpl.{Dictionary, Matrix, Player, ScrabbleField, Stone, StoneContainer}
 import de.htwg.se.scrabble.model.gameComponent.scoringBaseImpl.{EnglishScoringSystem, ScoringSystem}
 import de.htwg.se.scrabble.model.gameComponent.squareBaseImpl.{StandardSquare, StandardSquareFactory}
+import de.htwg.se.scrabble.model.gameState.GameStateBaseImpl.{JsonGameState, XmlGameState}
+import de.htwg.se.scrabble.model.gameState.GameStateInterface
 import de.htwg.se.scrabble.model.languageComponent.LanguageContextInterface
 import de.htwg.se.scrabble.model.languageComponent.languages.LanguageContext
 import de.htwg.se.scrabble.util.{CharacterProvider, IntegerProvider, LanguageEnum}
@@ -42,6 +44,6 @@ class Modules extends AbstractModule with ScalaModule{
     bind(new TypeLiteral[List[PlayerInterface]]{}).toInstance(List(new Player("Player1", 0, Nil), new Player("Player2", 0, Nil)))
     bind(new TypeLiteral[List[StoneInterface]]{}).toInstance(List(new Stone('_')))
     bind(new TypeLiteral[Vector[Vector[ScrabbleSquare]]] {}).toInstance(matrix.field)
-
+    bind(classOf[GameStateInterface]).to(classOf[JsonGameState])
   }
 }

@@ -6,7 +6,7 @@ import de.htwg.se.scrabble.model.gameComponent.ScrabbleFieldInterface
 import de.htwg.se.scrabble.model.languageComponent.LanguageContextInterface
 import de.htwg.se.scrabble.model.gameComponent.*
 import de.htwg.se.scrabble.model.gameComponent.gameComponentBaseImpl.{ScrabbleField, StoneContainer}
-import de.htwg.se.scrabble.model.gameState.GameStateBaseImpl.XmlGameState
+import de.htwg.se.scrabble.model.gameState.GameStateBaseImpl.{JsonGameState, XmlGameState}
 import de.htwg.se.scrabble.util
 import de.htwg.se.scrabble.util.*
 

@@ -95,7 +95,7 @@ class TUI(val controller: ControllerInterface ) extends Observer {
     //println(controller.field.player.playerTiles.toString)
     controller.enterWordcontroller
     val input = readLine()
-    val exitWord: String = controller.languageContext.exit; System.exit(0)
+    val exitWord: String = controller.languageContext.exit
     input match {
       case "z" => controller.doAndPublish(controller.undo); processInputLine()
       case "y" => controller.doAndPublish(controller.redo); processInputLine()
@@ -105,7 +105,9 @@ class TUI(val controller: ControllerInterface ) extends Observer {
     }
     if(input.equalsIgnoreCase(exitWord))
     {
-      controller.displayLeaderBoard; this
+      controller.displayLeaderBoard
+      System.exit(0)
+      this
     } else
       if (input.equalsIgnoreCase(controller.languageContext.exit)) {
         controller.exitcontroller

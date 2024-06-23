@@ -5,6 +5,8 @@ import com.google.inject.Inject
 import de.htwg.se.scrabble.model.gameComponent.{MatrixInterface, ScrabbleSquare, SquareFactory}
 import de.htwg.se.scrabble.model.gameComponent.squareBaseImpl.{StandardSquareFactory, WordSquareFactory}
 import de.htwg.se.scrabble.model.gameComponent.squareBaseImpl.LetterSquareFactory
+import play.api.libs.json._
+import play.api.libs.functional.syntax._
 
 class Matrix @Inject (val field: Vector[Vector[ScrabbleSquare]]) extends MatrixInterface:
   val columns, rows, rowsAndColumn: Int = field.length
@@ -12,7 +14,8 @@ class Matrix @Inject (val field: Vector[Vector[ScrabbleSquare]]) extends MatrixI
   val wordFactory: SquareFactory = new WordSquareFactory
   val standardSquareFactory: SquareFactory = new StandardSquareFactory
   val center: Int  = rowsAndColumn / 2
-  
+
+
   def this(rowsAndColumns: Int) = this(Vector.fill(rowsAndColumns, rowsAndColumns)(new StandardSquareFactory().createDoubleSquare(new Stone)))
   def updateBoard(board: Vector[Vector[ScrabbleSquare]], positions: List[(Int, Int)], factory: () => ScrabbleSquare): Vector[Vector[ScrabbleSquare]] =
     positions.foldLeft(board) { case (b, (row, col)) =>
@@ -157,4 +160,3 @@ class Matrix @Inject (val field: Vector[Vector[ScrabbleSquare]]) extends MatrixI
       }
     else false
   }
-

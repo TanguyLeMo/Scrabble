@@ -38,16 +38,20 @@ class XmlGameState extends GameStateInterface {
   }
 
   def loadXmlToMatrix(xml: Elem): MatrixInterface = {
-    val rowsAndColumns = (xml \ "ScrabbleField" \ "matrix" \ "rowsAndColumns").text.trim.toInt
+    val rowsAndColumns = (xml \ "matrix" \ "rowsAndColumns").text.trim.toInt
     val newMatrix = new Matrix(rowsAndColumns).init()
-    val letters: Vector[String] = (xml \ "ScrabbleField" \ "matrix" \ "field" \ "square").map(_.text.trim).grouped(rowsAndColumns).map(_.mkString).toVector
+    val letters: Vector[String] = (xml \ "matrix" \ "field" \ "square").map(_.text.trim).grouped(rowsAndColumns).map(_.mkString).toVector
+    println("geladene Matrix:")
+    for( l <- letters){
+      println(l)
+    }
     updateMatrix(newMatrix, letters, 0)
   }
 
 
-  def updateMatrix(matrix: MatrixInterface, letters: Vector[String], index: Int): MatrixInterface = {
+  def updateMatrix(matrix: Matrix, letters: Vector[String], index: Int): MatrixInterface = {
     if(index >= letters.length) return matrix
-    val updatedMatrix = matrix.placeWord(0, index , 'H', letters(index))
+    val updatedMatrix = matrix.horizontalPlacement(index, 0, letters(index), 0, matrix)
     updateMatrix(updatedMatrix, letters, index + 1)
   }
 

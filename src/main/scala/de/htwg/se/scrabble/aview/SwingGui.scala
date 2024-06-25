@@ -11,14 +11,13 @@ import de.htwg.se.scrabble.util.LanguageEnum.{ENGLISH, FRENCH, GERMAN, ITALIAN}
 import de.htwg.se.scrabble.util.placeWordsAsMove
 import de.htwg.se.scrabble.model.gameComponent.{PlayerInterface, ScrabbleFieldInterface}
 import util.*
-import de.htwg.se.scrabble.default.given
 
 import scala.swing.*
 import scala.swing.event.*
 import util.{NameCantBeEmpty, Observer, ScrabbleEvent}
 import util.ScrabbleEvent
 
-class SwingGui(using controller: ControllerInterface) extends Frame with Observer {
+class SwingGui(controller: ControllerInterface) extends Frame with Observer {
   controller.add(this)
 
   val languageWindow = LanguageWindow(controller)

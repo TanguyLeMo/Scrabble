@@ -4,7 +4,6 @@ package gameComponentBaseImpl
 import com.google.inject.Inject
 import de.htwg.se.scrabble.model.gameComponent.gameComponentBaseImpl.Stone
 import de.htwg.se.scrabble.model.gameComponent.PlayerInterface
-import de.htwg.se.scrabble.default.{given}
 
 import java.util
 import java.util.LinkedList

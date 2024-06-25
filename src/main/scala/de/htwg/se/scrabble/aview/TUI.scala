@@ -1,7 +1,6 @@
 package de.htwg.se.scrabble
 package aview
 
-import de.htwg.se.scrabble.default.{given}
 import de.htwg.se.scrabble.controller.ControllerComponent.ControllerInterface
 import util.*
 import de.htwg.se.scrabble.controller.ControllerComponent.ControllerInterface
@@ -18,7 +17,7 @@ import scala.collection.immutable
 import scala.util.{Failure, Success, Try}
 
 
-class TUI(using controller: ControllerInterface ) extends Observer {
+class TUI( controller: ControllerInterface ) extends Observer {
   controller.add(this)
   
 

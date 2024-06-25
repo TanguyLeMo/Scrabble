@@ -32,12 +32,20 @@ class Player (val name: String,val points: Int,val playerTiles: List[StoneInterf
     newListPlayers
   
   def removeStones(player: PlayerInterface, ListPlayers: List[PlayerInterface],stones: List[StoneInterface]): List[PlayerInterface] =
-    val newPlayer = new Player(player.getName, player.getPoints, player.playerTiles.filterNot(stones.contains))
+    val newPlayerTiles = stones.foldLeft(player.playerTiles) { (remainingTiles, stone) =>
+      val (before, after) = remainingTiles.span(_ != stone)
+      before ++ after.drop(1)
+    }
+    val newPlayer = new Player(player.getName, player.getPoints, newPlayerTiles)
     val newListPlayers = ListPlayers.updated(ListPlayers.indexOf(player),newPlayer)
     newListPlayers
 
   def hasStones(notRequiredStones: List[StoneInterface], word: String, player: PlayerInterface): Boolean = {
     val requiredStones = OnlyRequiredStones(notRequiredStones, word)
+    println(player)
+    println(player.playerTiles)
+    println(word)
+    println(requiredStones.forall(player.playerTiles.contains))
     requiredStones.forall(player.playerTiles.contains)
   }
   

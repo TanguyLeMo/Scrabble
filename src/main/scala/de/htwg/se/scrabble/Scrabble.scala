@@ -12,5 +12,5 @@ import de.htwg.se.scrabble.util.phaseChooseLanguage
     val controller: ControllerInterface = new Controller(field)
     val gui = new SwingGui(using controller: ControllerInterface)
     val tui = TUI(using controller: ControllerInterface)
-    controller.notifyObservers(new phaseChooseLanguage)
+    controller.notifyObservers(phaseChooseLanguage())
 }

@@ -24,7 +24,7 @@ class ScrabbleField(val matrix: MatrixInterface, val dictionary: DictionaryInter
     case GERMAN => "Sprache wurde eingestellt auf " + Console.YELLOW + " Deutsch" + Console.RESET
     case ITALIAN => "La linguga sara" + Console.YELLOW + " Italian" + Console.RESET
   }
-  val languageContext: LanguageContextInterface = new LanguageContext(languageEnum.toString)
+  val languageContext: LanguageContextInterface = new LanguageContext(using languageEnum.toString)
 
   def this(rowsAndColumns: Int) = this( new Matrix(Vector.fill(rowsAndColumns, rowsAndColumns)(new StandardSquareFactory().createDoubleSquare(Stone()))).init(), new Dictionary().readLines(ENGLISH), new StandardSquareFactory, ENGLISH, new Player("Player1",0,List[Stone]()), Nil, new StoneContainer(List[Stone]()))
   

@@ -79,9 +79,9 @@ class TUI(using controller: ControllerInterface ) extends Observer {
                 sortedPlayers.foreach(player => println(sortedPlayers.indexOf(player) + 1 + ". " + player));
       case event: NotEnoughStones => println(controller.languageContext.notEnoughStones)
 
-      case event: phaseChooseLanguage => controller.setLanguageDictionary(ENGLISH);controller.gamestartPlayStones(controller.field.languageEnum); controller.notifyObservers(phasePlayerAndNames())
-      case event: phasePlayerAndNames => controller.CreatePlayersList(getPlayersAndNames); controller.notifyObservers(phaseaddWordsToDictionary())
-      case event: phaseaddWordsToDictionary => controller.notifyObservers(phaseMainGame())
+      case event: phaseChooseLanguage => setGameLanguage()
+      case event: phasePlayerAndNames => inputNamesAndCreateList(); controller.notifyObservers(phaseaddWordsToDictionary())
+      case event: phaseaddWordsToDictionary => dictionaryAddWords; controller.notifyObservers(phaseMainGame())
       case event: phaseMainGame => processInputLine()
       case event: phaseEndGame => controller.notifyObservers(phaseExit())
       case event: phaseExit => println("Goodbye!"); System.exit(0)
@@ -93,7 +93,7 @@ class TUI(using controller: ControllerInterface ) extends Observer {
   def processInputLine() : TUI = {
     val currentPlayer = controller.field.player
     println(controller.field.player)
-    //println(controller.field.player.playerTiles.toString)
+    println(controller.field.player.playerTiles.toString)
     controller.enterWordcontroller
     val input = readLine()
     val exitWord: String = controller.languageContext.exit
@@ -139,17 +139,18 @@ class TUI(using controller: ControllerInterface ) extends Observer {
           } else {
             val lettersAlreadyThere = controller.lettersAlreadyThere(xCoordinate, yCoordinate, direction.charAt(0), word)
             val onlyRequiredStones = controller.OnlyRequiredStones(lettersAlreadyThere, word)
+            println("brauchtman: " + onlyRequiredStones)
 
-          //  if (controller.hasStones(lettersAlreadyThere, word, currentPlayer)) {
+              if (controller.hasStones(lettersAlreadyThere, word, currentPlayer)) {
               controller.removeStones(currentPlayer, controller.field.players, onlyRequiredStones)
               drawStonesAfterRound(controller.field.player, onlyRequiredStones.length, controller.field.players)
               controller.placeWord(xCoordinate, yCoordinate, direction.charAt(0), word)
               controller.nextTurn(controller.thisPlayerList,currentPlayer)
               processInputLine()
-            /*} else {
+              } else {
               controller.noteEnoughStonescontroller
               processInputLine()
-          }*/
+          }
         }
       }
     }
@@ -207,9 +208,9 @@ class TUI(using controller: ControllerInterface ) extends Observer {
       }
     }
 
-    //val numberPlayers = numberOfPlayers()
-    //readPlayerNames(numberPlayers, Vector.empty[String])
-     Vector("Player1", "Player2")
+    val numberPlayers = numberOfPlayers()
+    readPlayerNames(numberPlayers, Vector.empty[String])
+     //Vector("Player1", "Player2")
   }
 
   def displayLeaderboard(): List[PlayerInterface] = {
@@ -263,6 +264,7 @@ class TUI(using controller: ControllerInterface ) extends Observer {
       case _ =>
         setGameLanguage()
     controller.gamestartPlayStones(controller.field.languageEnum)
+    controller.notifyObservers(phasePlayerAndNames())
     this
   }
 

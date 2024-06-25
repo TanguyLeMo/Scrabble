@@ -44,7 +44,6 @@ class Controller @Inject (var field: ScrabbleFieldInterface) extends ControllerI
     val newState = field.placeWord(move.yPosition, move.xPosition, move.direction, move.word)
     field = undoManager.doStep(field, newState)
     field = field.addPoints(collectPoints(field.matrix, move.xPosition, move.yPosition, move.direction, move.word), field.player, field.players)
-    notifyObservers(new RoundsScrabbleEvent)
     field
 
   override def wordFits(xPosition: Int, yPosition: Int, direction: Char, word: String): Boolean =
@@ -88,6 +87,7 @@ class Controller @Inject (var field: ScrabbleFieldInterface) extends ControllerI
   override def nextTurn(playerList: List[PlayerInterface], lastTurn: PlayerInterface): PlayerInterface =
     val nextPlayer = field.player.nextTurn(playerList, lastTurn)
     field = new ScrabbleField(field.matrix,field.dictionary,field.squareFactory, field.languageEnum, nextPlayer,field.players,field.stoneContainer)
+    notifyObservers(new RoundsScrabbleEvent)
     nextPlayer
 
   override def addStones(player: PlayerInterface, stones: List[StoneInterface]): List[PlayerInterface] =

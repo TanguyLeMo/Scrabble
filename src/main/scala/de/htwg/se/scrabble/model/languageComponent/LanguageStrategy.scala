@@ -33,4 +33,8 @@ trait LanguageStrategy {
   def german: String
   def english: String
   def italian: String  
+  def undo : String
+  def redo : String
+  def currentLanguageRequest: String
+  def currentLanguage: String
 }

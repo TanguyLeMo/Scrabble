@@ -35,5 +35,8 @@ class FrenchStrategy extends LanguageStrategy{
   override def english: String = "anglais"
   override def german: String = "allemand"
   override def italian: String = "italien"
-  
+  override def undo: String = "annuler"
+  override def redo: String = "refaire"
+  override def currentLanguageRequest: String = "Langue actuelle: "
+  override def currentLanguage: String = "français"
 }

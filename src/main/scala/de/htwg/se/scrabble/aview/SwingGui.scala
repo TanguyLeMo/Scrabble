@@ -17,7 +17,10 @@ import scala.swing.event.*
 import util.{NameCantBeEmpty, Observer, ScrabbleEvent}
 import util.ScrabbleEvent
 
-import javax.swing.{BorderFactory, JMenuBar}
+import java.awt
+import javax.swing.{BorderFactory, ImageIcon, JMenuBar}
+import scala.swing.Action.NoAction.icon
+import scala.swing.event.Key.Modifiers
 
 class SwingGui(controller: ControllerInterface) extends Frame with Observer {
   controller.add(this)
@@ -82,6 +85,7 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
   case class LanguageWindow(val controller: ControllerInterface) extends SimpleSwingApplication {
     def top = new MainFrame {
       title = "Language Settings"
+
       val options = Seq("english", "german", "french", "italian")
       val comboBox = new ComboBox(options)
       val next = new Button("Next")
@@ -133,16 +137,19 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
     leaderboard.editable = false
     leaderboard.background = java.awt.Color(200,216,208)
     leaderboard.opaque = true
-
     val playerstones = new Label(controller.field.player.playerTiles.mkString(" | "))
     playerstones.border = Swing.LineBorder(java.awt.Color.BLACK)
     playerstones.background = java.awt.Color(249,218,165)
     playerstones.opaque = true
 
 
+
+
     background = java.awt.Color.RED
     val gridWithLabelsPanel = new GridPanel(controller.field.matrix.rows + 1, controller.field.matrix.columns + 1) {
       // Add an empty label for the top-left corner
+
+
       contents += new Label("") {
         background = java.awt.Color(200,216,208)
         opaque = true
@@ -193,38 +200,48 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
             controller.load
             background = java.awt.Color(200, 216, 208)
           })
-          contents += new Menu(controller.field.languageContext.changeLanguage) {
-            contents += new MenuItem(Action(controller.field.languageContext.english) {
-              controller.setLanguageDictionary(ENGLISH)
-              background = java.awt.Color(200, 216, 208)
-              update()
-
-            })
-            contents += new MenuItem(Action(controller.field.languageContext.german) {
-              controller.setLanguageDictionary(GERMAN)
-              background = java.awt.Color(200, 216, 208)
-              update()
-
-            })
-            contents += new MenuItem(Action(controller.field.languageContext.french) {
-              controller.setLanguageDictionary(FRENCH)
-              background = java.awt.Color(200, 216, 208)
-              update()
-
-            })
-            contents += new MenuItem(Action(controller.field.languageContext.italian) {
-              controller.setLanguageDictionary(ITALIAN)
-              background = java.awt.Color(200, 216, 208)
-              update()
-            })
-
+          background = java.awt.Color(200, 216, 208)
+        }
+        contents += new Menu("language") {
+          contents += new MenuItem(Action(controller.field.languageContext.english) {
+            controller.setLanguageDictionary(ENGLISH)
             background = java.awt.Color(200, 216, 208)
-          }
+            update()
 
-          /*contents += new MenuItem(Action(controller.field.languageContext.changeLanguage) {
-            controller.notifyObservers(new phaseChooseLanguage)
-            background = java.awt.Color(200,216,208)
-          })*/
+          })
+          contents += new MenuItem(Action(controller.field.languageContext.german) {
+            controller.setLanguageDictionary(GERMAN)
+            background = java.awt.Color(200, 216, 208)
+            update()
+
+          })
+          contents += new MenuItem(Action(controller.field.languageContext.french) {
+            controller.setLanguageDictionary(FRENCH)
+            background = java.awt.Color(200, 216, 208)
+            update()
+
+          })
+          contents += new MenuItem(Action(controller.field.languageContext.italian) {
+            controller.setLanguageDictionary(ITALIAN)
+            background = java.awt.Color(200, 216, 208)
+            update()
+          })
+          contents += new MenuItem(controller.field.languageContext.currentLanguageRequest + controller.field.languageContext.currentLanguage)
+
+          background = java.awt.Color(200, 216, 208)
+        }
+
+        contents += new Menu(controller.field.languageContext.undo) {
+          contents += new MenuItem(Action(controller.field.languageContext.undo) {
+            controller.doAndPublish(controller.undo)
+            update()
+            background = java.awt.Color(200, 216, 208)
+          })
+          contents += new MenuItem(Action(controller.field.languageContext.redo) {
+            controller.doAndPublish(controller.redo)
+            update()
+            background = java.awt.Color(200, 216, 208)
+          })
           background = java.awt.Color(200, 216, 208)
         }
         background = java.awt.Color(200, 216, 208)
@@ -234,6 +251,7 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
 
     def top: MainFrame = new MainFrame {
       title = "Scrabble"
+      iconImage = new ImageIcon(getClass.getResource("/scrabbleloggo.png")).getImage
       background = java.awt.Color.RED
       contents = new BoxPanel(Orientation.Vertical) {
         background = java.awt.Color(200,216,208)
@@ -265,6 +283,7 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
       }
       background = java.awt.Color(200,216,208)
       listenTo(placeButton)
+
       reactions += {
         case ButtonClicked(`placeButton`) =>
           val coordinates = controller.translateCoordinate(xAxisPanel.selection.item.toString + " " + yAxisPanel.selection.item.toString)
@@ -288,7 +307,11 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
               controller.notifyObservers(new NotEnoughStones)
             }
           }
+        case KeyPressed(_, Key.Z, Key.Modifier.Control, _) => controller.doAndPublish(controller.undo); update() ; println("undo")
+        case KeyPressed(_, Key.Y, Key.Modifier.Control, _) => controller.doAndPublish(controller.redo); update() ; println("redo")
       }
+
+
       background = java.awt.Color.YELLOW
     }
 

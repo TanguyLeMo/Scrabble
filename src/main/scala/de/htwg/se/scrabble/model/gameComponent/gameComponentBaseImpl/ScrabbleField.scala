@@ -13,7 +13,6 @@ import de.htwg.se.scrabble.util.LanguageEnum
 class ScrabbleField @Inject (val matrix: MatrixInterface, val dictionary: DictionaryInterface, val squareFactory: StandardSquareFactory, val languageEnum: LanguageEnum, val player : PlayerInterface, val players : List[PlayerInterface],val stoneContainer: StoneContainerInterface) extends ScrabbleFieldInterface:
   val numOfAlphabet: Int = 26
   val numSymbolPerColumn: Int = Math.ceil(matrix.rows.toDouble / numOfAlphabet.toDouble).toInt + 1
-
   val scoringSystem: ScoringSystemInterface = languageEnum match
     case ENGLISH => new EnglishScoringSystem()
     case FRENCH => new FrenchScoringSystem()

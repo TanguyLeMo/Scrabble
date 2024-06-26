@@ -33,5 +33,8 @@ trait LanguageContextInterface {
   def english: String
   def german: String
   def italian: String
-  
+  def undo: String
+  def redo : String
+  def currentLanguageRequest: String
+  def currentLanguage: String
 }

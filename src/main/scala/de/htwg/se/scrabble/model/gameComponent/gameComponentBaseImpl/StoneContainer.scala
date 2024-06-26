@@ -12,11 +12,11 @@ class StoneContainer @Inject (val stones : List[StoneInterface]) extends StoneCo
 
     def gamestartPlayStones(languageEnum: LanguageEnum): List[Stone] = {
         val source = scala.io.Source.fromResource(languageEnum match {
-            case LanguageEnum.ENGLISH => "englishPlaystones.txt"
-            case LanguageEnum.GERMAN => "englishPlaystones.txt"
+            case LanguageEnum.ENGLISH => "germanPlaystones.txt"
+            case LanguageEnum.GERMAN => "germanPlaystones.txt"
             case LanguageEnum.FRENCH => "frenchPlaystones.txt"
             case LanguageEnum.ITALIAN => "italianPlaystones.txt"
-            case null => "englishPlaystones.txt"
+            case null => "germanPlaystones.txt"
         })
         val letters: Try[List[Stone]] = Try {
             source.getLines.flatMap { line =>

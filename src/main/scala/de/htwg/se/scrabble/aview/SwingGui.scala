@@ -17,7 +17,7 @@ import scala.swing.event.*
 import util.{NameCantBeEmpty, Observer, ScrabbleEvent}
 import util.ScrabbleEvent
 
-import javax.swing.BorderFactory
+import javax.swing.{BorderFactory, JMenuBar}
 
 class SwingGui(controller: ControllerInterface) extends Frame with Observer {
   controller.add(this)
@@ -33,10 +33,6 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
       case event: RequestEnterLanguage =>
 
       case event: NoSuchLanguageScrabbleEvent =>
-        println(" Entered Language not a available language")
-        println(" Es handelt sich um keine verfügbare Sprache")
-        println(" il s'agit pas une langue disponible")
-        println(" non è una lingua disponibile")
       case event: GameEndScrabbleEvent => println("Game Over")
       case event: CurrentPlayer => println("Current Player: " + controller.field.player.getName)
       case event: Exit => println("Goodbye!")
@@ -55,7 +51,7 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
       case event: WordAlreadyAddedToDictionary => showErrorDialog(controller.languageContext.wordNotInDictionary)
       case event: NotEnoughStones => showErrorDialog(controller.languageContext.notEnoughStones)
       case event: WordAddedToDictionary => println(controller.languageContext.wordAddedToDictionary)
-      case event: EnterWordForDictionary => println(controller.languageContext.enterWordForDictionary)
+      case event: EnterWordForDictionary =>
       case event: LanguageSetting => println(controller.languageContext.languageSetting)
       case event: WordNotInDictionary => println(controller.languageContext.wordNotInDictionary)
       case event: DisplayLeaderBoard => println(controller.languageContext.leaderBoard)
@@ -124,16 +120,16 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
     xAxisPanel.opaque = true
     val yAxisPanel = new ComboBox[String]((0 until controller.field.matrix.rows).map(_.toString))
     yAxisPanel.background = java.awt.Color(202,209,220)
-    val orientationComboBox = new ComboBox(Seq("Horizontal", "Vertical"))
+    var orientationComboBox = new ComboBox(Seq(controller.field.languageContext.horizontal, controller.field.languageContext.vertical))
     orientationComboBox.background = java.awt.Color(202,209,220)
     orientationComboBox.opaque = true
-    val placeButton = new Button("Place")
+    val placeButton = new Button(controller.field.languageContext.place)
     placeButton.background = java.awt.Color(202,209,220)
     placeButton.opaque = true
-    val currentPlayer = new Label("Current Player: " + controller.field.player.getName)
+    val currentPlayer = new Label(controller.field.languageContext.currentPlayer + controller.field.player.getName)
     currentPlayer.background = java.awt.Color(255,246,214)
     currentPlayer.opaque = true
-    val leaderboard = new TextArea("Leaderboard: " + "\n" + controller.sortListAfterPoints(controller.field.players).zipWithIndex.map { case (player, index) => s"${index + 1}. $player" }.mkString("\n"))
+    val leaderboard = new TextArea(controller.field.languageContext.leaderBoard + "\n" + controller.sortListAfterPoints(controller.field.players).zipWithIndex.map { case (player, index) => s"${index + 1}. $player" }.mkString("\n"))
     leaderboard.editable = false
     leaderboard.background = java.awt.Color(200,216,208)
     leaderboard.opaque = true
@@ -186,7 +182,57 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
         }
       }
     }
-    def top = new MainFrame {
+    def setMenuBar: scala.swing.MenuBar = {
+      new MenuBar {
+        contents += new Menu(controller.field.languageContext.save) {
+          contents += new MenuItem(Action(controller.field.languageContext.save) {
+            controller.save
+            background = java.awt.Color(200, 216, 208)
+          })
+          contents += new MenuItem(Action(controller.field.languageContext.load) {
+            controller.load
+            background = java.awt.Color(200, 216, 208)
+          })
+          contents += new Menu(controller.field.languageContext.changeLanguage) {
+            contents += new MenuItem(Action(controller.field.languageContext.english) {
+              controller.setLanguageDictionary(ENGLISH)
+              background = java.awt.Color(200, 216, 208)
+              update()
+
+            })
+            contents += new MenuItem(Action(controller.field.languageContext.german) {
+              controller.setLanguageDictionary(GERMAN)
+              background = java.awt.Color(200, 216, 208)
+              update()
+
+            })
+            contents += new MenuItem(Action(controller.field.languageContext.french) {
+              controller.setLanguageDictionary(FRENCH)
+              background = java.awt.Color(200, 216, 208)
+              update()
+
+            })
+            contents += new MenuItem(Action(controller.field.languageContext.italian) {
+              controller.setLanguageDictionary(ITALIAN)
+              background = java.awt.Color(200, 216, 208)
+              update()
+            })
+
+            background = java.awt.Color(200, 216, 208)
+          }
+
+          /*contents += new MenuItem(Action(controller.field.languageContext.changeLanguage) {
+            controller.notifyObservers(new phaseChooseLanguage)
+            background = java.awt.Color(200,216,208)
+          })*/
+          background = java.awt.Color(200, 216, 208)
+        }
+        background = java.awt.Color(200, 216, 208)
+      }
+    }
+
+
+    def top: MainFrame = new MainFrame {
       title = "Scrabble"
       background = java.awt.Color.RED
       contents = new BoxPanel(Orientation.Vertical) {
@@ -203,6 +249,7 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
         }
         contents += gridWithLabelsPanel
 
+        menuBar = setMenuBar
         contents += new FlowPanel {
           contents += currentPlayer
           contents += playerstones
@@ -232,11 +279,10 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
           } else{
             val lettersAlreadyThere = controller.lettersAlreadyThere(x, y, direction, word)
             val onlyRequiredStones = controller.OnlyRequiredStones(lettersAlreadyThere, word)
-            println("braucht man: " + onlyRequiredStones)
             if (controller.hasStones(lettersAlreadyThere, word, controller.field.player)) {
               controller.removeStones(controller.field.player, controller.field.players, onlyRequiredStones)
               drawStonesAfterRound(controller.field.player, onlyRequiredStones.length, controller.field.players)
-              controller.placeWord(x, y, direction, word)
+              controller.placeWord(x, y, direction.toUpper, word)
               controller.nextTurn(controller.thisPlayerList, controller.field.player)
             } else {
               controller.notifyObservers(new NotEnoughStones)
@@ -246,10 +292,11 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
       background = java.awt.Color.YELLOW
     }
 
+
     def update(): Unit = {
-      currentPlayer.text = "Current Player: " + controller.field.player.getName
+      currentPlayer.text = controller.field.languageContext.currentPlayer + controller.field.player.getName
       currentPlayer.background = java.awt.Color(255,246,214)
-      leaderboard.text = "Leaderboard: " + "\n" + controller.sortListAfterPoints(controller.field.players).zipWithIndex.map { case (player, index) => s"${index + 1}. $player"}.mkString("\n")
+      leaderboard.text = controller.field.languageContext.leaderBoard + "\n" + controller.sortListAfterPoints(controller.field.players).zipWithIndex.map { case (player, index) => s"${index + 1}. $player"}.mkString("\n")
       leaderboard.background = java.awt.Color(255,246,214)
       playerstones.text = controller.field.player.playerTiles.mkString(" | ")
       for (row <- 0 until 15) {
@@ -266,6 +313,12 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
           }
         }
       }
+      placeButton.text = controller.field.languageContext.place
+      placeButton.background = java.awt.Color(202,209,220)
+
+      text.text = ""
+      orientationComboBox = new ComboBox(Seq(controller.field.languageContext.horizontal, controller.field.languageContext.vertical))
+      menuBar = setMenuBar
     }
   }
 

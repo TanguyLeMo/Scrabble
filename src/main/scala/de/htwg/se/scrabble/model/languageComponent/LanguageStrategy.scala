@@ -23,4 +23,14 @@ trait LanguageStrategy {
   def currentPlayer: String
   def noteEnoughStones: String
   def leaderBoard: String
+  def place: String
+  def horizontal:String
+  def vertical: String
+  def save: String
+  def load: String
+  def changeLanguage: String
+  def french: String
+  def german: String
+  def english: String
+  def italian: String  
 }

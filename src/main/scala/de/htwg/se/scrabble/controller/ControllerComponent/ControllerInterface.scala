@@ -60,6 +60,7 @@ trait ControllerInterface extends Observable{
   def translateCoordinate(coordinate: String): (Int, Int)
   def save: Boolean
   def load: ScrabbleFieldInterface
+  def changeLanguage(language: LanguageEnum): ScrabbleFieldInterface
   
 
 }

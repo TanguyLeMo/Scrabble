@@ -35,4 +35,14 @@ class LanguageContext @Inject (languageStrat: String) extends LanguageContextInt
   override def currentPlayer: String = languageStrategy.currentPlayer
   override def notEnoughStones: String = languageStrategy.noteEnoughStones
   override def leaderBoard: String = languageStrategy.leaderBoard
+  override def place: String = languageStrategy.place
+  override def horizontal: String = languageStrategy.horizontal
+  override def vertical: String = languageStrategy.vertical
+  override def save: String = languageStrategy.save
+  override def load: String = languageStrategy.load
+  override def changeLanguage: String = languageStrategy.changeLanguage
+  override def french: String = languageStrategy.french
+  override def english: String = languageStrategy.english
+  override def german: String = languageStrategy.german
+  override def italian: String = languageStrategy.italian
 }

@@ -23,4 +23,15 @@ trait LanguageContextInterface {
   def notEnoughStones: String
   def leaderBoard: String
   def wordNotInDictionary: String
+  def place: String
+  def horizontal: String
+  def vertical: String
+  def save : String
+  def load : String
+  def changeLanguage: String
+  def french: String
+  def english: String
+  def german: String
+  def italian: String
+  
 }

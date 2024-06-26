@@ -25,4 +25,15 @@ class EnglishStrategy extends LanguageStrategy{
   override def currentPlayer: String = "Current Player: "
   override def noteEnoughStones: String = "Not enough stones"
   override def leaderBoard: String = "Leaderboard"
+  override def place: String = "Place"
+  override def horizontal: String = "horizontal"
+  override def vertical: String = "vertical"
+  override def save: String = "save"
+  override def load: String = "load"
+  override def changeLanguage: String = "change language"
+  override def french: String = "french"
+  override def english: String = "english"
+  override def german: String = "german"
+  override def italian: String = "italian"
+  
 }

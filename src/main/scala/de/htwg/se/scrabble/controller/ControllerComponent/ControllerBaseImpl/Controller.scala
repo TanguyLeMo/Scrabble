@@ -21,6 +21,12 @@ class Controller @Inject (var field: ScrabbleFieldInterface) extends ControllerI
     notifyObservers(new RoundsScrabbleEvent)
 
   override def save: Boolean = fileIO.save(field)
+
+  override def changeLanguage(language: LanguageEnum): ScrabbleFieldInterface = {
+    field = field.setLanguageDictionary(language)
+    notifyObservers(new RoundsScrabbleEvent)
+    field
+  }
   
   override def doAndPublish(doThis: => ScrabbleFieldInterface): Unit =
     field = doThis

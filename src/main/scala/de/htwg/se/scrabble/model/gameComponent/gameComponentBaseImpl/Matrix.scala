@@ -77,7 +77,7 @@ class Matrix @Inject (val field: Vector[Vector[ScrabbleSquare]]) extends MatrixI
 
   def placeWord(xPosition: Int, yPosition: Int, direction: Char, word: String): Matrix =
     if (!wordFits(xPosition, yPosition, direction, word)) this else
-    direction.match
+    direction.toUpper match
       case 'V' => val NewMatrix = verticalPlacement(xPosition, yPosition, word, 0, this); NewMatrix
       case 'H' => val newMatrix = horizontalPlacement(xPosition, yPosition, word, 0, this); newMatrix
 

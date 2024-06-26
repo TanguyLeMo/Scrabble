@@ -77,17 +77,13 @@ class TUI( controller: ControllerInterface ) extends Observer {
                 val sortedPlayers = controller.sortListAfterPoints(players)
                 sortedPlayers.foreach(player => println(sortedPlayers.indexOf(player) + 1 + ". " + player));
       case event: NotEnoughStones => println(controller.languageContext.notEnoughStones)
-
       case event: phaseChooseLanguage => setGameLanguage()
       case event: phasePlayerAndNames => inputNamesAndCreateList(); controller.notifyObservers(phaseaddWordsToDictionary())
       case event: phaseaddWordsToDictionary => dictionaryAddWords; controller.notifyObservers(phaseMainGame())
       case event: phaseMainGame => processInputLine()
       case event: phaseEndGame => controller.notifyObservers(phaseExit())
       case event: phaseExit => println("Goodbye!"); System.exit(0)
-
     controller.toString
-
-
   }
   def processInputLine() : TUI = {
     val currentPlayer = controller.field.player
@@ -258,15 +254,18 @@ class TUI( controller: ControllerInterface ) extends Observer {
     val newTUI = language match
       case "english" =>
         controller.setLanguageDictionary(ENGLISH)
+        controller.gamestartPlayStones(ENGLISH)
       case "french" =>
         controller.setLanguageDictionary(FRENCH)
+        controller.gamestartPlayStones(FRENCH)
       case "german" =>
         controller.setLanguageDictionary(GERMAN)
+        controller.gamestartPlayStones(GERMAN)
       case "italian" =>
         controller.setLanguageDictionary(ITALIAN)
+        controller.gamestartPlayStones(ITALIAN)
       case _ =>
         setGameLanguage()
-    controller.gamestartPlayStones(controller.field.languageEnum)
     controller.notifyObservers(phasePlayerAndNames())
     this
   }

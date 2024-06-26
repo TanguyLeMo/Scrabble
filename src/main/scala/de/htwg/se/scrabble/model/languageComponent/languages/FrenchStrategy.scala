@@ -25,4 +25,15 @@ class FrenchStrategy extends LanguageStrategy{
   override def currentPlayer: String = "Joueur actuel: "
   override def noteEnoughStones: String = "Pas assez de pierres"
   override def leaderBoard: String = "Classement"
+  override def place: String = "placer"
+  override def horizontal: String = "horizontal"
+  override def vertical: String = "vertical"
+  override def save: String = "sauvegarder"
+  override def load: String = "charger"
+  override def changeLanguage: String = "changer de langue"
+  override def french: String = "français"
+  override def english: String = "anglais"
+  override def german: String = "allemand"
+  override def italian: String = "italien"
+  
 }

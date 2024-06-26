@@ -17,16 +17,13 @@ import scala.swing.event.*
 import util.{NameCantBeEmpty, Observer, ScrabbleEvent}
 import util.ScrabbleEvent
 
+import javax.swing.BorderFactory
+
 class SwingGui(controller: ControllerInterface) extends Frame with Observer {
   controller.add(this)
-
   val languageWindow = LanguageWindow(controller)
   val gameWindow = GameWindow(controller)
-  
-  
-  
-  
-  
+
   override def update(event: ScrabbleEvent): String = {
     event match
       case event: RoundsScrabbleEvent =>
@@ -96,6 +93,8 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
         contents += comboBox
         contents += next
         border = Swing.EmptyBorder(15, 10, 10, 10)
+        background = java.awt.Color(160, 182, 171)
+        opaque = true
       }
 
       listenTo(next)
@@ -119,25 +118,47 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
 
   case class GameWindow(val controller: ControllerInterface) extends SimpleSwingApplication {
     val text = new TextField(16)
+    text.background = java.awt.Color(249,218,165)
     val xAxisPanel = new ComboBox[String](('A' to 'O').map(_.toString))
+    xAxisPanel.background = java.awt.Color(202,209,220)
+    xAxisPanel.opaque = true
     val yAxisPanel = new ComboBox[String]((0 until controller.field.matrix.rows).map(_.toString))
+    yAxisPanel.background = java.awt.Color(202,209,220)
     val orientationComboBox = new ComboBox(Seq("Horizontal", "Vertical"))
+    orientationComboBox.background = java.awt.Color(202,209,220)
+    orientationComboBox.opaque = true
     val placeButton = new Button("Place")
+    placeButton.background = java.awt.Color(202,209,220)
+    placeButton.opaque = true
     val currentPlayer = new Label("Current Player: " + controller.field.player.getName)
+    currentPlayer.background = java.awt.Color(255,246,214)
+    currentPlayer.opaque = true
     val leaderboard = new TextArea("Leaderboard: " + "\n" + controller.sortListAfterPoints(controller.field.players).zipWithIndex.map { case (player, index) => s"${index + 1}. $player" }.mkString("\n"))
     leaderboard.editable = false
-    leaderboard.background = java.awt.Color.WHITE
+    leaderboard.background = java.awt.Color(200,216,208)
+    leaderboard.opaque = true
+
     val playerstones = new Label(controller.field.player.playerTiles.mkString(" | "))
     playerstones.border = Swing.LineBorder(java.awt.Color.BLACK)
+    playerstones.background = java.awt.Color(249,218,165)
+    playerstones.opaque = true
+
+
+    background = java.awt.Color.RED
     val gridWithLabelsPanel = new GridPanel(controller.field.matrix.rows + 1, controller.field.matrix.columns + 1) {
       // Add an empty label for the top-left corner
-      contents += new Label("")
-
+      contents += new Label("") {
+        background = java.awt.Color(200,216,208)
+        opaque = true
+      }
+      background = java.awt.Color(200,216,208)
       // Add the X axis labels
       for (col <- 0 until 15) {
         contents += new Label(('A' to 'O').map(_.toString)(col)) {
           horizontalAlignment = Alignment.Center
-          border = Swing.LineBorder(java.awt.Color.BLACK)
+          border = BorderFactory.createEmptyBorder()
+          background = java.awt.Color(200,216,208)
+          opaque = true
         }
       }
 
@@ -146,38 +167,56 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
         // Add the Y axis label
         contents += new Label((0 until controller.field.matrix.rows).map(_.toString)(row)) {
           horizontalAlignment = Alignment.Center
-          border = Swing.LineBorder(java.awt.Color.BLACK)
+          border = Swing.EmptyBorder
+          background = java.awt.Color(200,216,208)
+          opaque = true
         }
 
         // Add the corresponding row of the scrabble grid
         for (col <- 0 until 15) {
-          contents += new Label(controller.field.matrix.field(col)(row).letter.toString) {
+          val cellColor = controller.field.matrix.field(col)(row).color
+          val label = new Label(controller.field.matrix.field(col)(row).letter.toString) {
             horizontalAlignment = Alignment.Center
-            border = Swing.LineBorder(java.awt.Color.getColor(controller.field.matrix.field(col)(row).color))
+            border = Swing.EmptyBorder
+            background = consoleColorToSwingColor(cellColor)
+            opaque = true
           }
+          label.opaque = true
+          contents += label
         }
       }
     }
-
     def top = new MainFrame {
       title = "Scrabble"
+      background = java.awt.Color.RED
       contents = new BoxPanel(Orientation.Vertical) {
+        background = java.awt.Color(200,216,208)
+        opaque = true
         contents += new FlowPanel {
           contents += text
           contents += xAxisPanel
           contents += yAxisPanel
           contents += orientationComboBox
           contents += placeButton
+          background = java.awt.Color(200,216,208)
+          opaque = true
         }
         contents += gridWithLabelsPanel
+
         contents += new FlowPanel {
           contents += currentPlayer
           contents += playerstones
+          background = java.awt.Color(200,216,208)
+          opaque = true
         }
         contents += leaderboard
-
+        background = java.awt.Color.BLUE
+        opaque = true
         border = Swing.EmptyBorder(10, 10, 10, 10)
+        background = java.awt.Color(200,216,208)
+        opaque = true
       }
+      background = java.awt.Color(200,216,208)
       listenTo(placeButton)
       reactions += {
         case ButtonClicked(`placeButton`) =>
@@ -204,17 +243,26 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
             }
           }
       }
+      background = java.awt.Color.YELLOW
     }
 
     def update(): Unit = {
       currentPlayer.text = "Current Player: " + controller.field.player.getName
+      currentPlayer.background = java.awt.Color(255,246,214)
       leaderboard.text = "Leaderboard: " + "\n" + controller.sortListAfterPoints(controller.field.players).zipWithIndex.map { case (player, index) => s"${index + 1}. $player"}.mkString("\n")
+      leaderboard.background = java.awt.Color(255,246,214)
       playerstones.text = controller.field.player.playerTiles.mkString(" | ")
       for (row <- 0 until 15) {
         for (col <- 0 until 15) {
           gridWithLabelsPanel.contents((row + 1) * (controller.field.matrix.columns + 1) + col + 1) = new Label(controller.field.matrix.field(col)(row).letter.toString) {
             horizontalAlignment = Alignment.Center
-            border = Swing.LineBorder(java.awt.Color.getColor(controller.field.matrix.field(col)(row).color))
+            border = Swing.LineBorder(java.awt.Color(160,182,171))
+            background = if(controller.field.matrix.field(col)(row).letter.symbol == '_'){
+              consoleColorToSwingColor(controller.field.matrix.field(col)(row).color)
+            } else {
+              java.awt.Color(249,218,165)
+            }
+            opaque = true
           }
         }
       }
@@ -224,7 +272,7 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
   def drawStonesAfterRound(player: PlayerInterface, numberOfCards: Int, players: List[PlayerInterface]): List[PlayerInterface] = {
     if (controller.field.stoneContainer.stones.isEmpty || numberOfCards == 0) {
       players
-    } //newPlayer(name, points, tleslist[Stone], 
+    } //newPlayer(name, points, tleslist[Stone],
     else {
       val newStone = controller.drawRandomStone(controller.field.stoneContainer)
       println(newStone)
@@ -236,5 +284,17 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
 
     }
   }
+
+
+  def consoleColorToSwingColor(color: String): java.awt.Color = {
+    color match
+      case "white" => java.awt.Color(121,139,127)
+      case Console.RED => java.awt.Color(133, 33, 32)
+      case Console.MAGENTA => java.awt.Color(80, 4, 44)
+      case Console.YELLOW => java.awt.Color(227,128, 0)
+      case Console.BLUE => java.awt.Color(27, 47, 109)
+      case _ => java.awt.Color.BLACK
+  }
+
 }
 

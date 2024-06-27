@@ -340,7 +340,7 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
       placeButton.background = java.awt.Color(202,209,220)
 
       text.text = ""
-      orientationComboBox = new ComboBox(Seq(controller.field.languageContext.horizontal, controller.field.languageContext.vertical))
+      orientationComboBox.peer.setModel(ComboBox.newConstantModel(Seq(controller.field.languageContext.horizontal, controller.field.languageContext.vertical)))//new javax.swing.DefaultComboBoxModel(Array(controller.field.languageContext.horizontal, controller.field.languageContext.vertical)))
       menuBar = setMenuBar
     }
   }
@@ -360,8 +360,6 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
 
     }
   }
-
-
   def consoleColorToSwingColor(color: String): java.awt.Color = {
     color match
       case "white" => java.awt.Color(121,139,127)

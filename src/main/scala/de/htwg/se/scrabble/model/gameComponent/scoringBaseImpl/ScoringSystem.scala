@@ -28,15 +28,15 @@ abstract class ScoringSystem @Inject extends ScoringSystemInterface{
     case 'V' => (xCoordinates, yPosition + 1)
     case 'H' => (xCoordinates + 1 ,yPosition)
   }
-  val currentSquare = matrix.field(xCoordinates)(yPosition)
-  val (newSum, newMultiplication) = currentSquare match {
-    case wordSquare: WordSquare =>
-      (sum + determinPoints(currentSquare.letter) , multiplication * currentSquare.scoreModifier)
-    case letterSquare: LetterSquare =>
-      (sum + (determinPoints(currentSquare.letter) * currentSquare.scoreModifier), multiplication)
-    case _ =>
-      (sum + determinPoints(currentSquare.letter) , multiplication)
-  }
+    val currentSquare = matrix.field(xCoordinates)(yPosition)
+    val (newSum, newMultiplication) = currentSquare match {
+      case wordSquare: WordSquare =>
+        (sum + determinPoints(currentSquare.letter) , multiplication * currentSquare.scoreModifier)
+      case letterSquare: LetterSquare =>
+        (sum + (determinPoints(currentSquare.letter) * currentSquare.scoreModifier), multiplication)
+      case _ =>
+        (sum + determinPoints(currentSquare.letter) , multiplication)
+    }
     collectPointsR(matrix, newYPosition, newXPosition, direction, word, currentIndex + 1, newSum, newMultiplication)
 }
   def determinPoints(stone: StoneInterface): Int

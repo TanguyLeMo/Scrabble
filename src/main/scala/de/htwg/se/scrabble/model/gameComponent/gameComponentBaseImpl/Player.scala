@@ -46,12 +46,24 @@ class Player @Inject (val name: String,val points: Int,val playerTiles: List[Sto
     println(requiredStones.forall(player.playerTiles.contains))
     requiredStones.forall(player.playerTiles.contains)
   }
-  
+
   def OnlyRequiredStones(notRequiredStones: List[StoneInterface], word: String): List[StoneInterface] = {
     val requiredStonesForWord = word.toCharArray.map(char => Stone(char)).toList
-    val requiredStones = requiredStonesForWord.diff(notRequiredStones)
+
+    val remainingNotRequired = scala.collection.mutable.ListBuffer(notRequiredStones: _*)
+
+    val requiredStones = requiredStonesForWord.filter { stone =>
+      if (remainingNotRequired.contains(stone)) {
+        remainingNotRequired -= stone
+        false
+      } else {
+        true
+      }
+    }
+
     requiredStones
   }
+
 
   def nextTurn(playerList: List[PlayerInterface], lastTurn: PlayerInterface): PlayerInterface =
     val index = playerList.indexOf(lastTurn) + 1

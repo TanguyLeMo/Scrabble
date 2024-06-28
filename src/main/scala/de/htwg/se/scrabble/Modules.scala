@@ -44,6 +44,6 @@ class Modules extends AbstractModule with ScalaModule{
     bind(new TypeLiteral[List[PlayerInterface]]{}).toInstance(List(new Player("Player1", 0, Nil), new Player("Player2", 0, Nil)))
     bind(new TypeLiteral[List[StoneInterface]]{}).toInstance(List(new Stone('_')))
     bind(new TypeLiteral[Vector[Vector[ScrabbleSquare]]] {}).toInstance(matrix.field)
-    bind(classOf[GameStateInterface]).to(classOf[XmlGameState])
+    bind(classOf[GameStateInterface]).to(classOf[JsonGameState])
   }
 }

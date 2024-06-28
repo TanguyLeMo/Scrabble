@@ -71,13 +71,14 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
         val sortedPlayers = controller.sortListAfterPoints(players)
         sortedPlayers.foreach(player => println(sortedPlayers.indexOf(player) + 1 + ". " + player))
       case event: phaseChooseLanguage =>
-        val languageWindow = LanguageWindow(controller)
+        //val languageWindow = LanguageWindow(controller)
         //languageWindow.top.visible = true
       case event: phasePlayerAndNames =>
       case event: phaseaddWordsToDictionary =>
       case event: phaseMainGame =>
-        gameWindow.update()
-        gameWindow.top.visible = true
+        mainMenuWindow.top.visible = true
+       // gameWindow.update()
+        //gameWindow.top.visible = true
         
       case _ => ""
     controller.toString

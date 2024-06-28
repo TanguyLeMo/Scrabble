@@ -17,11 +17,15 @@ import scala.swing.event.*
 import util.{NameCantBeEmpty, Observer, ScrabbleEvent}
 import util.ScrabbleEvent
 
-import javax.swing.BorderFactory
+import javax.swing.{BorderFactory, ImageIcon}
+import scala.util.{Failure, Success, Try}
 
 class SwingGui(controller: ControllerInterface) extends Frame with Observer {
   controller.add(this)
+  val mainMenuWindow = MainMenuWindow(controller)
   val languageWindow = LanguageWindow(controller)
+  val numberPlayerWindow = NumberPlayerWindow(controller)
+  val dictionaryWindow = DictionaryWindow(controller)
   val gameWindow = GameWindow(controller)
 
   override def update(event: ScrabbleEvent): String = {
@@ -63,13 +67,13 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
         val sortedPlayers = controller.sortListAfterPoints(players)
         sortedPlayers.foreach(player => println(sortedPlayers.indexOf(player) + 1 + ". " + player))
       case event: phaseChooseLanguage =>
-        val languageWindow = LanguageWindow(controller)
         //languageWindow.top.visible = true
       case event: phasePlayerAndNames =>
       case event: phaseaddWordsToDictionary =>
       case event: phaseMainGame =>
-        gameWindow.update()
-        gameWindow.top.visible = true
+        mainMenuWindow.top.visible = true
+        //gameWindow.update()
+        //gameWindow.top.visible = true
         
       case _ => ""
     controller.toString
@@ -83,12 +87,82 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
   }
 
 
+  case class MainMenuWindow(val controller: ControllerInterface) extends SimpleSwingApplication {
+    def top = new MainFrame {
+      title = "Scrabble"
+      val newGame = new Button("New Game") {
+        maximumSize = new Dimension(100, 30)
+        xLayoutAlignment = java.awt.Component.CENTER_ALIGNMENT
+        background = java.awt.Color(202, 209, 220) // Setzen Sie die Farbe der Buttons
+        opaque = true
+      }
+      val load = new Button("Load") {
+        maximumSize = new Dimension(100, 30)
+        xLayoutAlignment = java.awt.Component.CENTER_ALIGNMENT
+        background = java.awt.Color(202, 209, 220) // Setzen Sie die Farbe der Buttons
+        opaque = true
+      }
+
+      // Laden Sie das Bild und erstellen Sie ein ImageIcon
+      val backgroundImage = new ImageIcon(getClass.getResource("/resources/scrabble.jpg"))
+
+      // Erstellen Sie ein Label mit dem ImageIcon als Hintergrund
+      val backgroundLabel = new Label {
+        icon = backgroundImage
+      }
+
+      // Erstellen Sie ein Panel für die Buttons
+      val buttonPanel = new BoxPanel(Orientation.Vertical) {
+        contents += newGame
+        contents += load
+        border = Swing.EmptyBorder(60, 20, 20, 20)
+        background = new Color(0, 0, 0, 0)
+        opaque = false
+      }
+
+      // Erstellen Sie ein BorderPanel, um das Hintergrund-Label und das Button-Panel zu überlagern
+      val borderPanel = new BorderPanel {
+        layout(backgroundLabel) = BorderPanel.Position.North
+        layout(buttonPanel) = BorderPanel.Position.Center
+        background = java.awt.Color(160, 182, 171)
+        opaque = true
+      }
+
+      // Setzen Sie das BorderPanel als Inhalt des Fensters
+      contents = borderPanel
+
+      // Setzen Sie die Hintergrundfarbe des Fensters auf die Farbe des LanguageWindow
+      background = java.awt.Color(160, 182, 171)
+      
+
+      listenTo(newGame, load)
+      reactions += {
+        case ButtonClicked(`newGame`) =>
+          dispose()
+          languageWindow.top.centerOnScreen()
+          languageWindow.top.visible = true
+        case ButtonClicked(`load`) =>
+          controller.load
+          dispose()
+          gameWindow.update()
+          gameWindow.top.visible = true
+      }
+      
+    }
+    
+  }
+  
+  
   case class LanguageWindow(val controller: ControllerInterface) extends SimpleSwingApplication {
     def top = new MainFrame {
       title = "Language Settings"
       val options = Seq("english", "german", "french", "italian")
       val comboBox = new ComboBox(options)
+      comboBox.background = java.awt.Color(202, 209, 220)
+      comboBox.opaque = true
       val next = new Button("Next")
+      next.background = java.awt.Color(202, 209, 220)
+      next.opaque = true
       contents = new FlowPanel {
         contents += comboBox
         contents += next
@@ -109,8 +183,152 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
               controller.setLanguageDictionary(GERMAN)
             case "italian" =>
               controller.setLanguageDictionary(ITALIAN)
+          controller.gamestartPlayStones(controller.field.languageEnum)
           dispose()
+          numberPlayerWindow.top.visible = true
+      }
+    }
+  }
+
+
+  case class NumberPlayerWindow(val controller: ControllerInterface) extends SimpleSwingApplication {
+
+    def top = new MainFrame {
+      title = "number Players Settings"
+      val text = new TextField(3)
+      val next = new Button("Next")
+      next.background = java.awt.Color(202, 209, 220)
+      next.opaque = true
+      contents = new FlowPanel {
+        contents += new Label("Number of Players: ")
+        contents += text
+        contents += next
+        border = Swing.EmptyBorder(30, 10, 10, 10)
+        background = java.awt.Color(160, 182, 171)
+        opaque = true
+      }
+
+      listenTo(next)
+      reactions += {
+        case ButtonClicked(`next`) =>
+          val isNumber: Try[Int] = Try(text.text.toInt)
+          isNumber match {
+            case Success(value) =>
+              if (value > 0 && (controller.field.stoneContainer.stones.length / (value * 7.0)) >= 1.0)
+                dispose()
+                val namePlayerWindow = NamePlayerWindow(controller, text.text.toInt)
+                namePlayerWindow.top.visible = true
+              else {
+                Dialog.showMessage(
+                  message = "Please enter a valid number of players",
+                  title = "invalid input",
+                  messageType = Dialog.Message.Info
+                )
+              }
+            case Failure(exception) =>
+              Dialog.showMessage(
+                message = "Please enter a valid number of players",
+                title = "invalid input",
+                messageType = Dialog.Message.Info
+              )  
+          }
+      }
+    }
+  }
+
+
+  case class NamePlayerWindow(val controller: ControllerInterface, numberPlayer: Int) extends SimpleSwingApplication {
+
+    def top = new MainFrame {
+      val numberOfTextFields = numberPlayer
+      title = "Playernames Settings"
+      val textFields = for (i <- 1 to numberOfTextFields) yield new TextField(16)
+      val next = new Button("Next")
+      next.background = java.awt.Color(202, 209, 220)
+      next.opaque = true
+      contents = new FlowPanel {
+        for (x <- textFields) {
+          contents += new Label("Player " + (textFields.indexOf(x)+1) + ": ")
+          contents += x
+        }
+        contents += next
+        border = Swing.EmptyBorder(40, 10, 10, 10)
+        background = java.awt.Color(160, 182, 171)
+        opaque = true
+      }
+
+      listenTo(next)
+      reactions += {
+        case ButtonClicked(`next`) =>
+          val playerNames = textFields.map(_.text).toVector
+          if (playerNames.distinct.length != playerNames.length || playerNames.contains("")) {
+            Dialog.showMessage(
+              message = "Please enter unique names for each player",
+              title = "invalid input",
+              messageType = Dialog.Message.Info
+            )
+
+          } else {
+            val PlayerListWithoutStones = controller.CreatePlayersList(playerNames)
+            val PlayerListWithStones = playerStartStones(7, PlayerListWithoutStones)
+            dispose()
+            dictionaryWindow.top.visible = true
+          }
+      }
+    }
+
+    def playerStartStones(numberStones: Int, playerList: List[PlayerInterface]): List[PlayerInterface] = {
+      if (numberStones == 0) playerList
+      else
+        val updatedPlayerList = playerList.foldLeft(playerList) { (updatedList, player) =>
+          val StonetoAdd = controller.drawRandomStone(controller.field.stoneContainer)
+          controller.removeStonefromContainer(StonetoAdd, controller.field.stoneContainer)
+          val AddStonetoPlayer: PlayerInterface = new Player(player.getName, player.getPoints, player.playerTiles :+ StonetoAdd)
+          updatedList.updated(updatedList.indexOf(player), AddStonetoPlayer)
+        }
+        controller.field = new ScrabbleField(controller.field.matrix, controller.field.dictionary, controller.field.squareFactory, controller.field.languageEnum, updatedPlayerList.head, updatedPlayerList, controller.field.stoneContainer)
+        playerStartStones(numberStones - 1, updatedPlayerList)
+    }
+  }
+
+  case class DictionaryWindow(val controller: ControllerInterface) extends SimpleSwingApplication {
+
+    def top = new MainFrame {
+      title = "dictionary Settings"
+      val text = new TextField(15)
+      val add = new Button("Add")
+      add.background = java.awt.Color(202, 209, 220)
+      add.opaque = true
+      val next = new Button("Next")
+      next.background = java.awt.Color(202, 209, 220)
+      next.opaque = true
+      contents = new FlowPanel {
+        contents += new Label("Enter new word: ")
+        contents += text
+        contents += add
+        contents += next
+        border = Swing.EmptyBorder(30, 10, 10, 10)
+        background = java.awt.Color(160, 182, 171)
+        opaque = true
+      }
+
+      listenTo(next, add)
+      reactions += {
+        case ButtonClicked(`add`) =>
+          if (controller.contains(text.text)) {
+            Dialog.showMessage(
+              message = "word already in dictionary",
+              title = "invalid input",
+              messageType = Dialog.Message.Info
+            )
+          } else {
+            controller.add(text.text)
+          }
+        case ButtonClicked(`next`) =>
+          dispose()
+          gameWindow.update()
           gameWindow.top.visible = true
+          controller.notifyObservers(new EnterWord)
       }
     }
   }
@@ -232,8 +450,10 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
           } else{
             val lettersAlreadyThere = controller.lettersAlreadyThere(x, y, direction, word)
             val onlyRequiredStones = controller.OnlyRequiredStones(lettersAlreadyThere, word)
-            println("braucht man: " + onlyRequiredStones)
-            if (controller.hasStones(lettersAlreadyThere, word, controller.field.player)) {
+            if(onlyRequiredStones.isEmpty){
+              controller.notifyObservers(new WordDoesntFit)
+            }
+            else if (controller.hasStones(lettersAlreadyThere, word, controller.field.player)) {
               controller.removeStones(controller.field.player, controller.field.players, onlyRequiredStones)
               drawStonesAfterRound(controller.field.player, onlyRequiredStones.length, controller.field.players)
               controller.placeWord(x, y, direction, word)

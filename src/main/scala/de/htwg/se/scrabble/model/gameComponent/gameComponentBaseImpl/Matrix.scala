@@ -133,13 +133,13 @@ class Matrix @Inject (val field: Vector[Vector[ScrabbleSquare]]) extends MatrixI
       case 'H' =>
         word.zipWithIndex.flatMap {
           case (char, index) =>
-            val element = field(yPosition)(xPosition + index)
+            val element = field(yPosition + index)(xPosition)
             if (element.letter.symbol == char) Some(element.letter) else None
         }.toList
       case 'V' =>
         word.zipWithIndex.flatMap {
           case (char, index) =>
-            val element = field(yPosition + index)(xPosition)
+            val element = field(yPosition)(xPosition + index)
             if (element.letter.symbol == char) Some(element.letter) else None
         }.toList
     }

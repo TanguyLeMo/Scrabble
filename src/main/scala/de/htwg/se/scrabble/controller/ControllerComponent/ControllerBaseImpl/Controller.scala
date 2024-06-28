@@ -87,6 +87,7 @@ class Controller @Inject (var field: ScrabbleFieldInterface) extends ControllerI
     val nextPlayer = field.player.nextTurn(playerList, lastTurn)
     field = new ScrabbleField(field.matrix,field.dictionary,field.squareFactory, field.languageEnum, nextPlayer,field.players,field.stoneContainer)
     notifyObservers(new RoundsScrabbleEvent)
+    notifyObservers(new EnterWord)
     nextPlayer
 
   override def addStones(player: PlayerInterface, stones: List[StoneInterface]): List[PlayerInterface] =

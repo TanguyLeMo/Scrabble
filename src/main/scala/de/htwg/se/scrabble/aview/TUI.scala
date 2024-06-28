@@ -63,7 +63,7 @@ class TUI( controller: ControllerInterface ) extends Observer {
       case event: EnterPlayerName => println(controller.languageContext.enterPlayerNames)
       case event: NameAlreadyTaken => println(controller.languageContext.nameAlreadyTaken)
       case event: NameCantBeEmpty => println(controller.languageContext.nameCantBeEmpty)
-      case event: EnterWord => println(controller.languageContext.enterWord)
+      case event: EnterWord => println(controller.field.player.toString + " |" + controller.field.player.playerTiles.mkString("|") + "|");println(controller.languageContext.enterWord)
       case event: InvalidInput => println(controller.languageContext.invalidInput)
       case event: InvalidNumber => println(controller.languageContext.invalidNumber)
       case event: RequestNewWord => println(controller.languageContext.requestNewWord)
@@ -78,9 +78,9 @@ class TUI( controller: ControllerInterface ) extends Observer {
                 sortedPlayers.foreach(player => println(sortedPlayers.indexOf(player) + 1 + ". " + player));
       case event: NotEnoughStones => println(controller.languageContext.notEnoughStones)
 
-      case event: phaseChooseLanguage => setGameLanguage()
-      case event: phasePlayerAndNames => inputNamesAndCreateList(); controller.notifyObservers(phaseaddWordsToDictionary())
-      case event: phaseaddWordsToDictionary => dictionaryAddWords; controller.notifyObservers(phaseMainGame())
+      case event: phaseChooseLanguage => /*setGameLanguage();*/ controller.notifyObservers(phasePlayerAndNames())
+      case event: phasePlayerAndNames => /*inputNamesAndCreateList();*/ controller.notifyObservers(phaseaddWordsToDictionary())
+      case event: phaseaddWordsToDictionary => /*dictionaryAddWords;*/ controller.notifyObservers(phaseMainGame())
       case event: phaseMainGame => processInputLine()
       case event: phaseEndGame => controller.notifyObservers(phaseExit())
       case event: phaseExit => println("Goodbye!"); System.exit(0)
@@ -91,9 +91,9 @@ class TUI( controller: ControllerInterface ) extends Observer {
   }
   def processInputLine() : TUI = {
     val currentPlayer = controller.field.player
-    println(controller.field.player)
-    println(controller.field.player.playerTiles.toString)
-    controller.enterWordcontroller
+    //println(controller.field.player)
+    //println(controller.field.player.playerTiles.mkString("|"))
+    //controller.enterWordcontroller
     val input = readLine()
     val exitWord: String = controller.languageContext.exit
     input match {
@@ -142,9 +142,12 @@ class TUI( controller: ControllerInterface ) extends Observer {
           } else {
             val lettersAlreadyThere = controller.lettersAlreadyThere(xCoordinate, yCoordinate, direction.charAt(0), word)
             val onlyRequiredStones = controller.OnlyRequiredStones(lettersAlreadyThere, word)
-            println("brauchtman: " + onlyRequiredStones)
 
-              if (controller.hasStones(lettersAlreadyThere, word, currentPlayer)) {
+            if (onlyRequiredStones.isEmpty) {
+              controller.wordDoesntFitcontroller
+              processInputLine()
+            }
+            else if (controller.hasStones(lettersAlreadyThere, word, currentPlayer)) {
               controller.removeStones(currentPlayer, controller.field.players, onlyRequiredStones)
               drawStonesAfterRound(controller.field.player, onlyRequiredStones.length, controller.field.players)
               controller.placeWord(xCoordinate, yCoordinate, direction.charAt(0), word)

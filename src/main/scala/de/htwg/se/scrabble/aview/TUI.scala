@@ -11,7 +11,6 @@ import de.htwg.se.scrabble.model.gameComponent.gameComponentBaseImpl.{Player, Sc
 
 import scala.io.StdIn.readLine
 import de.htwg.se.scrabble.util.LanguageEnum.{ENGLISH, FRENCH, GERMAN, ITALIAN}
-
 import scala.annotation.tailrec
 import scala.collection.immutable
 import scala.util.{Failure, Success, Try}
@@ -42,7 +41,6 @@ class TUI( controller: ControllerInterface ) extends Observer {
         println(controller.toString)
         println(controller.field.player)
         println(controller.languageContext.currentPlayer + controller.field.player.nextTurn(controller.thisPlayerList,controller.field.player))
-
       case event: DictionaryScrabbleEvent =>
         println(controller.field.languageSettings)
       case event: RequestEnterLanguage =>
@@ -91,9 +89,6 @@ class TUI( controller: ControllerInterface ) extends Observer {
   }
   def processInputLine() : TUI = {
     val currentPlayer = controller.field.player
-    //println(controller.field.player)
-    //println(controller.field.player.playerTiles.mkString("|"))
-    //controller.enterWordcontroller
     val input = readLine()
     val exitWord: String = controller.languageContext.exit
     input match {
@@ -178,9 +173,7 @@ class TUI( controller: ControllerInterface ) extends Observer {
     playerListWithStones
   }
 
-
   def getPlayersAndNames: Vector[String] = {
-
     @tailrec
     def numberOfPlayers(): Int = {
       controller.enterNumberofPlayerscontroller

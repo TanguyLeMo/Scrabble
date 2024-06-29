@@ -37,9 +37,7 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
       case event: RoundsScrabbleEvent =>
         gameWindow.update()
       case event: DictionaryScrabbleEvent =>
-
       case event: RequestEnterLanguage =>
-
       case event: NoSuchLanguageScrabbleEvent =>
         println(" Entered Language not a available language")
         println(" Es handelt sich um keine verfügbare Sprache")
@@ -109,7 +107,7 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
       }
 
       // Laden Sie das Bild und erstellen Sie ein ImageIcon
-      val backgroundImage = new ImageIcon(getClass.getResource("/resources/scrabble.jpg"))
+      val backgroundImage = new ImageIcon(getClass.getResource("/scrabble.jpg"))
 
       // Erstellen Sie ein Label mit dem ImageIcon als Hintergrund
       val backgroundLabel = new Label {
@@ -293,7 +291,6 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
   }
 
   case class DictionaryWindow(val controller: ControllerInterface) extends SimpleSwingApplication {
-
     def top = new MainFrame {
       title = "dictionary Settings"
       val text = new TextField(15)
@@ -332,8 +329,6 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
       }
     }
   }
-
-
   case class GameWindow(val controller: ControllerInterface) extends SimpleSwingApplication {
     val text = new TextField(16)
     text.background = java.awt.Color(249,218,165)
@@ -355,7 +350,6 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
     leaderboard.editable = false
     leaderboard.background = java.awt.Color(200,216,208)
     leaderboard.opaque = true
-
     val playerstones = new Label(controller.field.player.playerTiles.mkString(" | "))
     playerstones.border = Swing.LineBorder(java.awt.Color.BLACK)
     playerstones.background = java.awt.Color(249,218,165)
@@ -428,7 +422,6 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
             controller.setLanguageDictionary(GERMAN)
             background = java.awt.Color(200, 216, 208)
             update()
-
           })
           contents += new MenuItem(Action(controller.field.languageContext.french) {
             controller.setLanguageDictionary(FRENCH)
@@ -441,8 +434,6 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
             background = java.awt.Color(200, 216, 208)
             update()
           })
-          contents += new MenuItem(controller.field.languageContext.currentLanguageRequest + controller.field.languageContext.currentLanguage)
-
           background = java.awt.Color(200, 216, 208)
         }
 
@@ -500,10 +491,10 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
       listenTo(placeButton)
       reactions += {
         case ButtonClicked(`placeButton`) =>
-          val coordinates = controller.translateCoordinate(xAxisPanel.selection.item.toString + " " + yAxisPanel.selection.item.toString)
+          val coordinates = controller.translateCoordinate(xAxisPanel.selection.item + " " + yAxisPanel.selection.item)
           val y = coordinates._1
           val x = coordinates._2
-          val direction = orientationComboBox.selection.item.head
+          val direction = orientationComboBox.selection.item.toUpperCase.head
           val word = text.text.toUpperCase
           if(!controller.contains(word)){
             controller.notifyObservers(new WordAlreadyAddedToDictionary)
@@ -527,7 +518,6 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
       }
       background = java.awt.Color.YELLOW
     }
-
     def update(): Unit = {
       currentPlayer.text = controller.field.languageContext.currentPlayer + controller.field.player.getName
       currentPlayer.background = java.awt.Color(255,246,214)
@@ -560,7 +550,7 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
   def drawStonesAfterRound(player: PlayerInterface, numberOfCards: Int, players: List[PlayerInterface]): List[PlayerInterface] = {
     if (controller.field.stoneContainer.stones.isEmpty || numberOfCards == 0) {
       players
-    } //newPlayer(name, points, tleslist[Stone],
+    }
     else {
       val newStone = controller.drawRandomStone(controller.field.stoneContainer)
       println(newStone)
@@ -569,11 +559,8 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
       val newPlayerList = controller.field.players.updated(controller.field.players.indexOf(player), newPlayer)
       controller.field = new ScrabbleField(controller.field.matrix, controller.field.dictionary, controller.field.squareFactory, controller.field.languageEnum, newPlayer, newPlayerList, controller.field.stoneContainer)
       drawStonesAfterRound(newPlayer, numberOfCards - 1, newPlayerList)
-
     }
   }
-
-
   def consoleColorToSwingColor(color: String): java.awt.Color = {
     color match
       case "white" => java.awt.Color(121,139,127)
@@ -583,6 +570,5 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
       case Console.BLUE => java.awt.Color(27, 47, 109)
       case _ => java.awt.Color.BLACK
   }
-
 }
 

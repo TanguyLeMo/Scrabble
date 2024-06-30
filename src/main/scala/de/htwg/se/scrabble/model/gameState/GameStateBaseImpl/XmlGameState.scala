@@ -41,10 +41,6 @@ class XmlGameState extends GameStateInterface {
     val rowsAndColumns = (xml \ "matrix" \ "rowsAndColumns").text.trim.toInt
     val newMatrix = new Matrix(rowsAndColumns).init()
     val letters: Vector[String] = (xml \ "matrix" \ "field" \ "square").map(_.text.trim).grouped(rowsAndColumns).map(_.mkString).toVector
-    println("geladene Matrix:")
-    for( l <- letters){
-      println(l)
-    }
     updateMatrix(newMatrix, letters, 0)
   }
 
@@ -92,7 +88,7 @@ class XmlGameState extends GameStateInterface {
     }
   }
 
-  private def createDirectory(path: String): Unit = {
+  def createDirectory(path: String): Unit = {
     val directory = new File(path)
     if (!directory.exists()) {
       directory.mkdir()

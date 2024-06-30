@@ -39,4 +39,5 @@ class ItalianStrategy extends LanguageStrategy{
   override def redo: String = "rifare"
   override def currentLanguageRequest: String = "Lingua corrente: "
   override def currentLanguage: String = "Italiano"
+  override def next: String = "continua"
 }

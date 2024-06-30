@@ -12,7 +12,7 @@ import java.io.{File, PrintWriter}
 import scala.util.Try
 
 class JsonGameState extends GameStateInterface {
-  private def createDirectory(path: String): Unit = {
+  def createDirectory(path: String): Unit = {
     val directory = new File(path)
     if (!directory.exists()) {
       directory.mkdir()
@@ -74,10 +74,7 @@ class JsonGameState extends GameStateInterface {
       val stonesAsObjects: List[Stone] = stones.map(Stone(_))
       new Player(name, points, stonesAsObjects)
     })
-    println("Players")
-    for( t <- tmp){
-      println(t)
-    }
+
     tmp
   }
   def loadCurrentPlayerFromJson(currentPlayer: JsValue): PlayerInterface = {

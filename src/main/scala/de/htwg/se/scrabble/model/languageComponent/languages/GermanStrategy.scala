@@ -39,4 +39,5 @@ class GermanStrategy extends LanguageStrategy{
   override def redo: String = "wiederholen"
   override def currentLanguageRequest: String = "Aktuelle Sprache: "
   override def currentLanguage: String = "Deutsch"
+  override def next: String = "weiter"
 }

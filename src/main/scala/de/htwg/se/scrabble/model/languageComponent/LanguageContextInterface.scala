@@ -37,4 +37,5 @@ trait LanguageContextInterface {
   def redo : String
   def currentLanguageRequest: String
   def currentLanguage: String
+  def next: String
 }

@@ -23,7 +23,7 @@ abstract class ScoringSystem @Inject extends ScoringSystemInterface{
   }
     val (newXPosition, newYPosition) = direction match {
     case 'V' => (xCoordinates, yPosition + 1)
-    case 'H' => (xCoordinates + 1 ,yPosition)
+    case 'H' => (xCoordinates + 1 , yPosition)
   }
     val currentSquare = matrix.field(xCoordinates)(yPosition)
     val (newSum, newMultiplication) = currentSquare match {

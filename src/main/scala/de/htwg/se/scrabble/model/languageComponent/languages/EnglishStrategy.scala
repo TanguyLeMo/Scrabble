@@ -39,5 +39,5 @@ class EnglishStrategy extends LanguageStrategy{
   override def redo: String = "redo"
   override def currentLanguageRequest: String = "Current Language: "
   override def currentLanguage: String = "english"
-  
+  override def next: String = "next" 
 }

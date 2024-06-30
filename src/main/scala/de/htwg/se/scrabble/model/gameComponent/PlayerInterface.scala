@@ -18,6 +18,5 @@ trait PlayerInterface {
   def nextTurn(playerList: List[PlayerInterface], lastTurn: PlayerInterface): PlayerInterface
   def sortListAfterPoints(players: List[PlayerInterface]) : List[PlayerInterface]
   def toString: String
-  def previousTurn(playerList: List[PlayerInterface], currentTurn: PlayerInterface): PlayerInterface
 
 }

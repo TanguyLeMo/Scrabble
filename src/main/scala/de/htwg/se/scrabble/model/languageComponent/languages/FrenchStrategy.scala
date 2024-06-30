@@ -39,4 +39,5 @@ class FrenchStrategy extends LanguageStrategy{
   override def redo: String = "refaire"
   override def currentLanguageRequest: String = "Langue actuelle: "
   override def currentLanguage: String = "français"
+  override def next: String = "continuer"
 }

@@ -27,7 +27,7 @@ class Matrix @Inject (val field: Vector[Vector[ScrabbleSquare]]) extends MatrixI
   def initializeStandardBoard: Vector[Vector[ScrabbleSquare]] = {
     val baseDoubleLetterPositions = List((0, 3), (2, 6), (3, 0), (6, 2), (6, 6), (7, 3), (8, 2))
     val baseTripleLetterPositions = List((1, 5), (5, 1), (5, 5))
-    val baseDoubleWordPositions = List((1, 1), (2, 2), (3, 3), (4, 4))
+    val baseDoubleWordPositions = List((1, 1), (2, 2), (3, 3), (4, 4), (7,7))
     val baseTripleWordPositions = List((0, 0), (0, 7))
     val initialBoard = Vector.fill(rowsAndColumn, rowsAndColumn)(standardSquareFactory.createDoubleSquare(new Stone))
     val boardWithDoubleLetters = initializeBoard(initialBoard, baseDoubleLetterPositions, () => letterFactory.createDoubleSquare(new Stone))

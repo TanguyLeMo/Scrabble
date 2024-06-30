@@ -49,4 +49,5 @@ class LanguageContext @Inject (languageStrat: String) extends LanguageContextInt
   override def redo : String = languageStrategy.redo
   override def currentLanguageRequest: String = languageStrategy.currentLanguageRequest
   override def currentLanguage: String = languageStrategy.currentLanguage
+  override def next: String = languageStrategy.next
 }

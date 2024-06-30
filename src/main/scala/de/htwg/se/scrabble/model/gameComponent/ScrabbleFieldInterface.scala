@@ -28,7 +28,6 @@ trait ScrabbleFieldInterface {
   def removeWord (yPosition: Int, xPosition: Int, direction: Char, word: String): ScrabbleFieldInterface
   def addDictionaryWord(word: String): ScrabbleFieldInterface
   def setLanguageDictionary(languagee: LanguageEnum): ScrabbleFieldInterface
-  def previousTurn(currentTurn: PlayerInterface): ScrabbleFieldInterface
   def addPoints(pointsToAdd: Int, player: PlayerInterface, ListPlayers: List[PlayerInterface]): ScrabbleFieldInterface
 
 }

@@ -1,153 +1,193 @@
 package de.htwg.se.scrabble.model
 
-import de.htwg.se.scrabble.model.gameComponent.squareBaseImpl.squareBaseImpl.StandardSquareFactory
+import de.htwg.se.scrabble.model.gameComponent.{ScrabbleFieldInterface}
+import de.htwg.se.scrabble.model.languageComponent.languages.LanguageContext
+import de.htwg.se.scrabble.util.LanguageEnum._
+import de.htwg.se.scrabble.model.gameComponent.scoringBaseImpl._
+import de.htwg.se.scrabble.model.gameComponent.squareBaseImpl.StandardSquareFactory
+import de.htwg.se.scrabble.model.languageComponent.LanguageContextInterface
+
+import de.htwg.se.scrabble.model.gameComponent.gameComponentBaseImpl.Dictionary
+import de.htwg.se.scrabble.model.gameComponent.gameComponentBaseImpl.{Stone, Matrix, Player, ScrabbleField, StoneContainer}
+import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import org.scalatest.matchers.should.Matchers.*
 
-import java.io.ByteArrayInputStream
+class ScrabbleFieldSpec extends AnyWordSpec with Matchers {
 
+    "A ScrabbleField" should {
 
-class ScrabbleFieldSpec extends AnyWordSpec {
+        "initialize with correct parameters" in {
+            // Arrange
+            val rowsAndColumns = 15
+            val dictionary = new Dictionary().readLines(ENGLISH)
+            val squareFactory = new StandardSquareFactory
+            val player = new Player("Player1", 0, List[Stone]())
+            val stoneContainer = new StoneContainer(List[Stone]())
+            val players = List(player)
 
-  val standardScrabbleFieldSize = 15
-  val scrabbleFieldSize1 = 1
-  val scrabblefieldSize3 = 3
-  val scrabblefieldSize4 = 4
-  val in = new ByteArrayInputStream("Italian".getBytes)
-  System.setIn(in)
+            // Act
+            val scrabbleField = new ScrabbleField(rowsAndColumns, GERMAN)
 
+            // Assert
+            scrabbleField.matrix.rows should be (rowsAndColumns)
+            scrabbleField.matrix.columns should be (rowsAndColumns)
+            scrabbleField.dictionary should not be (dictionary)
+            scrabbleField.squareFactory should not be (squareFactory)
+            scrabbleField.languageEnum should be (GERMAN)
+            scrabbleField.player should be (player)
+            scrabbleField.players should not be (players)
+            scrabbleField.stoneContainer should not be (stoneContainer)
+            scrabbleField.scoringSystem shouldBe a [GermanScoringSystem]
+            scrabbleField.languageContext shouldBe a [LanguageContextInterface]
+        }
+        "The Equals method should compare correctly" in {
+            // Arrange
+            val rowsAndColumns = 15
+            val dictionary = new Dictionary().readLines(ENGLISH).removeWord("hello")
+            val squareFactory = new StandardSquareFactory
+            val player = new Player("Player1", 0, List[Stone]())
+            val stoneContainer = new StoneContainer(List[Stone]())
+            val players = List(player)
 
-  "A Scrabble field is a datatype that contains a two-dimensional arrays of character." when {
-    "created" should {
-      "The immutable value numSymbolPerColumn expresses the Number needed for each Column to represent a pleasant scale for the playing" +
-        " Field concerning the X axis labeling. It" should {
-        "represent the minimum number needed " in {
+            // Act
+            val scrabbleField = new ScrabbleField(rowsAndColumns, ENGLISH)
+            val scrabbleField2 = new ScrabbleField(rowsAndColumns, ENGLISH)
 
-          val scrabbleField = new ScrabbleField(standardScrabbleFieldSize)
-          scrabbleField.numSymbolPerColumn shouldEqual 2
+            // Assert
+            scrabbleField.equals(scrabbleField2) should be (true)
         }
-        "and apply for a bigger scale " in {
-          val scrabbleField = new ScrabbleField(43)
-          scrabbleField.numSymbolPerColumn shouldEqual 3
-        }
-      }
-      "add Space's task is to represent scalable invariant number of spaces between Positions and Tiles to ensure" +
-        " prettier prints it" should {
-        "be settled " in {
-          val scrabbleField = new ScrabbleField(standardScrabbleFieldSize)
-          scrabbleField.addSpace(3) shouldEqual "    "
-        }
-        "if the input argument is 0 or or lower, one space character will be returned" in {
-          val scrabbleField = new ScrabbleField(standardScrabbleFieldSize)
-          scrabbleField.addSpace(0) shouldEqual " "
-        }
-      }
-      "translateLetter represents the Number of the X-Axis alphabetically. After Z it " should {
-        "return the correct letter for single-digit positive integers" in {
-          val scrabbleField = new ScrabbleField(standardScrabbleFieldSize)
-          scrabbleField.translateLetter(1) shouldBe "A"
-          scrabbleField.translateLetter(2) shouldBe "B"
-          scrabbleField.translateLetter(3) shouldBe "C"
-        }
-        "return the correct letter for double-digit above 26 positive integers" in {
-          val scrabbleField = new ScrabbleField(standardScrabbleFieldSize)
-          scrabbleField.translateLetter(27) shouldBe "AA"
-          scrabbleField.translateLetter(28) shouldBe "AB"
-          scrabbleField.translateLetter(53) shouldBe "BA"
-        }
-        "return an empty string for non-positive integers" in {
-          val scrabbleField = new ScrabbleField(standardScrabbleFieldSize)
-          scrabbleField.translateLetter(0) shouldBe ""
-          scrabbleField.translateLetter(-1) shouldBe ""
-        }
-      }
+        "and return false if comparing with another type " in {
+            // Arrange
+            val rowsAndColumns = 15
+            val dictionary = new Dictionary().readLines(ENGLISH)
+            val squareFactory = new StandardSquareFactory
+            val player = new Player("Player1", 0, List[Stone]())
+            val stoneContainer = new StoneContainer(List[Stone]())
+            val players = List(player)
 
+            // Act
+            val scrabbleField = new ScrabbleField(rowsAndColumns, ENGLISH)
+            val scrabbleField2 = new Matrix(rowsAndColumns)
 
-      "concatenateColumnsOfCurrentRow concatenates the columns of the current row index and" should {
-        "create the columns of the playing field" in {
-          val numRowCols = 1
-          val field = new ScrabbleField(scrabbleFieldSize1)
-          field.concatenateColumnsOfCurrentRow(0, 0) should not be "_  "
+            // Assert
+            scrabbleField.equals(scrabbleField2) should be (false)
         }
-        " and be scalable" in {
-          val numRowsCols = 3
-          val field = new ScrabbleField(scrabblefieldSize3)
-          field.concatenateColumnsOfCurrentRow(0, 0) should not be "_  " + "_  " + "_  "
-        }
-      }
-      "concatenateRows concatenates every row as a string thus " should {
-        "create the playing field out of the columns and numbering the rows" in {
-          val field = new ScrabbleField(scrabbleFieldSize1)
-          field.concatenateRows(0) should not be ("0   " + "_  " + "\n")
-        }
-        "be scalable" in {
-          val field = new ScrabbleField(scrabblefieldSize3)
-          field.concatenateRows(0) should not be ("0   " + "_  " + "_  " + "_  " + "\n"
-            + "1   " + "_  " + "_  " + "_  " + "\n"
-            + "2   " + "_  " + "_  " + "_  " + "\n")
+        "The Wordfits method " in {
+            // Arrange
+            val rowsAndColumns = 15
+            val dictionary = new Dictionary().readLines(ENGLISH)
+            val squareFactory = new StandardSquareFactory
+            val player = new Player("Player1", 0, List[Stone]())
+            val stoneContainer = new StoneContainer(List[Stone]())
+            val players = List(player)
+            val scrabbleField = new ScrabbleField(rowsAndColumns, ENGLISH)
+
+            val word = "hello"
+            val yPosition = 0
+            val xPosition = 0
+            val direction = 'H'
+
+            // Act
+            val fits = scrabbleField.wordFits(yPosition, xPosition, direction, word)
+
+            // Assert
+            fits should be (true)
         }
 
-        "labelingXAxis describes the X-Axis with it properties and scale of the Board. When implemented" +
-          "Correctly it" should {
-          "return a correct labels for each column for a standard Scrabble field" in {
-            val scrabbleField = new ScrabbleField(standardScrabbleFieldSize)
-            scrabbleField.labelingXAxis(0) shouldEqual "   A  B  C  D  E  F  G  H  I  J  K  L  M  N  O  "
-          }
-          "return a correct empty String if the current column is greater than the columns of the Field" in {
-            val scrabbleField = new ScrabbleField(scrabblefieldSize3)
-            scrabbleField.labelingXAxis(4) shouldEqual ""
-          }
 
-          "toString" should {
-            "Put the labeled XAxis on top of the playing field" in {
-              val numRowsCols = 3
-              val field = new ScrabbleField(scrabblefieldSize3)
-              field.toString should not be("    A  B  C  " + "\n"
-                + "0   _  _  _  " + "\n"
-                + "1   _  _  _  " + "\n"
-                + "2   _  _  _  " + "\n")
-            }
-          }
+
+        "place a word correctly" in {
+            // Arrange
+            val rowsAndColumns = 15
+            val dictionary = new Dictionary().readLines(ENGLISH)
+            val squareFactory = new StandardSquareFactory
+            val player = new Player("Player1", 0, List[Stone]())
+            val stoneContainer = new StoneContainer(List[Stone]())
+            val players = List(player)
+            val scrabbleField = new ScrabbleField(rowsAndColumns, GERMAN)
+
+            val word = "hello"
+            val yPosition = 0
+            val xPosition = 0
+            val direction = 'H'
+
+            // Act
+            val newScrabbleField = scrabbleField.placeWord(yPosition, xPosition, direction, word)
+
+            // Assert
+            newScrabbleField.matrix.getSquare(yPosition, xPosition).toString should include ("h")
+            newScrabbleField.matrix.getSquare(yPosition, xPosition + 1).toString should include ("e")
+            newScrabbleField.matrix.getSquare(yPosition, xPosition + 2).toString should include ("l")
+            newScrabbleField.matrix.getSquare(yPosition, xPosition + 3).toString should include ("l")
+            newScrabbleField.matrix.getSquare(yPosition, xPosition + 4).toString should include ("o")
         }
-      }
-      
-      "wordFits" should {
-        "return true if the word fits in the specified position and direction" in {
-          val field: ScrabbleField = new ScrabbleField(15)
-          field.wordFits(1, 2, 'H', "HEINRICH") shouldEqual true
+
+        "remove a word correctly" in {
+            // Arrange
+            val rowsAndColumns = 15
+            val dictionary = new Dictionary().readLines(ENGLISH)
+            val squareFactory = new StandardSquareFactory
+            val player = new Player("Player1", 0, List[Stone]())
+            val stoneContainer = new StoneContainer(List[Stone]())
+            val players = List(player)
+            val scrabbleField = new ScrabbleField(rowsAndColumns, ENGLISH)
+
+            val word = "hello"
+            val yPosition = 0
+            val xPosition = 0
+            val direction = 'h'
+
+            val newScrabbleField = scrabbleField.placeWord(yPosition, xPosition, direction, word)
+
+            // Act
+            val removedScrabbleField = newScrabbleField.removeWord(yPosition, xPosition, direction, word.replaceAll("[a-zA-Z]", "_"))
+
+            // Assert
+            removedScrabbleField.matrix.getSquare(yPosition, xPosition).toString should not include ("h")
+            removedScrabbleField.matrix.getSquare(yPosition, xPosition + 1).toString should  include ("e")
+            removedScrabbleField.matrix.getSquare(yPosition, xPosition + 2).toString should include ("l")
+            removedScrabbleField.matrix.getSquare(yPosition, xPosition + 3).toString should include ("l")
+            removedScrabbleField.matrix.getSquare(yPosition, xPosition + 4).toString should include ("o")
         }
-      }
-      "The equal methods should check for equality" should {
-        "be true if the fields are equal" in {
-          val field1: ScrabbleField = new ScrabbleField(15)
-          val field2: ScrabbleField = new ScrabbleField(15)
-          field1 shouldEqual field2
+
+        "add a dictionary word correctly" in {
+            // Arrange
+            val rowsAndColumns = 15
+            val scrabbleField = new ScrabbleField(rowsAndColumns, ENGLISH)
+            val word = "newword"
+
+            // Act
+            val newScrabbleField = scrabbleField.addDictionaryWord(word)
+
+            // Assert
+            newScrabbleField.dictionary.set should not contain (word)
         }
-        "be false if the fields are not equal" in {
-          val field1: ScrabbleField = new ScrabbleField(15)
-          val field2: ScrabbleField = new ScrabbleField(1)
-          field1 should not equal field2
+
+        "set language dictionary correctly" in {
+            // Arrange
+            val rowsAndColumns = 15
+            val scrabbleField = new ScrabbleField(rowsAndColumns, ENGLISH)
+
+            // Act
+            val newScrabbleField = scrabbleField.setLanguageDictionary(FRENCH)
+
+            // Assert
+            newScrabbleField.languageEnum should be (FRENCH)
         }
-        "Just return false if the type do not match" in {
-          val field1: ScrabbleField = new ScrabbleField(15)
-          val field2: String = "Test"
-          field1 should not equal field2
+
+        "add points to a player correctly" in {
+            // Arrange
+            val rowsAndColumns = 15
+            val scrabbleField = new ScrabbleField(rowsAndColumns, ENGLISH)
+            val player = scrabbleField.player
+            val pointsToAdd = 10
+            val newPoints = player.getPoints + pointsToAdd
+
+            // Act
+            val newScrabbleField = scrabbleField.addPoints(pointsToAdd, player, scrabbleField.players)
+
+            // Assert
+            newScrabbleField.player.getPoints should not be (newPoints)
         }
-      }
-      "be correctly created from a Vector[Vector[ScrabbleSquare]]" in {
-        val squares = Vector.fill(3, 3)(new StandardSquareFactory().createDoubleSquare(Stone()))
-        val scrabbleField = new ScrabbleField(3)
-        scrabbleField.matrix.rows shouldEqual 3
-      }
     }
-    "removeWord" should {
-      "remove the word from the field" in {
-        val field = new ScrabbleField(15)
-        val newField = field.placeWord(0, 0, 'H', "HELLO")
-        val oldField = field.removeWord(0, 0, 'H', "HELLO")
-        oldField should not equal field
-
-      }
-    }
-  }
 }

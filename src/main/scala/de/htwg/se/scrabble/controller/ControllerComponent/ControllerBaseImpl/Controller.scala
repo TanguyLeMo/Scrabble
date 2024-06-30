@@ -15,16 +15,13 @@ import scala.util.*
 
 class Controller @Inject (var field: ScrabbleFieldInterface) extends ControllerInterface:
   val undoManager = new util.UndoManager[ScrabbleFieldInterface]
-  
   val fileIO: GameStateInterface = Guice.createInjector(new Modules).getInstance(classOf[GameStateInterface])
   
   override def doAndPublish(doThis: placeWordsAsMove => ScrabbleFieldInterface, move: placeWordsAsMove): Unit =
     val newState = doThis(move)
     field = undoManager.doStep(field, newState)
     notifyObservers(new RoundsScrabbleEvent)
-
   override def save: Boolean = fileIO.save(field)
-
   override def changeLanguage(language: LanguageEnum): ScrabbleFieldInterface = {
     field = field.setLanguageDictionary(language)
     notifyObservers(new RoundsScrabbleEvent)

@@ -18,6 +18,7 @@ import util.{NameCantBeEmpty, Observer, ScrabbleEvent}
 import util.ScrabbleEvent
 
 import java.awt
+import java.lang.ModuleLayer.Controller
 import javax.swing.{BorderFactory, ImageIcon, JMenuBar}
 import scala.swing.Action.NoAction.icon
 import scala.swing.event.Key.Modifiers
@@ -37,7 +38,9 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
       case event: RoundsScrabbleEvent =>
         gameWindow.update()
       case event: DictionaryScrabbleEvent =>
+
       case event: RequestEnterLanguage =>
+
       case event: NoSuchLanguageScrabbleEvent =>
         println(" Entered Language not a available language")
         println(" Es handelt sich um keine verfügbare Sprache")
@@ -92,6 +95,7 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
 
   case class MainMenuWindow(val controller: ControllerInterface) extends SimpleSwingApplication {
     def top = new MainFrame {
+      iconImage = new ImageIcon(getClass.getResource("/scrabbleloggo.png")).getImage
       title = "Scrabble"
       val newGame = new Button("New Game") {
         maximumSize = new Dimension(100, 30)
@@ -158,10 +162,11 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
 
   case class LanguageWindow(val controller: ControllerInterface) extends SimpleSwingApplication {
     def top = new MainFrame {
+      iconImage = new ImageIcon(getClass.getResource("/scrabbleloggo.png")).getImage
       title = "Language Settings"
       val options = Seq("english", "german", "french", "italian")
       val comboBox = new ComboBox(options)
-      val next = new Button("Next")
+      val next = new Button(controller.field.languageContext.next)
       contents = new FlowPanel {
         contents += comboBox
         contents += next
@@ -191,15 +196,15 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
 
 
   case class NumberPlayerWindow(val controller: ControllerInterface) extends SimpleSwingApplication {
-
     def top = new MainFrame {
-      title = "number Players Settings"
+      iconImage = new ImageIcon(getClass.getResource("/scrabbleloggo.png")).getImage
+      title = "Scrabble"
       val text = new TextField(3)
-      val next = new Button("Next")
+      val next = new Button(controller.field.languageContext.next)
       next.background = java.awt.Color(202, 209, 220)
       next.opaque = true
       contents = new FlowPanel {
-        contents += new Label("Number of Players: ")
+        contents += new Label(controller.field.languageContext.enterNumberofPlayers)
         contents += text
         contents += next
         border = Swing.EmptyBorder(30, 10, 10, 10)
@@ -217,17 +222,18 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
                 dispose()
                 val namePlayerWindow = NamePlayerWindow(controller, text.text.toInt)
                 namePlayerWindow.top.visible = true
+
               else {
                 Dialog.showMessage(
-                  message = "Please enter a valid number of players",
-                  title = "invalid input",
+                  message = controller.field.languageContext.invalidNumber,
+                  title = controller.field.languageContext.invalidInput,
                   messageType = Dialog.Message.Info
                 )
               }
             case Failure(exception) =>
               Dialog.showMessage(
-                message = "Please enter a valid number of players",
-                title = "invalid input",
+                message = controller.field.languageContext.invalidNumber,
+                title = controller.field.languageContext.invalidInput,
                 messageType = Dialog.Message.Info
               )
           }
@@ -240,9 +246,9 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
 
     def top = new MainFrame {
       val numberOfTextFields = numberPlayer
-      title = "Playernames Settings"
+      title = "Scrabble"
       val textFields = for (i <- 1 to numberOfTextFields) yield new TextField(16)
-      val next = new Button("Next")
+      val next = new Button(controller.field.languageContext.next)
       next.background = java.awt.Color(202, 209, 220)
       next.opaque = true
       contents = new FlowPanel {
@@ -262,8 +268,8 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
           val playerNames = textFields.map(_.text).toVector
           if (playerNames.distinct.length != playerNames.length || playerNames.contains("")) {
             Dialog.showMessage(
-              message = "Please enter unique names for each player",
-              title = "invalid input",
+              message = controller.field.languageContext.invalidInput,
+              title = controller.field.languageContext.invalidInput,
               messageType = Dialog.Message.Info
             )
 
@@ -291,17 +297,19 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
   }
 
   case class DictionaryWindow(val controller: ControllerInterface) extends SimpleSwingApplication {
+
     def top = new MainFrame {
-      title = "dictionary Settings"
+      iconImage = new ImageIcon(getClass.getResource("/scrabbleloggo.png")).getImage
+      title = "Scrabble"
       val text = new TextField(15)
       val add = new Button("Add")
       add.background = java.awt.Color(202, 209, 220)
       add.opaque = true
-      val next = new Button("Next")
+      val next = new Button(controller.field.languageContext.next)
       next.background = java.awt.Color(202, 209, 220)
       next.opaque = true
       contents = new FlowPanel {
-        contents += new Label("Enter new word: ")
+        contents += new Label(controller.field.languageContext.enterWordForDictionary)
         contents += text
         contents += add
         contents += next
@@ -315,8 +323,8 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
         case ButtonClicked(`add`) =>
           if (controller.contains(text.text)) {
             Dialog.showMessage(
-              message = "word already in dictionary",
-              title = "invalid input",
+              message = controller.field.languageContext.wordAlreadyAddedToDictionary,
+              title = controller.field.languageContext.invalidInput,
               messageType = Dialog.Message.Info
             )
           } else {
@@ -329,6 +337,8 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
       }
     }
   }
+
+
   case class GameWindow(val controller: ControllerInterface) extends SimpleSwingApplication {
     val text = new TextField(16)
     text.background = java.awt.Color(249,218,165)
@@ -350,6 +360,7 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
     leaderboard.editable = false
     leaderboard.background = java.awt.Color(200,216,208)
     leaderboard.opaque = true
+
     val playerstones = new Label(controller.field.player.playerTiles.mkString(" | "))
     playerstones.border = Swing.LineBorder(java.awt.Color.BLACK)
     playerstones.background = java.awt.Color(249,218,165)
@@ -398,7 +409,8 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
         }
       }
     }
-    def setMenuBar: scala.swing.MenuBar = {
+
+    def createMenuBar: MenuBar = {
       new MenuBar {
         contents += new Menu(controller.field.languageContext.save) {
           contents += new MenuItem(Action(controller.field.languageContext.save) {
@@ -416,7 +428,6 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
             controller.setLanguageDictionary(ENGLISH)
             background = java.awt.Color(200, 216, 208)
             update()
-
           })
           contents += new MenuItem(Action(controller.field.languageContext.german) {
             controller.setLanguageDictionary(GERMAN)
@@ -427,16 +438,15 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
             controller.setLanguageDictionary(FRENCH)
             background = java.awt.Color(200, 216, 208)
             update()
-
           })
           contents += new MenuItem(Action(controller.field.languageContext.italian) {
             controller.setLanguageDictionary(ITALIAN)
             background = java.awt.Color(200, 216, 208)
             update()
           })
+          contents += new MenuItem(controller.field.languageContext.currentLanguageRequest + controller.field.languageContext.currentLanguage)
           background = java.awt.Color(200, 216, 208)
         }
-
         contents += new Menu(controller.field.languageContext.undo) {
           contents += new MenuItem(Action(controller.field.languageContext.undo) {
             controller.doAndPublish(controller.undo)
@@ -473,7 +483,7 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
         }
         contents += gridWithLabelsPanel
 
-        menuBar = setMenuBar
+        menuBar = createMenuBar
         contents += new FlowPanel {
           contents += currentPlayer
           contents += playerstones
@@ -491,10 +501,11 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
       listenTo(placeButton)
       reactions += {
         case ButtonClicked(`placeButton`) =>
-          val coordinates = controller.translateCoordinate(xAxisPanel.selection.item + " " + yAxisPanel.selection.item)
+          val coordinates = controller.translateCoordinate(xAxisPanel.selection.item.toString + " " + yAxisPanel.selection.item.toString)
           val y = coordinates._1
           val x = coordinates._2
-          val direction = orientationComboBox.selection.item.toUpperCase.head
+          val directionunchecked = orientationComboBox.selection.item.toUpperCase().head
+          val direction = if(directionunchecked == 'H' || directionunchecked == 'V') directionunchecked else 'H'
           val word = text.text.toUpperCase
           if(!controller.contains(word)){
             controller.notifyObservers(new WordAlreadyAddedToDictionary)
@@ -518,6 +529,7 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
       }
       background = java.awt.Color.YELLOW
     }
+
     def update(): Unit = {
       currentPlayer.text = controller.field.languageContext.currentPlayer + controller.field.player.getName
       currentPlayer.background = java.awt.Color(255,246,214)
@@ -543,14 +555,14 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
 
       text.text = ""
       orientationComboBox.peer.setModel(ComboBox.newConstantModel(Seq(controller.field.languageContext.horizontal, controller.field.languageContext.vertical)))//new javax.swing.DefaultComboBoxModel(Array(controller.field.languageContext.horizontal, controller.field.languageContext.vertical)))
-      menuBar = setMenuBar
+      menuBar = createMenuBar
     }
   }
 
   def drawStonesAfterRound(player: PlayerInterface, numberOfCards: Int, players: List[PlayerInterface]): List[PlayerInterface] = {
     if (controller.field.stoneContainer.stones.isEmpty || numberOfCards == 0) {
       players
-    }
+    } //newPlayer(name, points, tleslist[Stone],
     else {
       val newStone = controller.drawRandomStone(controller.field.stoneContainer)
       println(newStone)
@@ -559,8 +571,11 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
       val newPlayerList = controller.field.players.updated(controller.field.players.indexOf(player), newPlayer)
       controller.field = new ScrabbleField(controller.field.matrix, controller.field.dictionary, controller.field.squareFactory, controller.field.languageEnum, newPlayer, newPlayerList, controller.field.stoneContainer)
       drawStonesAfterRound(newPlayer, numberOfCards - 1, newPlayerList)
+      
     }
   }
+
+
   def consoleColorToSwingColor(color: String): java.awt.Color = {
     color match
       case "white" => java.awt.Color(121,139,127)

@@ -12,4 +12,5 @@ class FrenchScoringSystem extends ScoringSystem{
     case 'F' | 'H' | 'V' => 4
     case 'J' | 'Q' => 8
     case 'K' | 'W' | 'X' | 'Y'| 'Z' => 10
+    case _ => 0
 }

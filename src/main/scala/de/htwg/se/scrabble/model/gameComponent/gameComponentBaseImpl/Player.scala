@@ -50,7 +50,7 @@ class Player @Inject (val name: String,val points: Int,val playerTiles: List[Sto
   def OnlyRequiredStones(notRequiredStones: List[StoneInterface], word: String): List[StoneInterface] = {
     val requiredStonesForWord = word.toCharArray.map(char => Stone(char)).toList
 
-    val remainingNotRequired = scala.collection.mutable.ListBuffer(notRequiredStones: _*)
+    val remainingNotRequired = scala.collection.mutable.ListBuffer(notRequiredStones*)
 
     val requiredStones = requiredStonesForWord.filter { stone =>
       if (remainingNotRequired.contains(stone)) {
@@ -81,11 +81,3 @@ class Player @Inject (val name: String,val points: Int,val playerTiles: List[Sto
   override def toString: String =
     name + " Points: " + points
 
-  def previousTurn(playerList: List[PlayerInterface], currentTurn: PlayerInterface): PlayerInterface = {
-    val index = playerList.indexOf(currentTurn) - 1
-    val playerOption = playerList.lift(index)
-
-    playerOption match
-      case Some(player) => player
-      case None => playerList.last
-  }

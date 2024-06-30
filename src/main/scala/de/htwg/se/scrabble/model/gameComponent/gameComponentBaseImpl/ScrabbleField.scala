@@ -56,7 +56,6 @@ class ScrabbleField @Inject (val matrix: MatrixInterface, val dictionary: Dictio
   def addDictionaryWord(word: String): ScrabbleFieldInterface = new ScrabbleField(matrix, dictionary.addWord(word))
   
   def setLanguageDictionary(languagee: LanguageEnum): ScrabbleFieldInterface = new ScrabbleField(matrix, dictionary.readLines(languagee), squareFactory, languagee, player, players,stoneContainer)
-  def previousTurn(currentTurn: PlayerInterface): ScrabbleFieldInterface = new ScrabbleField(matrix, dictionary, squareFactory, languageEnum, players.last, players, stoneContainer)
 
   def addPoints(pointsToAdd: Int, player: PlayerInterface, ListPlayers: List[PlayerInterface]): ScrabbleFieldInterface =
     val newPlayer = new Player(player.getName, player.getPoints + pointsToAdd, player.playerTiles)

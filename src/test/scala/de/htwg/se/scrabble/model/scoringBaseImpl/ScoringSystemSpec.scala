@@ -13,7 +13,6 @@ class ScoringSystemSpec extends AnyWordSpec with Matchers {
 
     "correctly determine points for the English scoring system" in {
       val scoringSystem = new EnglishScoringSystem
-
       scoringSystem.determinPoints(new Stone('A')) should be(1)
       scoringSystem.determinPoints(new Stone('D')) should be(2)
       scoringSystem.determinPoints(new Stone('B')) should be(3)

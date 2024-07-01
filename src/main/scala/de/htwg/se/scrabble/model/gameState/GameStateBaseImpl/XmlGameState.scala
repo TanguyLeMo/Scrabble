@@ -148,4 +148,5 @@ class XmlGameState extends GameStateInterface {
     } yield <stone>{stone.toString}</stone>}
     </stoneContainer>
   }
+  
 }

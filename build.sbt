@@ -1,4 +1,5 @@
 import sbt.Keys.libraryDependencies
+import scoverage.ScoverageKeys.coverageExcludedFiles
 
 ThisBuild / version := "0.1.0-SNAPSHOT"
 
@@ -15,5 +16,6 @@ lazy val root = (project in file("."))
     libraryDependencies += "net.codingwell" %% "scala-guice" % "7.0.0",
     coverageEnabled := true,
     libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "2.3.0",
-    libraryDependencies += "org.playframework" %% "play-json" % "3.0.4"
-  )
+    libraryDependencies += "org.playframework" %% "play-json" % "3.0.4",
+    coverageExcludedFiles := ".*Main.*;.*Scrabble.*;.*ScrabbleGUI.*"
+)

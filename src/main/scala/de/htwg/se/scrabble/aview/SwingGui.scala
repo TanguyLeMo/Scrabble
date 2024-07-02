@@ -134,9 +134,6 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
       title = "Language Settings"
       val options = Seq("english", "german", "french", "italian")
       val comboBox = new ComboBox(options)
-      val next = new Button(controller.field.languageContext.next)
-      comboBox.background = java.awt.Color(202, 209, 220)
-      comboBox.opaque = true
       val next = new Button("Next")
       next.background = java.awt.Color(202, 209, 220)
       next.opaque = true

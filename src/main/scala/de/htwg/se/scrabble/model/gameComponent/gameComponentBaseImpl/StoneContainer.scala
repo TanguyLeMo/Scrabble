@@ -34,7 +34,8 @@ class StoneContainer @Inject (val stones : List[StoneInterface]) extends StoneCo
 
     def drawRandomeStone(Container: StoneContainerInterface): StoneInterface = {
         val random = new scala.util.Random
-        val randomIndex = random.nextInt(Container.stones.length)
+        if(Container.stones.isEmpty) return new Stone('_')
+        val randomIndex = random.nextInt(Math.abs(Container.stones.length))
         Container.stones(randomIndex)
     }
 

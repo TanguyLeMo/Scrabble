@@ -38,4 +38,5 @@ trait LanguageStrategy {
   def currentLanguageRequest: String
   def currentLanguage: String
   def next: String
+  def ownWordForDictionary: String
 }

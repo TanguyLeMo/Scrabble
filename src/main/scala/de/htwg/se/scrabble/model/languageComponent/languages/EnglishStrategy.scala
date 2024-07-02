@@ -40,4 +40,5 @@ class EnglishStrategy extends LanguageStrategy{
   override def currentLanguageRequest: String = "Current Language: "
   override def currentLanguage: String = "english"
   override def next: String = "next" 
+  override def ownWordForDictionary: String = "Enter your personal words for the dictionary"
 }

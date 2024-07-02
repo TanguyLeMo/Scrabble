@@ -131,13 +131,12 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
   case class LanguageWindow(val controller: ControllerInterface) extends SimpleSwingApplication {
     def top = new MainFrame {
       iconImage = new ImageIcon(getClass.getResource("/scrabbleloggo.png")).getImage
-      title = "Language Settings"
+      title = "Scrabble"
       val options = Seq("english", "german", "french", "italian")
       val comboBox = new ComboBox(options)
-      val next = new Button(controller.field.languageContext.next)
       comboBox.background = java.awt.Color(202, 209, 220)
       comboBox.opaque = true
-      val next = new Button("Next")
+      val next = new Button(controller.field.languageContext.next)
       next.background = java.awt.Color(202, 209, 220)
       next.opaque = true
       contents = new FlowPanel {
@@ -228,6 +227,7 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
   case class NamePlayerWindow(val controller: ControllerInterface, numberPlayer: Int) extends SimpleSwingApplication {
 
     def top = new MainFrame {
+      iconImage = new ImageIcon(getClass.getResource("/scrabbleloggo.png")).getImage
       val numberOfTextFields = numberPlayer
       title = "Scrabble"
       val textFields = for (i <- 1 to numberOfTextFields) yield new TextField(16)
@@ -302,7 +302,7 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
       contents = new BoxPanel(Orientation.Vertical) {
         contents += new BoxPanel(Orientation.Horizontal) {
           contents += Swing.HGlue
-          contents += new Label("Own word for dictionary: ")
+          contents += new Label(controller.field.languageContext.ownWordForDictionary)
           contents += Swing.HGlue
           background = java.awt.Color(160, 182, 171)
           opaque = true
@@ -374,6 +374,7 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
         background = java.awt.Color(200,216,208)
         opaque = true
       }
+      iconImage = new ImageIcon(getClass.getResource("/scrabbleloggo.png")).getImage
       background = java.awt.Color(200,216,208)
       for (col <- 0 until 15) {
         contents += new Label(('A' to 'O').map(_.toString)(col)) {

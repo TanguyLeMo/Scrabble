@@ -40,4 +40,5 @@ class ItalianStrategy extends LanguageStrategy{
   override def currentLanguageRequest: String = "Lingua corrente: "
   override def currentLanguage: String = "Italiano"
   override def next: String = "continua"
+  override def ownWordForDictionary: String = "Inserisci le tue parole personali per il dizionario"
 }

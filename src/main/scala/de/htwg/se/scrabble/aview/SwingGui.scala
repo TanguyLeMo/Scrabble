@@ -83,8 +83,6 @@ class SwingGui(controller: ControllerInterface) extends Frame with Observer {
         background = java.awt.Color(202, 209, 220)
         opaque = true
       }
-
-
       val backgroundImage = new ImageIcon(getClass.getResource("/scrabble.jpg"))
 
 

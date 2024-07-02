@@ -9,7 +9,7 @@ import de.htwg.se.scrabble.model.gameComponent.gameComponentBaseImpl.{ScrabbleFi
 import de.htwg.se.scrabble.model.gameState.GameStateBaseImpl.{JsonGameState, XmlGameState}
 import de.htwg.se.scrabble.model.gameState.GameStateInterface
 import de.htwg.se.scrabble.{Modules, util}
-import de.htwg.se.scrabble.util.*
+import de.htwg.se.scrabble.util.{DictionaryScrabbleEvent, EnterWord, GameEndScrabbleEvent, NoSuchLanguageScrabbleEvent, RequestEnterLanguage, RoundsScrabbleEvent, WordAddedToDictionary, WordAlreadyAddedToDictionary, WordNotInDictionary, *}
 import scala.util.*
 
 

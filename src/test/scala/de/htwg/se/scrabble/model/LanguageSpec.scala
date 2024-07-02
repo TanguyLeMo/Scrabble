@@ -1,7 +1,7 @@
 package de.htwg.se.scrabble.model
 
 import de.htwg.se.scrabble.model.languageComponent.languages.LanguageContext
-import org.scalatest.matchers.must.Matchers
+import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
 class LanguageSpec extends AnyWordSpec with Matchers {
@@ -13,446 +13,446 @@ class LanguageSpec extends AnyWordSpec with Matchers {
 
     "used in French" should {
       "have a requestNewWord" in {
-        FrenchlanguageContext.requestNewWord must be("Entrez un nouveau mot")
+        FrenchlanguageContext.requestNewWord should be("Entrez un nouveau mot")
       }
       "have wordAlreadyAddedToDictionary" in {
-        FrenchlanguageContext.wordAlreadyAddedToDictionary must be("Le mot a déjà été ajouté au dictionnaire")
+        FrenchlanguageContext.wordAlreadyAddedToDictionary should be("Le mot a déjà été ajouté au dictionnaire")
       }
       "have wordAddedToDictionary" in {
-        FrenchlanguageContext.wordAddedToDictionary must be("Le mot a été ajouté au dictionnaire")
+        FrenchlanguageContext.wordAddedToDictionary should be("Le mot a été ajouté au dictionnaire")
       }
       "have invalidcoordinates" in {
-        FrenchlanguageContext.invalidcoordinates must be("Coordonnées invalides")
+        FrenchlanguageContext.invalidcoordinates should be("Coordonnées invalides")
       }
       "have invalidInput" in {
-        FrenchlanguageContext.invalidInput must be("Entrée invalide")
+        FrenchlanguageContext.invalidInput should be("Entrée invalide")
       }
       "have notInDictionary" in {
-        FrenchlanguageContext.notInDictionary must be(" n'est pas dans le dictionnaire")
+        FrenchlanguageContext.notInDictionary should be(" n'est pas dans le dictionnaire")
       }
       "have wordNotInDictionary" in {
-        FrenchlanguageContext.wordNotInDictionary must be(" n'est pas dans le dictionnaire")
+        FrenchlanguageContext.wordNotInDictionary should be(" n'est pas dans le dictionnaire")
       }
       "have enterWordforDictionary" in {
-        FrenchlanguageContext.enterWordForDictionary must be("Entrez un mot pour le dictionnaire")
+        FrenchlanguageContext.enterWordForDictionary should be("Entrez un mot pour le dictionnaire")
       }
       "have stop" in {
-        FrenchlanguageContext.stop must be("stop")
+        FrenchlanguageContext.stop should be("stop")
       }
       "have enterWord" in {
-        FrenchlanguageContext.enterWord must be("Entrez votre mot: et Direction (H|V) exemple: monMot A 0 H")
+        FrenchlanguageContext.enterWord should be("Entrez votre mot: et Direction (H|V) exemple: monMot A 0 H")
       }
       "have NoCorrectDirection" in {
-        FrenchlanguageContext.noCorrectDirection must be("Aucune direction correcte")
+        FrenchlanguageContext.noCorrectDirection should be("Aucune direction correcte")
       }
       "have wordDoesntFit" in {
-        FrenchlanguageContext.wordDoesntFit must be("Le mot ne convient pas")
+        FrenchlanguageContext.wordDoesntFit should be("Le mot ne convient pas")
       }
       "have exit" in {
-        FrenchlanguageContext.exit must be("sortir")
+        FrenchlanguageContext.exit should be("sortir")
       }
       "have nameAlreadyTaken" in {
-        FrenchlanguageContext.nameAlreadyTaken must be("Le nom est déjà pris")
+        FrenchlanguageContext.nameAlreadyTaken should be("Le nom est déjà pris")
       }
       "have enterNumberofPlayers" in {
-        FrenchlanguageContext.enterNumberofPlayers must be("Entrez le nombre de joueurs")
+        FrenchlanguageContext.enterNumberofPlayers should be("Entrez le nombre de joueurs")
       }
       "have invalidNumber" in {
-        FrenchlanguageContext.invalidNumber must be("Entrée invalide, veuillez entrer un nombre valide")
+        FrenchlanguageContext.invalidNumber should be("Entrée invalide, veuillez entrer un nombre valide")
       }
       "have enterPlayernames" in {
-        FrenchlanguageContext.enterPlayerNames must be("Entrez les noms du premier / prochain joueur ")
+        FrenchlanguageContext.enterPlayerNames should be("Entrez les noms du premier / prochain joueur ")
       }
       "have nameCantBeEmpty" in {
-        FrenchlanguageContext.nameCantBeEmpty must be("Le nom ne peut pas être vide")
+        FrenchlanguageContext.nameCantBeEmpty should be("Le nom ne peut pas être vide")
       }
       "have currentPlayer" in {
-        FrenchlanguageContext.currentPlayer must be("Joueur actuel: ")
+        FrenchlanguageContext.currentPlayer should be("Joueur actuel: ")
       }
       "have noteEnoughStones" in {
-        FrenchlanguageContext.notEnoughStones must be("Pas assez de pierres")
+        FrenchlanguageContext.notEnoughStones should be("Pas assez de pierres")
       }
       "have leaderBoard" in {
-        FrenchlanguageContext.leaderBoard must be("Classement")
+        FrenchlanguageContext.leaderBoard should be("Classement")
       }
       "have place" in {
-        FrenchlanguageContext.place must be("placer")
+        FrenchlanguageContext.place should be("placer")
       }
       "have horizontal" in {
-        FrenchlanguageContext.horizontal must be("horizontal")
+        FrenchlanguageContext.horizontal should be("horizontal")
       }
       "have vertical" in {
-        FrenchlanguageContext.vertical must be("vertical")
+        FrenchlanguageContext.vertical should be("vertical")
       }
       "have save" in {
-        FrenchlanguageContext.save must be("sauvegarder")
+        FrenchlanguageContext.save should be("sauvegarder")
       }
       "have load" in {
-        FrenchlanguageContext.load must be("charger")
+        FrenchlanguageContext.load should be("charger")
       }
       "have changeLanguage" in {
-        FrenchlanguageContext.changeLanguage must be("changer de langue")
+        FrenchlanguageContext.changeLanguage should be("changer de langue")
       }
       "have french" in {
-        FrenchlanguageContext.french must be("français")
+        FrenchlanguageContext.french should be("français")
       }
       "have english" in {
-        FrenchlanguageContext.english must be("anglais")
+        FrenchlanguageContext.english should be("anglais")
       }
       "have german" in {
-        FrenchlanguageContext.german must be("allemand")
+        FrenchlanguageContext.german should be("allemand")
       }
       "have italian" in {
-        FrenchlanguageContext.italian must be("italien")
+        FrenchlanguageContext.italian should be("italien")
       }
       "have undo" in {
-        FrenchlanguageContext.undo must be("annuler")
+        FrenchlanguageContext.undo should be("annuler")
       }
       "have redo" in {
-        FrenchlanguageContext.redo must be("refaire")
+        FrenchlanguageContext.redo should be("refaire")
       }
       "have currentLanguageRequest" in {
-        FrenchlanguageContext.currentLanguageRequest must be("Langue actuelle: ")
+        FrenchlanguageContext.currentLanguageRequest should be("Langue actuelle: ")
       }
       "have currentLanguage" in {
-        FrenchlanguageContext.currentLanguage must be("français")
+        FrenchlanguageContext.currentLanguage should be("français")
       }
       "have next" in {
-        FrenchlanguageContext.next must be("continuer")
+        FrenchlanguageContext.next should be("continuer")
       }
     }
     "used in German" should {
       "have a requestNewWord" in {
-        GermanlanguageContext.requestNewWord must be("Bitte geben Sie ein neues Wort ein")
+        GermanlanguageContext.requestNewWord should be("Bitte geben Sie ein neues Wort ein")
       }
       "have wordAlreadyAddedToDictionary" in {
-        GermanlanguageContext.wordAlreadyAddedToDictionary must be("Das Wort wurde bereits zum Wörterbuch hinzugefügt")
+        GermanlanguageContext.wordAlreadyAddedToDictionary should be("Das Wort wurde bereits zum Wörterbuch hinzugefügt")
       }
       "have wordAddedToDictionary" in {
-        GermanlanguageContext.wordAddedToDictionary must be("Das Wort wurde zum Wörterbuch hinzugefügt")
+        GermanlanguageContext.wordAddedToDictionary should be("Das Wort wurde zum Wörterbuch hinzugefügt")
       }
       "have invalidcoordinates" in {
-        GermanlanguageContext.invalidcoordinates must be("Ungültige Koordinaten")
+        GermanlanguageContext.invalidcoordinates should be("Ungültige Koordinaten")
       }
       "have invalidInput" in {
-        GermanlanguageContext.invalidInput must be("Ungültige Eingabe")
+        GermanlanguageContext.invalidInput should be("Ungültige Eingabe")
       }
       "have notInDictionary" in {
-        GermanlanguageContext.notInDictionary must be("Das Wort ist nicht im Wörterbuch, sorry")
+        GermanlanguageContext.notInDictionary should be("Das Wort ist nicht im Wörterbuch, sorry")
       }
       "have wordNotInDictionary" in {
-        GermanlanguageContext.wordNotInDictionary must be("Das Wort ist nicht im Wörterbuch")
+        GermanlanguageContext.wordNotInDictionary should be("Das Wort ist nicht im Wörterbuch")
       }
       "have enterWordforDictionary" in {
-        GermanlanguageContext.enterWordForDictionary must be("Sie können eigene Wörter in das Wörterbuch eintragen")
+        GermanlanguageContext.enterWordForDictionary should be("Sie können eigene Wörter in das Wörterbuch eintragen")
       }
       "have stop" in {
-        GermanlanguageContext.stop must be("stop")
+        GermanlanguageContext.stop should be("stop")
       }
       "have enterWord" in {
-        GermanlanguageContext.enterWord must be("Geben Sie Ihr Wort ein: und Richtung (H|V) Beispiel: meinWort A 0 H")
+        GermanlanguageContext.enterWord should be("Geben Sie Ihr Wort ein: und Richtung (H|V) Beispiel: meinWort A 0 H")
       }
       "have NoCorrectDirection" in {
-        GermanlanguageContext.noCorrectDirection must be(" ist keine richtige Richtung")
+        GermanlanguageContext.noCorrectDirection should be(" ist keine richtige Richtung")
       }
       "have wordDoesntFit" in {
-        GermanlanguageContext.wordDoesntFit must be("Das Wort passt nicht")
+        GermanlanguageContext.wordDoesntFit should be("Das Wort passt nicht")
       }
       "have exit" in {
-        GermanlanguageContext.exit must be("exit")
+        GermanlanguageContext.exit should be("exit")
       }
       "have nameAlreadyTaken" in {
-        GermanlanguageContext.nameAlreadyTaken must be("Der Name ist bereits vergeben")
+        GermanlanguageContext.nameAlreadyTaken should be("Der Name ist bereits vergeben")
       }
       "have enterNumberofPlayers" in {
-        GermanlanguageContext.enterNumberofPlayers must be("Geben Sie die Anzahl der Spieler ein")
+        GermanlanguageContext.enterNumberofPlayers should be("Geben Sie die Anzahl der Spieler ein")
       }
       "have invalidNumber" in {
-        GermanlanguageContext.invalidNumber must be("Ungültige Eingabe, bitte geben Sie eine gültige Nummer ein")
+        GermanlanguageContext.invalidNumber should be("Ungültige Eingabe, bitte geben Sie eine gültige Nummer ein")
       }
       "have enterPlayernames" in {
-        GermanlanguageContext.enterPlayerNames must be("Geben Sie die Namen des ersten / nächsten Spieler ein")
+        GermanlanguageContext.enterPlayerNames should be("Geben Sie die Namen des ersten / nächsten Spieler ein")
       }
       "have nameCantBeEmpty" in {
-        GermanlanguageContext.nameCantBeEmpty must be("Der Name darf nicht leer sein")
+        GermanlanguageContext.nameCantBeEmpty should be("Der Name darf nicht leer sein")
       }
       "have currentPlayer" in {
-        GermanlanguageContext.currentPlayer must be("Aktueller Spieler: ")
+        GermanlanguageContext.currentPlayer should be("Aktueller Spieler: ")
       }
       "have noteEnoughStones" in {
-        GermanlanguageContext.notEnoughStones must be("Nicht genügend Steine")
+        GermanlanguageContext.notEnoughStones should be("Nicht genügend Steine")
       }
       "have leaderBoard" in {
-        GermanlanguageContext.leaderBoard must be("Bestenliste")
+        GermanlanguageContext.leaderBoard should be("Bestenliste")
       }
       "have place" in {
-        GermanlanguageContext.place must be("platzieren")
+        GermanlanguageContext.place should be("platzieren")
       }
       "have horizontal" in {
-        GermanlanguageContext.horizontal must be("horizontal")
+        GermanlanguageContext.horizontal should be("horizontal")
       }
       "have vertical" in {
-        GermanlanguageContext.vertical must be("vertikal")
+        GermanlanguageContext.vertical should be("vertikal")
       }
       "have save" in {
-        GermanlanguageContext.save must be("speichern")
+        GermanlanguageContext.save should be("speichern")
       }
       "have load" in {
-        GermanlanguageContext.load must be("laden")
+        GermanlanguageContext.load should be("laden")
       }
       "have changeLanguage" in {
-        GermanlanguageContext.changeLanguage must be("Sprache ändern")
+        GermanlanguageContext.changeLanguage should be("Sprache ändern")
       }
       "have french" in {
-        GermanlanguageContext.french must be("Französisch")
+        GermanlanguageContext.french should be("Französisch")
       }
       "have english" in {
-        GermanlanguageContext.english must be("Englisch")
+        GermanlanguageContext.english should be("Englisch")
       }
       "have german" in {
-        GermanlanguageContext.german must be("Deutsch")
+        GermanlanguageContext.german should be("Deutsch")
       }
       "have italian" in {
-        GermanlanguageContext.italian must be("Italienisch")
+        GermanlanguageContext.italian should be("Italienisch")
       }
       "have undo" in {
-        GermanlanguageContext.undo must be("rückgängig")
+        GermanlanguageContext.undo should be("rückgängig")
       }
       "have redo" in {
-        GermanlanguageContext.redo must be("wiederholen")
+        GermanlanguageContext.redo should be("wiederholen")
       }
       "have currentLanguageRequest" in {
-        GermanlanguageContext.currentLanguageRequest must be("Aktuelle Sprache: ")
+        GermanlanguageContext.currentLanguageRequest should be("Aktuelle Sprache: ")
       }
       "have currentLanguage" in {
-        GermanlanguageContext.currentLanguage must be("Deutsch")
+        GermanlanguageContext.currentLanguage should be("Deutsch")
       }
       "have next" in {
-        GermanlanguageContext.next must be("weiter")
+        GermanlanguageContext.next should be("weiter")
       }
     }
     "used in Italian" should {
       "have a requestNewWord" in {
-        ItalianlanguageContext.requestNewWord must be("Inserisci una nuova parola")
+        ItalianlanguageContext.requestNewWord should be("Inserisci una nuova parola")
       }
       "have wordAlreadyAddedToDictionary" in {
-        ItalianlanguageContext.wordAlreadyAddedToDictionary must be("Questa parola è già stata aggiunta al dizionario")
+        ItalianlanguageContext.wordAlreadyAddedToDictionary should be("Questa parola è già stata aggiunta al dizionario")
       }
       "have wordAddedToDictionary" in {
-        ItalianlanguageContext.wordAddedToDictionary must be("Parola aggiunta al dizionario")
+        ItalianlanguageContext.wordAddedToDictionary should be("Parola aggiunta al dizionario")
       }
       "have invalidcoordinates" in {
-        ItalianlanguageContext.invalidcoordinates must be("Coordinate non valide")
+        ItalianlanguageContext.invalidcoordinates should be("Coordinate non valide")
       }
       "have invalidInput" in {
-        ItalianlanguageContext.invalidInput must be("Input non valido")
+        ItalianlanguageContext.invalidInput should be("Input non valido")
       }
       "have notInDictionary" in {
-        ItalianlanguageContext.notInDictionary must be("Parola non presente nel dizionario")
+        ItalianlanguageContext.notInDictionary should be("Parola non presente nel dizionario")
       }
       "have wordNotInDictionary" in {
-        ItalianlanguageContext.wordNotInDictionary must be("Parola non presente nel dizionario")
+        ItalianlanguageContext.wordNotInDictionary should be("Parola non presente nel dizionario")
       }
       "have enterWordforDictionary" in {
-        ItalianlanguageContext.enterWordForDictionary must be("Inserisci una parola per il dizionario")
+        ItalianlanguageContext.enterWordForDictionary should be("Inserisci una parola per il dizionario")
       }
       "have stop" in {
-        ItalianlanguageContext.stop must be("stop")
+        ItalianlanguageContext.stop should be("stop")
       }
       "have enterWord" in {
-        ItalianlanguageContext.enterWord must be("Inserisci la tua parola: e Direzione (H|V) esempio: miaParola A 0 H")
+        ItalianlanguageContext.enterWord should be("Inserisci la tua parola: e Direzione (H|V) esempio: miaParola A 0 H")
       }
       "have NoCorrectDirection" in {
-        ItalianlanguageContext.noCorrectDirection must be(" non è una direzione corretta")
+        ItalianlanguageContext.noCorrectDirection should be(" non è una direzione corretta")
       }
       "have wordDoesntFit" in {
-        ItalianlanguageContext.wordDoesntFit must be("La parola non si adatta")
+        ItalianlanguageContext.wordDoesntFit should be("La parola non si adatta")
       }
       "have exit" in {
-        ItalianlanguageContext.exit must be("uscire")
+        ItalianlanguageContext.exit should be("uscire")
       }
       "have nameAlreadyTaken" in {
-        ItalianlanguageContext.nameAlreadyTaken must be("Il nome è già stato preso")
+        ItalianlanguageContext.nameAlreadyTaken should be("Il nome è già stato preso")
       }
       "have enterNumberofPlayers" in {
-        ItalianlanguageContext.enterNumberofPlayers must be("Inserisci il numero di giocatori")
+        ItalianlanguageContext.enterNumberofPlayers should be("Inserisci il numero di giocatori")
       }
       "have invalidNumber" in {
-        ItalianlanguageContext.invalidNumber must be("Input non valido, inserisci un numero valido")
+        ItalianlanguageContext.invalidNumber should be("Input non valido, inserisci un numero valido")
       }
       "have enterPlayernames" in {
-        ItalianlanguageContext.enterPlayerNames must be("Inserisci i nomi dei primi / prossimi giocatore")
+        ItalianlanguageContext.enterPlayerNames should be("Inserisci i nomi dei primi / prossimi giocatore")
       }
       "have nameCantBeEmpty" in {
-        ItalianlanguageContext.nameCantBeEmpty must be("Il nome non può essere vuoto")
+        ItalianlanguageContext.nameCantBeEmpty should be("Il nome non può essere vuoto")
       }
       "have currentPlayer" in {
-        ItalianlanguageContext.currentPlayer must be("Giocatore corrente: ")
+        ItalianlanguageContext.currentPlayer should be("Giocatore corrente: ")
       }
       "have noteEnoughStones" in {
-        ItalianlanguageContext.notEnoughStones must be("Non abbastanza pietre")
+        ItalianlanguageContext.notEnoughStones should be("Non abbastanza pietre")
       }
       "have leaderBoard" in {
-        ItalianlanguageContext.leaderBoard must be("Classifica")
+        ItalianlanguageContext.leaderBoard should be("Classifica")
       }
       "have place" in {
-        ItalianlanguageContext.place must be("Posizione")
+        ItalianlanguageContext.place should be("Posizione")
       }
       "have horizontal" in {
-        ItalianlanguageContext.horizontal must be("orizzontale")
+        ItalianlanguageContext.horizontal should be("orizzontale")
       }
       "have vertical" in {
-        ItalianlanguageContext.vertical must be("verticale")
+        ItalianlanguageContext.vertical should be("verticale")
       }
       "have save" in {
-        ItalianlanguageContext.save must be("salvare")
+        ItalianlanguageContext.save should be("salvare")
       }
       "have load" in {
-        ItalianlanguageContext.load must be("caricare")
+        ItalianlanguageContext.load should be("caricare")
       }
       "have changeLanguage" in {
-        ItalianlanguageContext.changeLanguage must be("cambia lingua")
+        ItalianlanguageContext.changeLanguage should be("cambia lingua")
       }
       "have french" in {
-        ItalianlanguageContext.french must be("francese")
+        ItalianlanguageContext.french should be("francese")
       }
       "have english" in {
-        ItalianlanguageContext.english must be("inglese")
+        ItalianlanguageContext.english should be("inglese")
       }
       "have german" in {
-        ItalianlanguageContext.german must be("tedesco")
+        ItalianlanguageContext.german should be("tedesco")
       }
       "have italian" in {
-        ItalianlanguageContext.italian must be("italiano")
+        ItalianlanguageContext.italian should be("italiano")
       }
       "have undo" in {
-        ItalianlanguageContext.undo must be("annulla")
+        ItalianlanguageContext.undo should be("annulla")
       }
       "have redo" in {
-        ItalianlanguageContext.redo must be("rifare")
+        ItalianlanguageContext.redo should be("rifare")
       }
       "have currentLanguageRequest" in {
-        ItalianlanguageContext.currentLanguageRequest must be("Lingua corrente: ")
+        ItalianlanguageContext.currentLanguageRequest should be("Lingua corrente: ")
       }
       "have currentLanguage" in {
-        ItalianlanguageContext.currentLanguage must be("Italiano")
+        ItalianlanguageContext.currentLanguage should be("Italiano")
       }
       "have next" in {
-        ItalianlanguageContext.next must be("continua")
+        ItalianlanguageContext.next should be("continua")
       }
     }
 
     "used in English" should {
       "have a requestNewWord" in {
-        EnglishlanguageContext.requestNewWord must be("Enter your word: ")
+        EnglishlanguageContext.requestNewWord should be("Enter your word: ")
       }
       "have wordAlreadyAddedToDictionary" in {
-        EnglishlanguageContext.wordAlreadyAddedToDictionary must be("Word already added to dictionary")
+        EnglishlanguageContext.wordAlreadyAddedToDictionary should be("Word already added to dictionary")
       }
       "have wordAddedToDictionary" in {
-        EnglishlanguageContext.wordAddedToDictionary must be("Word added to dictionary")
+        EnglishlanguageContext.wordAddedToDictionary should be("Word added to dictionary")
       }
       "have invalidcoordinates" in {
-        EnglishlanguageContext.invalidcoordinates must be("Invalid coordinates")
+        EnglishlanguageContext.invalidcoordinates should be("Invalid coordinates")
       }
       "have invalidInput" in {
-        EnglishlanguageContext.invalidInput must be("Invalid input")
+        EnglishlanguageContext.invalidInput should be("Invalid input")
       }
       "have notInDictionary" in {
-        EnglishlanguageContext.notInDictionary must be(" is not in dictionary, sorry!")
+        EnglishlanguageContext.notInDictionary should be(" is not in dictionary, sorry!")
       }
       "have wordNotInDictionary" in {
-        EnglishlanguageContext.wordNotInDictionary must be("Word not in dictionary")
+        EnglishlanguageContext.wordNotInDictionary should be("Word not in dictionary")
       }
       "have enterWordforDictionary" in {
-        EnglishlanguageContext.enterWordForDictionary must be("Enter your personal words, which should be available in the dictionary, apart from the default words \n type:" + EnglishlanguageContext.stop + "to finish the input of your personal words")
+        EnglishlanguageContext.enterWordForDictionary should be("Enter your personal words, which should be available in the dictionary, apart from the default words \n type:" + EnglishlanguageContext.stop + "to finish the input of your personal words")
       }
       "have stop" in {
-        EnglishlanguageContext.stop must be("stop")
+        EnglishlanguageContext.stop should be("stop")
       }
       "have languageSetting" in {
-        EnglishlanguageContext.languageSetting must be("Language setting: ")
+        EnglishlanguageContext.languageSetting should be("Language setting: ")
       }
       "have enterWord" in {
-        EnglishlanguageContext.enterWord must be("Enter your word: and Direction (H|V) example: myWord A 0 H")
+        EnglishlanguageContext.enterWord should be("Enter your word: and Direction (H|V) example: myWord A 0 H")
       }
       "have NoCorrectDirection" in {
-        EnglishlanguageContext.noCorrectDirection must be(" is not a correct direction")
+        EnglishlanguageContext.noCorrectDirection should be(" is not a correct direction")
       }
       "have wordDoesntFit" in {
-        EnglishlanguageContext.wordDoesntFit must be("Word doesnt fit")
+        EnglishlanguageContext.wordDoesntFit should be("Word doesnt fit")
       }
       "have exit" in {
-        EnglishlanguageContext.exit must be("exit")
+        EnglishlanguageContext.exit should be("exit")
       }
       "have enterNumberofPlayers" in {
-        EnglishlanguageContext.enterNumberofPlayers must be("Enter number of Players")
+        EnglishlanguageContext.enterNumberofPlayers should be("Enter number of Players")
       }
       "have nameAlreadyTaken" in {
-        EnglishlanguageContext.nameAlreadyTaken must be("Name already taken")
+        EnglishlanguageContext.nameAlreadyTaken should be("Name already taken")
       }
       "have invalidNumber" in {
-        EnglishlanguageContext.invalidNumber must be("Invalid input, please enter a valid number")
+        EnglishlanguageContext.invalidNumber should be("Invalid input, please enter a valid number")
       }
       "have enterPlayernames" in {
-        EnglishlanguageContext.enterPlayerNames must be("Enter the names of the first / next player")
+        EnglishlanguageContext.enterPlayerNames should be("Enter the names of the first / next player")
       }
       "have nameCantBeEmpty" in {
-        EnglishlanguageContext.nameCantBeEmpty must be("Name cant be empty")
+        EnglishlanguageContext.nameCantBeEmpty should be("Name cant be empty")
       }
       "have currentPlayer" in {
-        EnglishlanguageContext.currentPlayer must be("Current Player: ")
+        EnglishlanguageContext.currentPlayer should be("Current Player: ")
       }
       "have noteEnoughStones" in {
-        EnglishlanguageContext.notEnoughStones must be("Not enough stones")
+        EnglishlanguageContext.notEnoughStones should be("Not enough stones")
       }
       "have leaderBoard" in {
-        EnglishlanguageContext.leaderBoard must be("Leaderboard")
+        EnglishlanguageContext.leaderBoard should be("Leaderboard")
       }
       "have place" in {
-        EnglishlanguageContext.place must be("Place")
+        EnglishlanguageContext.place should be("Place")
       }
       "have horizontal" in {
-        EnglishlanguageContext.horizontal must be("horizontal")
+        EnglishlanguageContext.horizontal should be("horizontal")
       }
       "have vertical" in {
-        EnglishlanguageContext.vertical must be("vertical")
+        EnglishlanguageContext.vertical should be("vertical")
       }
       "have save" in {
-        EnglishlanguageContext.save must be("save")
+        EnglishlanguageContext.save should be("save")
       }
       "have load" in {
-        EnglishlanguageContext.load must be("load")
+        EnglishlanguageContext.load should be("load")
       }
       "have changeLanguage" in {
-        EnglishlanguageContext.changeLanguage must be("change language")
+        EnglishlanguageContext.changeLanguage should be("change language")
       }
       "have french" in {
-        EnglishlanguageContext.french must be("french")
+        EnglishlanguageContext.french should be("french")
       }
       "have english" in {
-        EnglishlanguageContext.english must be("english")
+        EnglishlanguageContext.english should be("english")
       }
       "have german" in {
-        EnglishlanguageContext.german must be("german")
+        EnglishlanguageContext.german should be("german")
       }
       "have italian" in {
-        EnglishlanguageContext.italian must be("italian")
+        EnglishlanguageContext.italian should be("italian")
       }
       "have undo" in {
-        EnglishlanguageContext.undo must be("undo")
+        EnglishlanguageContext.undo should be("undo")
       }
       "have redo" in {
-        EnglishlanguageContext.redo must be("redo")
+        EnglishlanguageContext.redo should be("redo")
       }
       "have currentLanguageRequest" in {
-        EnglishlanguageContext.currentLanguageRequest must be("Current Language: ")
+        EnglishlanguageContext.currentLanguageRequest should be("Current Language: ")
       }
       "have currentLanguage" in {
-        EnglishlanguageContext.currentLanguage must be("english")
+        EnglishlanguageContext.currentLanguage should be("english")
       }
       "have next" in {
-        EnglishlanguageContext.next must be("next")
+        EnglishlanguageContext.next should be("next")
       }
     }
   }

@@ -1,8 +1,11 @@
+
 package de.htwg.se.scrabble.controller
 import de.htwg.se.scrabble.controller.ControllerComponent.ControllerBaseImpl.Controller
 import de.htwg.se.scrabble.controller.ControllerComponent.ControllerInterface
 import de.htwg.se.scrabble.model.gameComponent.ScrabbleFieldInterface
-import de.htwg.se.scrabble.model.gameComponent.gameComponentBaseImpl.ScrabbleField
+import de.htwg.se.scrabble.model.gameComponent.gameComponentBaseImpl.{ScrabbleField, Stone}
+import de.htwg.se.scrabble.model.gameState.GameStateInterface
+import de.htwg.se.scrabble.util.placeWordsAsMove
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers.*
@@ -11,14 +14,88 @@ import scala.List.*
 import javax.annotation.meta.When
 import scala.List
 import scala.language.postfixOps
+import org.scalatestplus.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar.mock
+import de.htwg.se.scrabble.util.*
+import org.mockito.Mockito.{verify, when}
 
 class ControllerSpec extends AnyWordSpec with Matchers:
   "A Controller" when {
     val scrabbleField : ScrabbleFieldInterface = ScrabbleField(15)
-    "new" should {
-      val controller: ControllerInterface = new Controller(scrabbleField)
+    "A Controller" should {
+
+      "doAndPublish with a move correctly" in {
+
+        val mockField = mock[ScrabbleFieldInterface]
+        val mockNewField = mock[ScrabbleFieldInterface]
+        val mockFileIO = mock[GameStateInterface]
+        val mockUndoManager = mock[UndoManager[ScrabbleFieldInterface]]
+        val controller = new Controller(mockField) {
+          override val fileIO: GameStateInterface = mockFileIO
+          override val undoManager: UndoManager[ScrabbleFieldInterface] = mockUndoManager
+        }
+        val move = new placeWordsAsMove( 0, 0, 'H',"word")
+        when(mockUndoManager.doStep(mockField, mockNewField)).thenReturn(mockNewField)
+
+        controller.doAndPublish(_ => mockNewField, move)
+
+        verify(mockUndoManager).doStep(mockField, mockNewField)
+        controller.field should be(mockNewField)
+      }
+
+      "doAndPublish without a move correctly" in {
+        val mockField = mock[ScrabbleFieldInterface]
+        val mockNewField = mock[ScrabbleFieldInterface]
+        val mockFileIO = mock[GameStateInterface]
+        val controller = new Controller(mockField) {
+          override val fileIO: GameStateInterface = mockFileIO
+        }
+
+        controller.doAndPublish(mockNewField)
+
+        controller.field should be(mockNewField)
+      }
+
+      "save the game state correctly" in {
+        val mockField = mock[ScrabbleFieldInterface]
+        val mockFileIO = mock[GameStateInterface]
+        val controller = new Controller(mockField) {
+          override val fileIO: GameStateInterface = mockFileIO
+        }
+        when(mockFileIO.save(mockField)).thenReturn(true)
+
+        controller.save should be(true)
+        verify(mockFileIO).save(mockField)
+      }
+
+      "change language correctly" in {
+        val mockField = mock[ScrabbleFieldInterface]
+        val mockNewField = mock[ScrabbleFieldInterface]
+        val mockFileIO = mock[GameStateInterface]
+        val controller = new Controller(mockField) {
+          override val fileIO: GameStateInterface = mockFileIO
+        }
+        when(mockField.setLanguageDictionary(LanguageEnum.FRENCH)).thenReturn(mockNewField)
+
+        controller.changeLanguage(LanguageEnum.FRENCH) should be(mockNewField)
+        controller.field should be(mockNewField)
+        verify(mockField).setLanguageDictionary(LanguageEnum.FRENCH)
+      }
+      "DrawRandomStone" in {
+        val controller: Controller = new Controller(scrabbleField)
+        controller.drawRandomStone(controller.field.stoneContainer) should not be null
+      }
+
+      val controller: Controller = new Controller(scrabbleField)
       "have a empty field" in {
         controller.field shouldEqual scrabbleField
+      }
+
+      "removeStoneFromContainer" in {
+        controller.removeStonefromContainer(new Stone('A'), controller.field.stoneContainer) should not be null
+      }
+      "wordfits" in {
+        controller.wordFits(7, 7, 'V', "A") should be(true)
       }
       "have a empty dictionary" in {
         controller.field.dictionary should not equal(Set())

@@ -15,12 +15,14 @@ import scala.util.*
 
 class Controller @Inject (var field: ScrabbleFieldInterface) extends ControllerInterface:
   val undoManager = new util.UndoManager[ScrabbleFieldInterface]
+  
   val fileIO: GameStateInterface = Guice.createInjector(new Modules).getInstance(classOf[GameStateInterface])
   
   override def doAndPublish(doThis: placeWordsAsMove => ScrabbleFieldInterface, move: placeWordsAsMove): Unit =
     val newState = doThis(move)
     field = undoManager.doStep(field, newState)
     notifyObservers(new RoundsScrabbleEvent)
+
   override def save: Boolean = fileIO.save(field)
   override def changeLanguage(language: LanguageEnum): ScrabbleFieldInterface = {
     field = field.setLanguageDictionary(language)
@@ -32,16 +34,17 @@ class Controller @Inject (var field: ScrabbleFieldInterface) extends ControllerI
     field = doThis
     notifyObservers(new RoundsScrabbleEvent)
 
-  override def undo: ScrabbleFieldInterface = {
+  override def undo: ScrabbleFieldInterface =
     field = undoManager.undoStep(field)
     field
-  }
+
   override def redo: ScrabbleFieldInterface = undoManager.redoStep(field)
-  override def load: ScrabbleFieldInterface = {
+
+  override def load: ScrabbleFieldInterface =
     field = fileIO.load 
     notifyObservers(new RoundsScrabbleEvent)
     field
-  }
+
   override def toString: String = field.toString
 
   override def placeWord(xPosition: Int, yPosition: Int, direction: Char, word: String): ScrabbleFieldInterface =
@@ -106,104 +109,124 @@ class Controller @Inject (var field: ScrabbleFieldInterface) extends ControllerI
     field = new ScrabbleField(field.matrix,field.dictionary,field.squareFactory, field.languageEnum, playerList(playerList.indexOf(player)), playerList, field.stoneContainer)
     playerList
 
-  override def OnlyRequiredStones(notRequiredStones: List[StoneInterface], word: String): List[StoneInterface] = {
+  override def OnlyRequiredStones(notRequiredStones: List[StoneInterface], word: String): List[StoneInterface] =
     field.player.OnlyRequiredStones(notRequiredStones, word)
-  }
 
-  override def gamestartPlayStones(languageEnum: LanguageEnum): List[StoneInterface] = {
+  override def gamestartPlayStones(languageEnum: LanguageEnum): List[StoneInterface] =
     val StoneContainerStart = field.stoneContainer.gamestartPlayStones(languageEnum)
     field = new ScrabbleField(field.matrix,field.dictionary,field.squareFactory, field.languageEnum, field.player, field.players, new StoneContainer(StoneContainerStart))
     StoneContainerStart
-  }
 
-  override def drawRandomStone( Container: StoneContainerInterface): StoneInterface = {
+  override def drawRandomStone( Container: StoneContainerInterface): StoneInterface =
     Container.drawRandomeStone(Container)
-  }
 
-  override def removeStonefromContainer(StoneToRemove : StoneInterface,Container: StoneContainerInterface): StoneContainerInterface = {
+  override def removeStonefromContainer(StoneToRemove : StoneInterface,Container: StoneContainerInterface): StoneContainerInterface =
     val newContainer = Container.removeStonefromContainer(StoneToRemove,Container)
     field = new ScrabbleField(field.matrix,field.dictionary,field.squareFactory, field.languageEnum, field.player, field.players, newContainer)
     newContainer
-  }
+
   override def requestLanguage: ScrabbleFieldInterface =
     notifyObservers(RequestEnterLanguage())
     field
   override def noSuchLanguage: ScrabbleFieldInterface =
     notifyObservers(NoSuchLanguageScrabbleEvent())
     field
+
   override def displayLeaderBoard: List[PlayerInterface] =
     notifyObservers(GameEndScrabbleEvent())
     field.players
+
   override def requestnewWord: ScrabbleFieldInterface =
     notifyObservers(RequestNewWord())
     field
+
   override def wordAlreadyAddedToDictionarycontroller: ScrabbleFieldInterface =
     notifyObservers(WordAlreadyAddedToDictionary())
     field
+
   override def wordAddedToDictionarycontroller: ScrabbleFieldInterface =
     notifyObservers(WordAddedToDictionary())
     field
+
   override def invalidcoordinatescontroller: ScrabbleFieldInterface =
     notifyObservers(InvalidCoordinates())
     field
+
   override def invalidInputcontroller: ScrabbleFieldInterface =
     notifyObservers(InvalidInput())
     field
+
   override def notInDictionarycontroller: ScrabbleFieldInterface =
     notifyObservers(NotInDictionary())
     field
+
   override def wordNotInDictionarycontroller: ScrabbleFieldInterface =
     notifyObservers(WordNotInDictionary())
     field
+
   override def enterWordforDictionarycontroller: ScrabbleFieldInterface =
     notifyObservers(EnterWordForDictionary())
     field
+
   override def stopcontroller: ScrabbleFieldInterface =
     notifyObservers(Stop())
     field
+
   override def languageSettingcontroller: ScrabbleFieldInterface =
     notifyObservers(LanguageSetting())
     field
+
   override def enterWordcontroller: ScrabbleFieldInterface =
     notifyObservers(EnterWord())
     field
+
   override def NoCorrectDirectioncontroller: ScrabbleFieldInterface =
     notifyObservers(NoCorrectDirection())
     field
+
   override def wordDoesntFitcontroller: ScrabbleFieldInterface =
     notifyObservers(WordDoesntFit())
     field
+
   override def exitcontroller: ScrabbleFieldInterface =
     notifyObservers(Exit())
     field
+
   override def nameAlreadyTakencontroller: ScrabbleFieldInterface =
     notifyObservers(NameAlreadyTaken())
     field
+
   override def enterNumberofPlayerscontroller: ScrabbleFieldInterface =
     notifyObservers(EnterNumberOfPlayers())
     field
+
   override def invalidNumbercontroller: ScrabbleFieldInterface =
     notifyObservers(InvalidNumber())
     field
+
   override def currentPlayercontroller: ScrabbleFieldInterface =
     notifyObservers(CurrentPlayer())
     field
+
   override def enterPlayerNamecontroller: ScrabbleFieldInterface =
     notifyObservers(EnterPlayerName())
     field
+
   override def nameCantBeEmptycontroller: ScrabbleFieldInterface =
     notifyObservers(NameCantBeEmpty())
     field
+
   override def noteEnoughStonescontroller: ScrabbleFieldInterface =
     notifyObservers(NotEnoughStones())
     field
+
   override def leaderBoardcontroller: ScrabbleFieldInterface =
     notifyObservers(DisplayLeaderBoard())
     field
+
   override def thisPlayerList : List[PlayerInterface] = field.players
 
-  override def translateCoordinate(coordinate: String): (Int, Int) = {
+  override def translateCoordinate(coordinate: String): (Int, Int) =
     val coordinates = coordinate.split(" ")
     (coordinates(0).toUpperCase().toCharArray.sum - 'A', coordinates(1).toInt)
-  }
   

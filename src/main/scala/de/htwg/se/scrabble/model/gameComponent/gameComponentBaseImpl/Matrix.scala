@@ -48,7 +48,7 @@ class Matrix @Inject (val field: Vector[Vector[ScrabbleSquare]]) extends MatrixI
       updateAtPosition(board, row, col, wordFactory.createTripleSquare(new Stone))
     }
   }
-  //override def toString: String = field.map(_.map(_.toString).mkString(" ")).mkString("\n")
+  
   private def initializeDiagonalSquares(board: Vector[Vector[ScrabbleSquare]]): Vector[Vector[ScrabbleSquare]] = {
     val topLeftBottomRightDiagonal = (0 until rowsAndColumn).map(i => (i, i)).toList
     val topRightBottomLeftDiagonal = (0 until rowsAndColumn).map(i => (i, rowsAndColumn - 1 - i)).toList
@@ -63,6 +63,7 @@ class Matrix @Inject (val field: Vector[Vector[ScrabbleSquare]]) extends MatrixI
       updateAtPosition(b, row, col, wordFactory.createTripleSquare(new Stone))
     }
   }
+  
   private def symmetricPositions(basePositions: List[(Int, Int)]): List[(Int, Int)] =
     basePositions.flatMap { case (row, col) =>
       List(

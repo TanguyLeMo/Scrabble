@@ -12,7 +12,6 @@ abstract class ScoringSystem @Inject extends ScoringSystemInterface{
   def collectPoints(matrix: MatrixInterface, xPosition: Int, yPosition: Int, direction: Char, word: String): Int = {
 
     // Collect points for the newly placed word
-    print("X position:" + xPosition + " Y position:" + yPosition + " Direction:" + direction + " Word:" + word + "\n")
     val (newWordSum, newWordMultiplication) = collectPointsR(matrix, yPosition, xPosition, direction , word, 0, 0, 1)
 
     val totalPointsNewWord = newWordSum * newWordMultiplication
@@ -22,7 +21,6 @@ abstract class ScoringSystem @Inject extends ScoringSystemInterface{
     if (currentIndex >= word.length || xCoordinates >= matrix.columns || yPosition >= matrix.rows || matrix.field(xCoordinates)(yPosition).isEmpty) {
     return (sum, multiplication)
   }
-    print("X position:" + xCoordinates + " Y position:" + yPosition + " Direction:" + direction + " Word:" + word + "\n")
 
     val (newXPosition, newYPosition) = direction match {
     case 'V' => (xCoordinates, yPosition + 1)

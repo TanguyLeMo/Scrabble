@@ -123,7 +123,6 @@ class JsonGameState extends GameStateInterface {
                                column <- 0 until scrabbleField.matrix.columns} yield scrabbleField.matrix.getSquare(row, column).letter.symbol
     val matriString: String = matrixRealString.grouped(scrabbleField.matrix.columns).map(_.mkString("")).mkString("\n")
 
-    //val matrixString: String = scrabbleField.matrix.field.map(row => row.map(_.letter.symbol).mkString("")).mkString("\n")
     val matrixJson: JsValue = Json.obj(
       "rowsAndColumns" -> scrabbleField.matrix.rowsAndColumn,
       "field" -> matriString

@@ -40,9 +40,6 @@ class TUI( controller: ControllerInterface ) extends Observer {
     event match
       case event: RoundsScrabbleEvent =>
         println(controller.toString)
-        println(controller.field.player)
-        println(controller.languageContext.currentPlayer + controller.field.player.nextTurn(controller.thisPlayerList,controller.field.player))
-
       case event: DictionaryScrabbleEvent =>
         println(controller.field.languageSettings)
       case event: RequestEnterLanguage =>
@@ -53,17 +50,16 @@ class TUI( controller: ControllerInterface ) extends Observer {
         println(" il s'agit pas une langue disponible")
         println(" non è una lingua disponibile")
       case event: GameEndScrabbleEvent => displayLeaderboard()
-      case event: CurrentPlayer => println("Current Player: " + controller.field.player.getName)
+      case event: CurrentPlayer => println(controller.languageContext.currentPlayer + controller.field.player.getName)
       case event: Exit => println("Goodbye!")
       case event: InvalidCoordinates => println(controller.languageContext.invalidcoordinates)
-      case event: NotInDictionary => println(controller.languageContext.notInDictionary)
       case event: NoCorrectDirection => println(controller.languageContext.noCorrectDirection)
       case event: WordDoesntFit => println(controller.languageContext.wordDoesntFit)
       case event: EnterNumberOfPlayers => println(controller.languageContext.enterNumberofPlayers)
       case event: EnterPlayerName => println(controller.languageContext.enterPlayerNames)
       case event: NameAlreadyTaken => println(controller.languageContext.nameAlreadyTaken)
       case event: NameCantBeEmpty => println(controller.languageContext.nameCantBeEmpty)
-      case event: EnterWord => println(controller.field.player.toString + " |" + controller.field.player.playerTiles.mkString("|") + "|");println(controller.languageContext.enterWord)
+      case event: EnterWord => println(controller.languageContext.currentPlayer + controller.field.player.toString + " |" + controller.field.player.playerTiles.mkString("|") + "|");println(controller.languageContext.enterWord)
       case event: InvalidInput => println(controller.languageContext.invalidInput)
       case event: InvalidNumber => println(controller.languageContext.invalidNumber)
       case event: RequestNewWord => println(controller.languageContext.requestNewWord)
@@ -90,10 +86,6 @@ class TUI( controller: ControllerInterface ) extends Observer {
 
   }
   def processInputLine() : TUI = {
-    val currentPlayer = controller.field.player
-    //println(controller.field.player)
-    //println(controller.field.player.playerTiles.mkString("|"))
-    //controller.enterWordcontroller
     val input = readLine()
     val exitWord: String = controller.languageContext.exit
     input match {
@@ -131,7 +123,7 @@ class TUI( controller: ControllerInterface ) extends Observer {
           val yCoordinate = coordinates._1
           val xCoordinate = coordinates._2
           if (!controller.contains(word)) {
-            controller.notInDictionarycontroller
+            controller.wordNotInDictionarycontroller
             processInputLine()
           } else if (!(direction == "H" | direction == "V")) {
             controller.NoCorrectDirectioncontroller
@@ -143,16 +135,17 @@ class TUI( controller: ControllerInterface ) extends Observer {
             val lettersAlreadyThere = controller.lettersAlreadyThere(xCoordinate, yCoordinate, direction.charAt(0), word)
             val onlyRequiredStones = controller.OnlyRequiredStones(lettersAlreadyThere, word)
             println("brauchtman: " + onlyRequiredStones)
+            println(controller.field.player)
 
             if (onlyRequiredStones.isEmpty) {
               controller.wordDoesntFitcontroller
               processInputLine()
             }
-            else if (controller.hasStones(lettersAlreadyThere, word, currentPlayer)) {
-              controller.removeStones(currentPlayer, controller.field.players, onlyRequiredStones)
+            else if (controller.hasStones(lettersAlreadyThere, word, controller.field.player)) {
+              controller.removeStones(controller.field.player, controller.field.players, onlyRequiredStones)
               drawStonesAfterRound(controller.field.player, onlyRequiredStones.length, controller.field.players)
               controller.placeWord(xCoordinate, yCoordinate, direction.charAt(0), word)
-              controller.nextTurn(controller.thisPlayerList,currentPlayer)
+              controller.nextTurn(controller.thisPlayerList,controller.field.player)
               processInputLine()
               } else {
               controller.noteEnoughStonescontroller
@@ -217,7 +210,6 @@ class TUI( controller: ControllerInterface ) extends Observer {
 
     val numberPlayers = numberOfPlayers()
     readPlayerNames(numberPlayers, Vector.empty[String])
-     //Vector("Player1", "Player2")
   }
 
   def displayLeaderboard(): List[PlayerInterface] = {
@@ -230,10 +222,9 @@ class TUI( controller: ControllerInterface ) extends Observer {
   def drawStonesAfterRound(player: PlayerInterface, numberOfCards: Int, players: List[PlayerInterface]): List[PlayerInterface] = {
     if (controller.field.stoneContainer.stones.isEmpty || numberOfCards == 0) {
       players
-    } //newPlayer(name, points, tleslist[Stone], 
+    } 
     else {
       val newStone = controller.drawRandomStone(controller.field.stoneContainer)
-      println(newStone)
       controller.removeStonefromContainer(newStone, controller.field.stoneContainer)
       val newPlayer:PlayerInterface = new Player(player.getName, player.getPoints, player.playerTiles :+ newStone) // create new Player via controller
       val newPlayerList = controller.field.players.updated(controller.field.players.indexOf(player), newPlayer)

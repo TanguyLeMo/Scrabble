@@ -18,12 +18,12 @@ class ScrabbleField @Inject (val matrix: MatrixInterface, val dictionary: Dictio
     case FRENCH => new FrenchScoringSystem()
     case GERMAN => new GermanScoringSystem()
     case ITALIAN => new ItalianScoringSystem()
-  val languageSettings : String = languageEnum match {
+  val languageSettings : String = languageEnum match 
     case ENGLISH => "Language is set to" + Console.YELLOW  + " English" + Console.RESET
     case FRENCH => "Le Language sera"+ Console.YELLOW +" Francais" + Console.RESET
     case GERMAN => "Sprache wurde eingestellt auf " + Console.YELLOW + " Deutsch" + Console.RESET
     case ITALIAN => "La linguga sara" + Console.YELLOW + " Italian" + Console.RESET
-  }
+  
   val languageContext: LanguageContextInterface = new LanguageContext(languageEnum.toString)
 
   def this(rowsAndColumns: Int) = this(new Matrix(Vector.fill(rowsAndColumns, rowsAndColumns)(new StandardSquareFactory().createDoubleSquare(Stone()))).init(), new Dictionary().readLines(ENGLISH), new StandardSquareFactory, ENGLISH, new Player("Player1",0,List[Stone]()), Nil, new StoneContainer(List[Stone]()))

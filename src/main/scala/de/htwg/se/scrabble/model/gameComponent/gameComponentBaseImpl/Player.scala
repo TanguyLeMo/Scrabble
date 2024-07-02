@@ -38,16 +38,11 @@ class Player @Inject (val name: String,val points: Int,val playerTiles: List[Sto
     val newListPlayers = ListPlayers.updated(ListPlayers.indexOf(player),newPlayer)
     newListPlayers
 
-  def hasStones(notRequiredStones: List[StoneInterface], word: String, player: PlayerInterface): Boolean = {
+  def hasStones(notRequiredStones: List[StoneInterface], word: String, player: PlayerInterface): Boolean = 
     val requiredStones = OnlyRequiredStones(notRequiredStones, word)
-    println(player)
-    println(player.playerTiles)
-    println(word)
-    println(requiredStones.forall(player.playerTiles.contains))
     requiredStones.forall(player.playerTiles.contains)
-  }
 
-  def OnlyRequiredStones(notRequiredStones: List[StoneInterface], word: String): List[StoneInterface] = {
+  def OnlyRequiredStones(notRequiredStones: List[StoneInterface], word: String): List[StoneInterface] = 
     val requiredStonesForWord = word.toCharArray.map(char => Stone(char)).toList
 
     val remainingNotRequired = scala.collection.mutable.ListBuffer(notRequiredStones: _*)
@@ -60,9 +55,7 @@ class Player @Inject (val name: String,val points: Int,val playerTiles: List[Sto
         true
       }
     }
-
     requiredStones
-  }
 
 
   def nextTurn(playerList: List[PlayerInterface], lastTurn: PlayerInterface): PlayerInterface =
@@ -81,11 +74,10 @@ class Player @Inject (val name: String,val points: Int,val playerTiles: List[Sto
   override def toString: String =
     name + " Points: " + points
 
-  def previousTurn(playerList: List[PlayerInterface], currentTurn: PlayerInterface): PlayerInterface = {
+  def previousTurn(playerList: List[PlayerInterface], currentTurn: PlayerInterface): PlayerInterface = 
     val index = playerList.indexOf(currentTurn) - 1
     val playerOption = playerList.lift(index)
 
     playerOption match
       case Some(player) => player
       case None => playerList.last
-  }

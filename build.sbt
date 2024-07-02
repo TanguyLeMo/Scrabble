@@ -17,5 +17,4 @@ lazy val root = (project in file("."))
     coverageEnabled := true,
     libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "2.3.0",
     libraryDependencies += "org.playframework" %% "play-json" % "3.0.4",
-    coverageExcludedFiles := ".*Main.*;.*Scrabble.*;.*ScrabbleGUI.*"
 )
